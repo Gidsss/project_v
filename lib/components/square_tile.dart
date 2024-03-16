@@ -1,3 +1,4 @@
+// Google and Facebook Icons in Log-in Page
 import 'package:flutter/material.dart';
 
 class SquareTile extends StatelessWidget {

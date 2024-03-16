@@ -157,7 +157,7 @@ class LoginPage extends StatelessWidget {
 
               const SizedBox(height: 20),
 
-              // google + apple sign in buttons
+              // google + facebook sign in buttons
               const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -166,7 +166,7 @@ class LoginPage extends StatelessWidget {
 
                   SizedBox(width: 25),
 
-                  // apple button
+                  // facebook button
                   SquareTile(imagePath: 'assets/facebook.png')
                 ],
               ),
