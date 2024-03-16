@@ -1,7 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/homepage.dart';
+import 'package:project_v/pages/loginpage.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(milliseconds: 3000), () {});
     _navigatorKey.currentState?.pushReplacement(
       MaterialPageRoute(
-        builder: (_) => const MyHomePage(
+        builder: (_) => LoginPage(
           title: 'Valdopeña Opticals',
         ),
       ),
@@ -43,12 +43,17 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset('assets/logo1.jpg'),
-                const SizedBox(height: 16),   // Add some spacing
+                Image.asset(
+                  'assets/logo1.jpg',
+                  width: 350, 
+                  height: 350, 
+                  fit: BoxFit.contain, 
+                ),
+                const SizedBox(height: 45),   // Add some spacing
                 const CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black87),
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black54),
                   strokeWidth: 3,
-                  backgroundColor: Color.fromARGB(0, 57, 57, 57),
+      
                 ), // Loading indicator
               ],
             ),
