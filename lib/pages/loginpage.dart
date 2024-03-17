@@ -5,23 +5,21 @@ import 'package:project_v/components/button.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key, required String title});
-  
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
+
+  // This widget is the login page of the application.
 
   // This class is the configuration for the state. It holds the values (in this
   // case the title) provided by the parent (in this case the App widget) and
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
-  
+
   //text editing controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   //customer sign in method
   void userSignIn() {
-    // Dito na sign in logic
+    // sign-in logic to be added
   }
 
   @override
@@ -29,6 +27,7 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 249, 249, 249),
       body: SafeArea(
+        child: SingleChildScrollView( //fixed bottom overflowing
         child: Center(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,6 +178,7 @@ class LoginPage extends StatelessWidget {
           ),
         ),
       ),
+    ),
     );
   }
 }
