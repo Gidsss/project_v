@@ -70,7 +70,7 @@ Widget build(BuildContext context) {
           ),
           const SizedBox(height: 10),
           const Padding(
-            padding: EdgeInsets.only(left: 20.0),
+            padding: EdgeInsets.only(left: 23.0),
             child: Text(
               "Start the journey you've always envisioned.",
               style: TextStyle(
