@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project_v/components/sendbutton.dart';
-import 'package:project_v/components/textfield.dart';
+import 'package:project_v/components/auth/sendbutton.dart';
+import 'package:project_v/components/auth/textfield.dart';
 // Forgot Password Screen
 class ForgotPasswordScreen extends StatelessWidget {
   ForgotPasswordScreen({super.key});
@@ -52,7 +52,7 @@ class ForgotPasswordScreen extends StatelessWidget {
 
               // welcome back, you've been missed!
               const Padding(
-              padding: EdgeInsets.only(left: 20.0), // Adjust the padding as needed
+              padding: EdgeInsets.only(left: 25.0), // Adjust the padding as needed
               child: Text(
                 'We’ll send you a code to reset your password.',
                 style: TextStyle(

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/components/square_tile.dart';
-import 'package:project_v/components/textfield.dart';
-import 'package:project_v/components/loginbutton.dart';
+import 'package:project_v/components/auth/textfield.dart';
+import 'package:project_v/components/auth/loginbutton.dart';
 import 'package:project_v/screens/auth/password/forgotpasswordscreen.dart';
 import 'package:project_v/screens/auth/signup/signupscreen.dart';
 import 'package:project_v/constants/app_constants.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key, required String title});
-
+  static String routeName = "/login";
   // This widget is the login page of the application.
 
   // This class is the configuration for the state. It holds the values (in this

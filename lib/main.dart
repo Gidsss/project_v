@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_v/routes.dart';
 import 'package:project_v/screens/auth/log-in/splashscreen.dart';
 
 void main() {
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const SplashScreen(), //Entry of the app
+      routes: routes,
     );
   }
 }

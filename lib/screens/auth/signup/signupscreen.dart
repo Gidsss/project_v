@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:project_v/components/continueasguestbutton.dart';
-import 'package:project_v/components/signupbutton.dart';
-import 'package:project_v/components/textfield.dart';
+import 'package:project_v/components/auth/continueasguestbutton.dart';
+import 'package:project_v/components/auth/signupbutton.dart';
+import 'package:project_v/screens/auth/signup/completeprofilescreen.dart';
+import 'package:project_v/components/auth/textfield.dart';
 import 'package:project_v/screens/auth/log-in/loginscreen.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -11,8 +12,24 @@ class SignUpScreen extends StatelessWidget {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-  void signUp() {
-    // sign up logic to be added
+   void signUp(BuildContext context) {
+    // Sign up logic to be added
+
+    // Navigate to the next screen
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ProfileScreen()), // Replace NextScreen with the screen you want to navigate to
+    );
+  }
+
+  void continueasGuest(BuildContext context) {
+    // Sign up logic to be added
+
+    // Navigate to the next screen
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen(title: 'Valdopeña Opticals',)), // Replace NextScreen with the screen you want to navigate to
+    );
   }
 
   @override
@@ -124,7 +141,9 @@ Widget build(BuildContext context) {
         ),
         const SizedBox(height: 25),
               SignUpButton(
-                onTap: signUp,
+                onTap: () {
+                  signUp(context);
+                }
               ),
         const SizedBox(height: 25),
              Padding(
@@ -163,7 +182,9 @@ Widget build(BuildContext context) {
             ),
             const SizedBox(height: 25),
               GuestButton(
-                onTap: signUp,
+                onTap: () {
+                  continueasGuest(context); //edit this
+                }
               ),
         ],
       ),

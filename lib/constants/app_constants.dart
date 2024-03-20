@@ -14,6 +14,7 @@ class AppConstants {
 
   // User Profile Images
   static const String profileIconPath = 'assets/user.png';
+  static const String editIconPath = 'assets/cameraicon.svg';
 
   // Color constants
   static const Color primaryColor = Colors.blue;

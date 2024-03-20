@@ -16,8 +16,20 @@ class MyTextField extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
+Widget build(BuildContext context) {
+  return Container(
+    decoration: const BoxDecoration(
+      borderRadius: BorderRadius.all(Radius.circular(4)),
+      boxShadow: [
+        BoxShadow(
+          color: Color(0x0C000000), 
+          spreadRadius: 0,
+          blurRadius: 8,
+          offset: Offset(0, 1),
+        ),
+      ],
+    ),
+    child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: TextField(
         controller: controller,
@@ -26,26 +38,26 @@ class MyTextField extends StatelessWidget {
           color: Colors.black,
           fontSize: 16,
           fontFamily: 'Inter', 
-          
-          ),
+        ),
         decoration: InputDecoration(
-            enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey.shade400),
-            ),
-            fillColor: Colors.white,
-            filled: true,
-            hintText: hintText,
-            hintStyle: TextStyle(
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey.shade400),
+          ),
+          fillColor: Colors.white,
+          filled: true,
+          hintText: hintText,
+          hintStyle: TextStyle(
             color: Colors.grey[500],
             fontSize: 16,
             fontWeight: FontWeight.normal,
             fontFamily: 'Inter',
-            ),
+          ),
+        ),
       ),
     ),
-    );
+  );
   }
 }
