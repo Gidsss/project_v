@@ -1,10 +1,10 @@
 // Log-in Button in Log-in Page
 import 'package:flutter/material.dart';
 
-class Button extends StatelessWidget {
+class LoginButton extends StatelessWidget {
   final Function()? onTap;
 
-  const Button({super.key, required this.onTap});
+  const LoginButton({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

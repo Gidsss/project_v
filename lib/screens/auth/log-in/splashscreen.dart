@@ -1,7 +1,8 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:project_v/pages/loginpage.dart';
+import 'package:project_v/screens/auth/log-in/loginscreen.dart';
+import 'package:project_v/constants/app_constants.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -24,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(milliseconds: 3000), () {});
     _navigatorKey.currentState?.pushReplacement(
       MaterialPageRoute(
-        builder: (_) => LoginPage(
+        builder: (_) => LoginScreen(
           title: 'Valdopeña Opticals',
         ),
       ),
@@ -44,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'assets/logotrans.png',
+                  AppConstants.logoImagePath,
                   width: 350, 
                   height: 350, 
                   fit: BoxFit.contain, 

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/components/square_tile.dart';
 import 'package:project_v/components/textfield.dart';
-import 'package:project_v/components/button.dart';
+import 'package:project_v/components/loginbutton.dart';
+import 'package:project_v/screens/auth/password/forgotpasswordscreen.dart';
+import 'package:project_v/screens/auth/signup/signupscreen.dart';
+import 'package:project_v/constants/app_constants.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key, required String title});
+class LoginScreen extends StatelessWidget {
+  LoginScreen({super.key, required String title});
 
   // This widget is the login page of the application.
 
@@ -67,7 +70,7 @@ class LoginPage extends StatelessWidget {
 
               const SizedBox(height: 25),
 
-              // username textfield
+              // email textfield
               MyTextField(
                 controller: emailController,
                 hintText: 'Email',
@@ -94,65 +97,81 @@ class LoginPage extends StatelessWidget {
               
               ),
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
 
-              // forgot password?
+              // forgot password? and don't have an acct
               Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Forgot Password?',
-                    style: TextStyle(color: Colors.grey[600]),
+                  GestureDetector(
+                    onTap: () {
+                      // Go to the Forgot Password screen
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordScreen()));
+                    },
+                    child: Text(
+                      'Forgot Password?',
+                      style: TextStyle(color: Colors.grey[600]),
+                    ),
                   ),
-                  Text(
-                    "Don't have an account?",
-                    style: TextStyle(color: Colors.grey[600]),
+                  GestureDetector(
+                    onTap: () {
+                      // Go to the Sign Up screen
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen()));
+                    },
+                    child: Text(
+                      "Don't have an account?",
+                      style: TextStyle(color: Colors.grey[600]),
+                    ),
                   ),
                 ],
               ),
-              ),
+            ),
 
               const SizedBox(height: 25),
 
               // sign in button
-              Button(
+              LoginButton(
                 onTap: userSignIn,
               ),
 
               const SizedBox(height: 50),
-              // or continue with
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.5,
-                        color: Colors.grey[400],
+              // or login using
+               Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 100.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 20, // Adjust width as needed
+                    child: Divider(
+                      thickness: 0.5,
+                      color: Colors.grey[400],
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Text(
+                      'Or Login Using',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontFamily: 'Inter',
+                        fontSize: 14,
+                        
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Text(
-                        'Or Login Using',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontFamily: 'Inter',
-                          fontSize: 14,
-                          ),
-                      ),
+                  ),
+                  SizedBox(
+                    width: 20, // Adjust width as needed
+                    child: Divider(
+                      thickness: 0.5,
+                      color: Colors.grey[400],
                     ),
-                    Expanded(
-                      child: Divider(
-                        thickness: 0.5,
-                        color: Colors.grey[400],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+            ),
 
               const SizedBox(height: 20),
 
@@ -161,19 +180,13 @@ class LoginPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // google button
-                  SquareTile(imagePath: 'assets/google.png'),
-
+                  SquareTile(imagePath: AppConstants.googleIconPath),
                   SizedBox(width: 25),
-
                   // facebook button
-                  SquareTile(imagePath: 'assets/facebook.png')
+                  SquareTile(imagePath: AppConstants.facebookIconPath)
                 ],
               ),
-
               const SizedBox(height: 50),
-
-             
-              
             ],
           ),
         ),

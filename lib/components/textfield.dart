@@ -1,4 +1,4 @@
-// TextFields in Login Page (Email and Password)
+// TextFields in Login Page and Sign Up Page(Email and Password)
 import 'package:flutter/material.dart';
 
 class MyTextField extends StatelessWidget {
@@ -26,6 +26,7 @@ class MyTextField extends StatelessWidget {
           color: Colors.black,
           fontSize: 16,
           fontFamily: 'Inter', 
+          
           ),
         decoration: InputDecoration(
             enabledBorder: const OutlineInputBorder(
