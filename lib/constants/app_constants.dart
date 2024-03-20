@@ -9,7 +9,7 @@ class AppConstants {
   static const String googleIconPath = 'assets/google.png';
   static const String facebookIconPath = 'assets/facebook.png';
 
-  // 
+  // Previous Icon
   static const String backIconPath = 'assets/previous.png';
 
   // User Profile Images
