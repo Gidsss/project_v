@@ -1,19 +1,22 @@
+// Forgot Password Screen Page 2
 import 'package:flutter/material.dart';
-import 'package:project_v/components/auth/sendbutton.dart';
+import 'package:project_v/components/auth/changepasswordbutton.dart';
 import 'package:project_v/components/auth/textfield.dart';
-import 'package:project_v/screens/auth/password/passwordreset.dart';
+import 'package:project_v/screens/auth/password/forgotpasswordscreen.dart';
 import 'package:project_v/constants/app_constants.dart';
 // Forgot Password Screen
-class ForgotPasswordScreen extends StatelessWidget {
-  ForgotPasswordScreen({super.key});
+class PasswordReset2 extends StatelessWidget {
+  PasswordReset2({super.key});
 
-  final emailController = TextEditingController();
+  final passwordController= TextEditingController();
+  final confirmpasswordController= TextEditingController();
+
 
    void sendEmail(BuildContext context) {
     // send email logic to be added
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const PasswordReset()), 
+      MaterialPageRoute(builder: (context) => ForgotPasswordScreen()), 
     );
   }
     @override
@@ -44,7 +47,7 @@ class ForgotPasswordScreen extends StatelessWidget {
           const Padding(
             padding: EdgeInsets.only(left: 20.0),
             child: Text(
-              'Forgot Password',
+              'Reset Password',
               style: TextStyle(
                 color: Color(0xFF222222),
                 fontSize: 34,
@@ -61,7 +64,7 @@ class ForgotPasswordScreen extends StatelessWidget {
               const Padding(
               padding: EdgeInsets.only(left: 25.0), // Adjust the padding as needed
               child: Text(
-                'We’ll send you a code to reset your password.',
+                'Enter your New Password.',
                 style: TextStyle(
                   color: Color(0xFF757575),
                   fontSize: 11,
@@ -75,17 +78,28 @@ class ForgotPasswordScreen extends StatelessWidget {
 
               // email textfield
               MyTextField(
-                controller: emailController,
-                hintText: 'Email',
+                controller: passwordController,
+                hintText: 'Your New Password',
                 obscureText: false,
                 decoration: const InputDecoration(
                    border: OutlineInputBorder(),
-                   labelText: 'Email',
+                   labelText: 'Password',
+                    
+                ),
+              ),
+              const SizedBox(height: 10),
+               MyTextField(
+                controller: confirmpasswordController,
+                hintText: 'Confirm Password',
+                obscureText: false,
+                decoration: const InputDecoration(
+                   border: OutlineInputBorder(),
+                   labelText: 'Confirm Password',
                     
                 ),
               ),
               const SizedBox(height: 25),
-              SendButton(
+              ChangePasswordButton(
                 onTap: () {
                   sendEmail(context);
                 }
