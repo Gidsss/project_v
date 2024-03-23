@@ -19,7 +19,7 @@ class GuestButton extends StatelessWidget {
         ),
         child: const Center(
           child: Text(
-            "CONTINE AS GUEST",
+            "CONTINUE AS GUEST",
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w300,
