@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:project_v/components/square_tile.dart';
-import 'package:project_v/components/auth/textfield.dart';
-import 'package:project_v/components/auth/loginbutton.dart';
+import 'package:project_v/widgets/img/square_tile.dart';
+import 'package:project_v/widgets/textfields/textfield.dart';
+import 'package:project_v/widgets/buttons/auth/loginbutton.dart';
 import 'package:project_v/screens/auth/password/forgotpasswordscreen.dart';
 import 'package:project_v/screens/auth/signup/signupscreen.dart';
 import 'package:project_v/constants/app_constants.dart';

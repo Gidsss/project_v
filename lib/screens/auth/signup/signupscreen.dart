@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:project_v/components/auth/continueasguestbutton.dart';
-import 'package:project_v/components/auth/signupbutton.dart';
+import 'package:project_v/widgets/buttons/auth/continueasguestbutton.dart';
+import 'package:project_v/widgets/buttons/auth/signupbutton.dart';
 import 'package:project_v/screens/auth/signup/completeprofilescreen.dart';
-import 'package:project_v/components/auth/textfield.dart';
+import 'package:project_v/widgets/textfields/textfield.dart';
 import 'package:project_v/screens/auth/log-in/loginscreen.dart';
 
 class SignUpScreen extends StatelessWidget {

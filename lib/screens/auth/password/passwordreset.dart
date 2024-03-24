@@ -1,10 +1,9 @@
 // Forgot Password Screen Page 1
 import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
-import 'package:project_v/components/auth/resetpassbutton.dart';
+import 'package:project_v/widgets/buttons/auth/resetpassbutton.dart';
 import 'package:project_v/screens/auth/password/passwordreset2.dart';
-// import 'package:project_v/components/auth/resetpassbutton.dart';
-// import 'package:project_v/components/auth/textfield.dart';
+import 'package:project_v/widgets/textfields/otptextfield.dart';
 
 
 class PasswordReset extends StatefulWidget {
@@ -105,36 +104,22 @@ class _PasswordResetState extends State<PasswordReset> {
             ),
 
 
-             
-              const SizedBox(
-                height: 15,
+             const SizedBox(height: 15),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 249, 249, 249),
+                borderRadius: BorderRadius.circular(12),
               ),
-              Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 249, 249, 249),
-                  borderRadius: BorderRadius.circular(12),
-                  
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _textFieldOTP(first: true, last: false),
-                        _textFieldOTP(first: false, last: false),
-                        _textFieldOTP(first: false, last: false),
-                        _textFieldOTP(first: true, last: false),
-                        _textFieldOTP(first: false, last: false),
-                        _textFieldOTP(first: false, last: true),
-                      ],
-                    ),
-                    
-                    
-                  ],
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Use OTPTextField widget for each OTP field
+                  for (int i = 0; i < 6; i++)
+                    OTPTextField(first: i == 0, last: i == 5),
+                ],
               ),
-              
+            ),
               ResetButton(
                     onTap: () {
                       sendOTP(context);
@@ -173,54 +158,4 @@ class _PasswordResetState extends State<PasswordReset> {
       ),
     );
   }
-
-Widget _textFieldOTP({required bool first, bool? last}) {
-  return SizedBox(
-    height: 65,
-    width: 52,
-    child: AspectRatio(
-      aspectRatio: 1.0,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(17),
-          border: Border.all(
-            width: 2, 
-            color: Colors.black87, 
-          ),
-        ),
-        child: TextField(
-          autofocus: true,
-          onChanged: (value) {
-            if (value.length == 1 && last == false) {
-              FocusScope.of(context).nextFocus();
-            }
-            if (value.isEmpty && first == false) {
-              FocusScope.of(context).previousFocus();
-            }
-          },
-          textAlignVertical: TextAlignVertical.center,
-          showCursor: false,
-          readOnly: false,
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-          keyboardType: TextInputType.number,
-          maxLength: 1,
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 12 , vertical: -2),
-            counter: const Offstage(),
-            border: InputBorder.none, 
-            focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(
-                width: 2, 
-                color: Colors.black87, 
-              ),
-              borderRadius: BorderRadius.circular(15),
-            ),
-          ),
-        ),
-      ),
-    ),
-  );
-}
 }

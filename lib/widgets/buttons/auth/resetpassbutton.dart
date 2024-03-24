@@ -1,4 +1,4 @@
-// Continue Button
+// Continue Button in Reset Password (After typing OTP)
 import 'package:flutter/material.dart';
 
 class ResetButton extends StatelessWidget {
@@ -13,7 +13,7 @@ class ResetButton extends StatelessWidget {
       child: Container(
       
          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        margin: const EdgeInsets.symmetric(horizontal: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
           color: Colors.black,
           borderRadius: BorderRadius.circular(30),

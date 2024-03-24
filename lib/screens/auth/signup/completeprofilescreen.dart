@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:project_v/components/auth/donebutton.dart';
-import 'package:project_v/components/auth/profilepic.dart';
-import 'package:project_v/components/auth/textfield.dart';
+import 'package:project_v/widgets/buttons/auth/donebutton.dart';
+import 'package:project_v/widgets/img/profilepic.dart';
+import 'package:project_v/widgets/textfields/textfield.dart';
 import 'package:project_v/screens/auth/log-in/loginscreen.dart';
 
 

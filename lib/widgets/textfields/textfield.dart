@@ -1,4 +1,4 @@
-// TextFields in Login Page and Sign Up Page(Email and Password)
+// General TextField in All Screens
 import 'package:flutter/material.dart';
 
 class MyTextField extends StatelessWidget {

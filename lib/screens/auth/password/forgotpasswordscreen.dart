@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project_v/components/auth/sendbutton.dart';
-import 'package:project_v/components/auth/textfield.dart';
+import 'package:project_v/widgets/buttons/auth/sendbutton.dart';
+import 'package:project_v/widgets/textfields/textfield.dart';
 import 'package:project_v/screens/auth/password/passwordreset.dart';
 import 'package:project_v/constants/app_constants.dart';
 // Forgot Password Screen
