@@ -12,7 +12,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-     MaterialColor primaryColor = const MaterialColor(
+
+    // I commented this because it was resulting in every widget being white. Which was annoying.
+
+     /*MaterialColor primaryColor = const MaterialColor(
       0xFFfdfdfd,
       <int, Color>{
         50: Color(0xFFfdfdfd),
@@ -26,7 +29,7 @@ class MyApp extends StatelessWidget {
         800: Color(0xFFfdfdfd),
         900: Color(0xFFfdfdfd),
       },
-    );
+    );*/
     return MaterialApp(
       title: 'Valdopeña Opticals',
       debugShowCheckedModeBanner: false,
@@ -34,8 +37,10 @@ class MyApp extends StatelessWidget {
         // This is the theme of your application.
          // Set the scaffold background color to white
         scaffoldBackgroundColor: const Color.fromARGB(253, 253, 253, 253),
+        
+        // I commented this also because it was using the primarycolor variable defined in Line 18)
         // Set the color scheme with black as the primary color
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: primaryColor),
+        //colorScheme: ColorScheme.fromSwatch(primarySwatch: primaryColor),
         // Enable Material Design 3
         useMaterial3: true,
       ),
