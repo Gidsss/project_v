@@ -86,13 +86,14 @@ Widget buildheader() {
               ),
               SizedBox(width: 20),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  headerIconButton(Icons.mark_unread_chat_alt_outlined, 5),
-                  headerIconButton(Icons.notifications_outlined, 5),
-                  headerIconButton(Icons.favorite_border, 5),
-                  headerIconButton(Icons.shopping_bag_outlined, 0)
+                  headerIconButton(Icons.mark_unread_chat_alt_outlined),
+                  SizedBox(width: 8),
+                  headerIconButton(Icons.notifications_outlined),
+                  SizedBox(width: 8),
+                  headerIconButton(Icons.favorite_border),
+                  SizedBox(width: 8),
+                  headerIconButton(Icons.shopping_bag_outlined)
                 ],
               ),
             ],
@@ -212,7 +213,7 @@ Widget buildButton(String label, IconData icon, bool isScreen) {
   );
 }
 
-Widget headerIconButton(IconData icon, double padding) {
+Widget headerIconButton(IconData icon, ) {
   return IconButton(
     onPressed: () {
       // Navigate to screen Logic To follow
@@ -223,7 +224,7 @@ Widget headerIconButton(IconData icon, double padding) {
       size: 30,
     ),
     color: Colors.black,
-    padding: EdgeInsets.only(right: padding),
+    padding: EdgeInsets.all(0),
     constraints: const BoxConstraints(), 
     style: const ButtonStyle(
       tapTargetSize: MaterialTapTargetSize.shrinkWrap, 
