@@ -3,13 +3,13 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:project_v/constants/app_constants.dart';
 
-class headerfooter extends StatefulWidget {
+class HeaderFooter extends StatefulWidget {
   final Widget body;
   final bool hasDrawer;
   final String title;
   final List<bool> buttonStatus;
 
-  const headerfooter(
+  const HeaderFooter(
       {super.key,
       required this.body,
       this.hasDrawer = false,
@@ -17,10 +17,10 @@ class headerfooter extends StatefulWidget {
       required this.buttonStatus});
 
   @override
-  State<headerfooter> createState() => _headerfooterState();
+  State<HeaderFooter> createState() => _HeaderFooterState();
 }
 
-class _headerfooterState extends State<headerfooter> {
+class _HeaderFooterState extends State<HeaderFooter> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,21 +44,57 @@ Widget buildheader() {
         color: Colors.grey.withOpacity(0.5),
         spreadRadius: 4,
         blurRadius: 4,
-        offset: const Offset(0, -2), 
+        offset: const Offset(0, -2),
       ),
     ], color: Colors.white),
     child: Expanded(
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(15,5,15,10),
+          padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Image.asset(
-                AppConstants.logoImagePath,
-                width: 60,
-                height: 60,
+              Row(
+                children: [
+                  Image.asset(
+                    AppConstants.logoImagePath,
+                    width: 60,
+                    height: 60,
+                  ),
+                  SizedBox(width: 8),
+                  const Padding(
+                    padding: EdgeInsets.only(top:8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text("Valdopeña",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: "Times New Roman",
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500)),
+                        Text("Opticals",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontFamily: "Times New Roman",
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500)),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              RichText(text: const TextSpan(text: "Valdopeña Opticals", style: TextStyle(color: Colors.black, fontFamily: "JosefinSans")))
+              SizedBox(width: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  headerIconButton(Icons.mark_unread_chat_alt_outlined, 5),
+                  headerIconButton(Icons.notifications_outlined, 5),
+                  headerIconButton(Icons.favorite_border, 5),
+                  headerIconButton(Icons.shopping_bag_outlined, 0)
+                ],
+              ),
             ],
           ),
         ),
@@ -83,11 +119,24 @@ Widget buildFooter(List<bool> buttonStatus) {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          buildButton("Home", Icons.home, buttonStatus[0]),
-          buildButton("Explore", Icons.explore, buttonStatus[1]),
-          buildButton("Schedule", Icons.calendar_today, buttonStatus[2]),
-          buildButton("Orders", Icons.local_shipping, buttonStatus[3]),
-          buildButton("Profile", Icons.account_circle, buttonStatus[4]),
+          buttonStatus[0]
+              ? buildButton("Home", Icons.home, buttonStatus[0])
+              : buildButton("Home", Icons.home_outlined, buttonStatus[0]),
+          buttonStatus[1]
+              ? buildButton("Explore", Icons.explore, buttonStatus[1])
+              : buildButton("Explore", Icons.explore_outlined, buttonStatus[1]),
+          buttonStatus[2]
+              ? buildButton("Schedule", Icons.calendar_month, buttonStatus[2])
+              : buildButton(
+                  "Schedule", Icons.calendar_month_outlined, buttonStatus[2]),
+          buttonStatus[3]
+              ? buildButton("Orders", Icons.local_shipping, buttonStatus[3])
+              : buildButton(
+                  "Orders", Icons.local_shipping_outlined, buttonStatus[3]),
+          buttonStatus[4]
+              ? buildButton("Home", Icons.account_circle, buttonStatus[4])
+              : buildButton(
+                  "Profile", Icons.account_circle_outlined, buttonStatus[4]),
         ],
       ),
     ),
@@ -116,6 +165,7 @@ Widget buildButton(String label, IconData icon, bool isScreen) {
                     ),
                     Icon(
                       icon,
+                      size: 34,
                       color: Colors.black,
                     ),
                     const SizedBox(
@@ -128,8 +178,12 @@ Widget buildButton(String label, IconData icon, bool isScreen) {
                   ],
                 )),
           )
+
         : TextButton(
-            onPressed: () {},
+            onPressed: () {
+                // Navigate to screen Logic To follow
+
+            },
             style: ButtonStyle(
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     const RoundedRectangleBorder(
@@ -143,6 +197,7 @@ Widget buildButton(String label, IconData icon, bool isScreen) {
                 ),
                 Icon(
                   icon,
+                  size: 34,
                   color: Colors.black,
                 ),
                 const SizedBox(
@@ -154,5 +209,24 @@ Widget buildButton(String label, IconData icon, bool isScreen) {
                 ),
               ],
             )),
+  );
+}
+
+Widget headerIconButton(IconData icon, double padding) {
+  return IconButton(
+    onPressed: () {
+      // Navigate to screen Logic To follow
+      
+    },
+    icon: Icon(
+      icon,
+      size: 30,
+    ),
+    color: Colors.black,
+    padding: EdgeInsets.only(right: padding),
+    constraints: const BoxConstraints(), 
+    style: const ButtonStyle(
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap, 
+    ),
   );
 }
