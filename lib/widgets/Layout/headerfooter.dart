@@ -29,7 +29,7 @@ class _HeaderFooterState extends State<HeaderFooter> {
         buildheader(),
         Expanded(
             child: Container(
-                padding: const EdgeInsets.all(15), child: widget.body)),
+              child: widget.body)),
         buildFooter(widget.buttonStatus)
       ],
     ));
