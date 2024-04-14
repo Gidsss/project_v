@@ -58,7 +58,7 @@ Widget buildheader() {
                 width: 60,
                 height: 60,
               ),
-              RichText(text: const TextSpan(text: "Valdopeña Opticals", style: TextStyle(color: Colors.black, fontFamily: "DancingScript")))
+              RichText(text: const TextSpan(text: "Valdopeña Opticals", style: TextStyle(color: Colors.black, fontFamily: "JosefinSans")))
             ],
           ),
         ),
