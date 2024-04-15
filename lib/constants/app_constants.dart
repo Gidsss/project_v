@@ -16,6 +16,9 @@ class AppConstants {
   static const String profileIconPath = 'assets/images/user.png';
   static const String editIconPath = 'assets/cameraicon.svg';
 
+  // Home Page Images
+  static const String meneyeglassIconPath = 'assets/images/MenEyeglass.jpg';
+
   // Color constants
   static const Color primaryColor = Colors.blue;
   static const Color secondaryColor = Colors.green;
