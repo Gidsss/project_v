@@ -5,6 +5,7 @@ import 'package:project_v/widgets/buttons/auth/loginbutton.dart';
 import 'package:project_v/screens/auth/password/forgotpasswordscreen.dart';
 import 'package:project_v/screens/auth/signup/signupscreen.dart';
 import 'package:project_v/constants/app_constants.dart';
+import 'package:project_v/screens/main/homescreen.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key, required String title});
@@ -19,11 +20,6 @@ class LoginScreen extends StatelessWidget {
   //text editing controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
-  //customer sign in method
-  void userSignIn() {
-    // sign-in logic to be added
-  }
 
   @override
    Widget build(BuildContext context) {
@@ -133,7 +129,10 @@ class LoginScreen extends StatelessWidget {
 
               // sign in button
               LoginButton(
-                onTap: userSignIn,
+                onTap: (){
+                  // Sign-in, go to Home Screen
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen()));
+                }
               ),
 
               const SizedBox(height: 50),

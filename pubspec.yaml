@@ -68,10 +68,10 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-  - assets/images/
-  - assets/logos/
-  - assets/fonts/
-  - assets/videos/
+    - assets/images/
+    - assets/logos/
+    - assets/fonts/
+    - assets/videos/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -79,6 +79,31 @@ flutter:
 
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
+
+  fonts:
+  # Hindi ko ni-include lahat ng fonts, yung need ko lang. Pero nilagay ko lahat ng fonts na nasa drive dun sa assets/fonts folder.
+    - family: DancingScript
+      fonts:
+        - asset: assets/fonts/DancingScript-Regular.ttf
+        - asset: assets/fonts/DancingScript-Bold.ttf
+          weight: 700
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+        - asset: assets/fonts/Inter-SemiBold.ttf
+        - weight: 600
+        - asset: assets/fonts/Inter-Bold.ttf
+          weight: 700
+    - family: Lato
+      fonts:
+        - asset: assets/fonts/Lato-Regular.ttf
+        - asset: assets/fonts/Lato-Bold.ttf
+          weight: 700
+    - family: JosefinSans
+      fonts:
+        - asset: assets/fonts/JosefinSans-Regular.ttf
+        - asset: assets/fonts/JosefinSans-Bold.ttf
+          weight: 700
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
