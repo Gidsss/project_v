@@ -27,9 +27,7 @@ class _HeaderFooterState extends State<HeaderFooter> {
         body: Column(
       children: [
         buildheader(),
-        Expanded(
-            child: Container(
-              child: widget.body)),
+        Expanded(child: Container(child: widget.body)),
         buildFooter(widget.buttonStatus)
       ],
     ));
@@ -63,7 +61,7 @@ Widget buildheader() {
                   ),
                   SizedBox(width: 8),
                   const Padding(
-                    padding: EdgeInsets.only(top:8),
+                    padding: EdgeInsets.only(top: 8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
@@ -152,7 +150,9 @@ Widget buildButton(String label, IconData icon, bool isScreen) {
             decoration: const BoxDecoration(
                 border: Border(top: BorderSide(width: 1.5))),
             child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  // Pass argument here to Navigate to screen Logic which is to follow
+                },
                 style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         const RoundedRectangleBorder(
@@ -179,11 +179,9 @@ Widget buildButton(String label, IconData icon, bool isScreen) {
                   ],
                 )),
           )
-
         : TextButton(
             onPressed: () {
-                // Navigate to screen Logic To follow
-
+              // Pass argument here to Navigate to screen Logic which is to follow
             },
             style: ButtonStyle(
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -213,11 +211,12 @@ Widget buildButton(String label, IconData icon, bool isScreen) {
   );
 }
 
-Widget headerIconButton(IconData icon, ) {
+Widget headerIconButton(
+  IconData icon,
+) {
   return IconButton(
     onPressed: () {
-      // Navigate to screen Logic To follow
-      
+      // Pass argument here to Navigate to screen Logic which is to follow
     },
     icon: Icon(
       icon,
@@ -225,9 +224,9 @@ Widget headerIconButton(IconData icon, ) {
     ),
     color: Colors.black,
     padding: EdgeInsets.all(0),
-    constraints: const BoxConstraints(), 
+    constraints: const BoxConstraints(),
     style: const ButtonStyle(
-      tapTargetSize: MaterialTapTargetSize.shrinkWrap, 
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
     ),
   );
 }

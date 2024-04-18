@@ -4,6 +4,7 @@ import 'package:project_v/widgets/buttons/auth/signupbutton.dart';
 import 'package:project_v/screens/auth/signup/completeprofilescreen.dart';
 import 'package:project_v/widgets/textfields/textfield.dart';
 import 'package:project_v/screens/auth/log-in/loginscreen.dart';
+import 'package:project_v/constants/app_constants.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
@@ -47,7 +48,7 @@ Widget build(BuildContext context) {
               height: 40,
               child: IconButton(
                 iconSize: 24,
-                icon: Image.asset('assets/previous.png'),
+                icon: Image.asset(AppConstants.backIconPath),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -152,7 +153,7 @@ Widget build(BuildContext context) {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 20, // Adjust width as needed
+                    width: 10, // Adjust width as needed
                     child: Divider(
                       thickness: 0.5,
                       color: Colors.grey[400],
@@ -171,7 +172,7 @@ Widget build(BuildContext context) {
                     ),
                   ),
                   SizedBox(
-                    width: 20, // Adjust width as needed
+                    width: 10, // Adjust width as needed
                     child: Divider(
                       thickness: 0.5,
                       color: Colors.grey[400],

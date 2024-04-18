@@ -11,7 +11,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return HeaderFooter(
         title: "HeaderFooter",
-        buttonStatus: [true, false, false, false, false],
+        buttonStatus: const [true, false, false, false, false],
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -62,18 +62,41 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  itemCreate(AppConstants.meneyeglassIconPath, "Men"),
-                  itemCreate(AppConstants.profileIconPath, "Women"),
-                  itemCreate(AppConstants.profileIconPath, "Kids"),
-                  itemCreate(AppConstants.profileIconPath, "Reading"),
-                  itemCreate(AppConstants.profileIconPath, "Trendy")
-                ],
+              SizedBox(
+                height: 100,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        itemCreate(
+                            AppConstants.menEyeglassCategoryIconPath, "Men"),
+                        itemCreate(AppConstants.womenEyeglassCategoryIconPath,
+                            "Women"),
+                        itemCreate(
+                            AppConstants.kidEyeglassCategoryIconPath, "Kids"),
+                        itemCreate(AppConstants.readingEyeglassCategoryIconPath,
+                            "Reading"),
+                        itemCreate(AppConstants.trendyEyeglassCategoryIconPath,
+                            "Trendy"),
+                        itemCreate(AppConstants.roundEyeglassCategoryIconPath,
+                            "Round"),
+                        itemCreate(AppConstants.nerdyEyeglassCategoryIconPath,
+                            "Nerdy"),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
               const SizedBox(
-                height: 25,
+                height: 5,
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
@@ -82,18 +105,41 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  itemCreate(AppConstants.profileIconPath, "Daily"),
-                  itemCreate(AppConstants.profileIconPath, "Weekly"),
-                  itemCreate(AppConstants.profileIconPath, "Monthly"),
-                  itemCreate(AppConstants.profileIconPath, "Bi-Annual"),
-                  itemCreate(AppConstants.profileIconPath, "Yearly")
-                ],
+              SizedBox(
+                height: 100,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        itemCreate(AppConstants.dailyContactsCategoryIconPath,
+                            "Daily"),
+                        itemCreate(AppConstants.weeklyContactsCategoryIconPath,
+                            "Weekly"),
+                        itemCreate(AppConstants.monthlyContactsCategoryIconPath,
+                            "Monthly"),
+                        itemCreate(AppConstants.yearlyContactsCategoryIconPath,
+                            "Yearly"),
+                        itemCreate(AppConstants.coloredContactsCategoryIconPath,
+                            "Colored"),
+                        itemCreate(
+                            AppConstants.softContactsCategoryIconPath, "Soft"),
+                        itemCreate(AppConstants.rigidContactsCategoryIconPath,
+                            "Rigid"),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
               const SizedBox(
-                height: 35,
+                height: 10,
               ),
               const Center(
                   child: Text("Best Sellers",
@@ -102,25 +148,40 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(
                   width: 80,
                   child: Divider(
-                    height: 8,
-                    thickness: 1,
+                    height: 4,
+                    thickness: 2,
                     color: Colors.black,
                   )),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image.asset(scale: 2, AppConstants.meneyeglassIconPath),
-                      Text("Gucci Eyes"),
+              const SizedBox(height: 10),
+              SizedBox(
+                height: 225,
+                child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: <Widget>[
                       Row(
-                        children: [Text("2,999"), Text("1000 sold")],
-                      ),
-                    ],
-                  ),
-                ],
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          createBestSellerItem('Aviatorae', '2,999', '124',
+                              AppConstants.aviatorBestSellerIconPath),
+                          createBestSellerItem('Reumanim', '10,999', '55',
+                              AppConstants.koreanBestSellerIconPath),
+                          createBestSellerItem('Wayfarer Galore', '6,000', '99',
+                              AppConstants.wayfarerBestSellerIconPath),
+                          createBestSellerItem('Chameleon', '4,500', '532',
+                              AppConstants.readingBestSellerIconPath),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                        ],
+                      )
+                    ]),
               ),
+              const SizedBox(
+                height: 20,
+              )
             ],
           ),
         ));
@@ -157,26 +218,99 @@ Widget itemHeader(String title) {
 }
 
 Widget itemCreate(String image, String label) {
-  return GestureDetector(
-    onTap: () {
-      // Argument goes here. Navigate to Product Listings Page with the relevant category selected.
-    },
-    child: Column(
-      children: [
-        SizedBox(
-          width: 56,
-          height: 56,
-          child: CircleAvatar(radius: 80, backgroundImage: AssetImage(image)),
+  return SizedBox(
+    width: 70,
+    child: GestureDetector(
+      onTap: () {
+        // Argument goes here. Navigate to Product Listings Page with the relevant category selected.
+      },
+      child: Column(
+        children: [
+          SizedBox(
+            width: 56,
+            height: 56,
+            child: CircleAvatar(radius: 80, backgroundImage: AssetImage(image)),
+          ),
+          const SizedBox(
+            height: 6,
+          ),
+          Text(
+            label,
+            style: const TextStyle(
+                fontFamily: "Inter", fontSize: 12, fontWeight: FontWeight.w500),
+          )
+        ],
+      ),
+    ),
+  );
+}
+
+Widget createBestSellerItem(String productName, String productPrice,
+    String productSold, String productImage) {
+  return SizedBox(
+    width: 170,
+    child: Card(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.asset(productImage),
+              ),
+            ),
+            const SizedBox(
+              height: 7,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: 100,
+                  child: Text(productName,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "Inter",
+                          fontSize: 16),
+                      overflow: TextOverflow.ellipsis),
+                ),
+                GestureDetector(
+                    onTap: () {
+                      // Logic to Follow
+                    },
+                    child: const Icon(Icons.chevron_right))
+              ],
+            ),
+            const SizedBox(
+              height: 7,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: 50,
+                  child: Text(
+                    '₱$productPrice',
+                    style: const TextStyle(
+                        fontFamily: "Inter",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Text('$productSold sold',
+                    style: const TextStyle(
+                        fontFamily: "Inter",
+                        fontSize: 9,
+                        fontWeight: FontWeight.w100),
+                    overflow: TextOverflow.ellipsis)
+              ],
+            ),
+          ],
         ),
-        const SizedBox(
-          height: 6,
-        ),
-        Text(
-          label,
-          style: const TextStyle(
-              fontFamily: "Inter", fontSize: 12, fontWeight: FontWeight.w500),
-        )
-      ],
+      ),
     ),
   );
 }
