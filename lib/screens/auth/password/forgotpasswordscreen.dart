@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:project_v/widgets/buttons/auth/sendbutton.dart';
 import 'package:project_v/widgets/textfields/textfield.dart';
 import 'package:project_v/screens/auth/password/passwordreset.dart';
-import 'package:project_v/screens/auth/password/passwordreset2.dart';
 import 'package:project_v/constants/app_constants.dart';
 // Forgot Password Screen
 class ForgotPasswordScreen extends StatelessWidget {
@@ -14,7 +13,7 @@ class ForgotPasswordScreen extends StatelessWidget {
     // send email logic to be added
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => PasswordReset()), 
+      MaterialPageRoute(builder: (context) => const PasswordReset()), 
     );
   }
     @override

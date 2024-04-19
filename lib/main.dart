@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
         //colorScheme: ColorScheme.fromSwatch(primarySwatch: primaryColor),
 
         // Use inter as the main font for the app.
-        textTheme: TextTheme(bodyLarge: TextStyle(fontFamily: fontFamily), bodySmall: TextStyle(fontFamily: fontFamily)),
+        textTheme: const TextTheme(bodyLarge: TextStyle(fontFamily: fontFamily), bodySmall: TextStyle(fontFamily: fontFamily)),
 
         // Enable Material Design 3
         useMaterial3: true,

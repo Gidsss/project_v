@@ -1,8 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/Layout/headerfooter.dart';
+import 'package:project_v/screens/main/explorescreen.dart';
+import 'package:project_v/screens/main/ordersscreen.dart';
+import 'package:project_v/screens/main/profilescreen.dart';
+import 'package:project_v/screens/main/homescreen.dart';
+import 'package:project_v/screens/main/schedulescreen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -10,6 +13,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HeaderFooter(
+        context: context,
         title: "HeaderFooter",
         buttonStatus: const [true, false, false, false, false],
         body: SingleChildScrollView(
