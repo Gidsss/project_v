@@ -219,7 +219,7 @@ class _HeaderFooterState extends State<HeaderFooter> {
             )
           : TextButton(
               onPressed: () {
-                // Pass argument here to Navigate to screen Logic which is to follow
+                navigate(); // Pass argument here to Navigate to screen Logic which is to follow
               },
               style: ButtonStyle(
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
