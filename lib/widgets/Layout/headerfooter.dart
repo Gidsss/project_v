@@ -12,9 +12,11 @@ class HeaderFooter extends StatefulWidget {
   final String title;
   final List<bool> buttonStatus;
   final BuildContext context;
+  final bool mainHeader;
 
   const HeaderFooter(
       {super.key,
+      this.mainHeader = true,
       required this.body,
       this.hasDrawer = false,
       required this.title,
@@ -28,17 +30,53 @@ class HeaderFooter extends StatefulWidget {
 class _HeaderFooterState extends State<HeaderFooter> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Column(
-      children: [
-        buildheader(),
-        Expanded(child: Container(child: widget.body)),
-        buildFooter(widget.buttonStatus, widget.context)
-      ],
-    ));
+    return widget.mainHeader
+        ? Scaffold(
+            body: Column(
+            children: [
+              buildmainHeader(),
+              Expanded(
+                child: Container(
+                  child: widget.body,
+                ),
+              ),
+              buildFooter(widget.buttonStatus, widget.context),
+            ],
+          ))
+        : DefaultTabController(
+          initialIndex: 1,
+            length: 3,
+            child: Scaffold(
+                appBar: AppBar(
+                  centerTitle: true,
+                  title: Image.asset(
+                      AppConstants.logoImagePath,
+                      width: 40,
+                      height:40,
+                    ),
+                  bottom: const TabBar(
+                    labelColor: Colors.black,
+                    indicatorColor: Colors.black,
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    tabs: [
+                      Tab(text: "Upcoming"),
+                      Tab(text: "Completed"),
+                      Tab(text: "Cancelled")
+                    ],
+                  ),
+                ),
+                body: Column(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        child: widget.body,
+                      ),
+                    ),
+                    buildFooter(widget.buttonStatus, widget.context),
+                  ],
+                )));
   }
-
-  Widget buildheader() {
+  Widget buildmainHeader() {
     return Material(
         child: Container(
       decoration: BoxDecoration(boxShadow: [
@@ -123,12 +161,12 @@ class _HeaderFooterState extends State<HeaderFooter> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             buttonStatus[0]
-                ? buildButton("Home", Icons.home, buttonStatus[0], () {
-                    print("object");
-                  })
+                ? buildButton("Home", Icons.home, buttonStatus[0], () {})
                 : buildButton("Home", Icons.home_outlined, buttonStatus[0], () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const HomeScreen()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomeScreen()));
                   }),
             buttonStatus[1]
                 ? buildButton("Explore", Icons.explore, buttonStatus[1], () {})

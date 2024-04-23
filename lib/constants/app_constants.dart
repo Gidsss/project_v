@@ -36,6 +36,9 @@ class AppConstants {
   static const String wayfarerBestSellerIconPath = 'assets/images/BestSellerWayfarer.jpg';
   static const String readingBestSellerIconPath = 'assets/images/BestSellerReading.jpg';
 
+  // Schedule Screen Images
+  static const String eyeExamIconPath = 'assets/images/EyeExam.jpg';
+
   // Color constants
   static const Color primaryColor = Colors.blue;
   static const Color secondaryColor = Colors.green;
