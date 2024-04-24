@@ -10,6 +10,7 @@ class ExploreScreen extends StatefulWidget {
   State<ExploreScreen> createState() => _ExploreScreenState();
 }
 
+
 class ProductItem extends StatelessWidget {
   final String imageURL;
   final String name;
@@ -25,6 +26,7 @@ class ProductItem extends StatelessWidget {
     this.onTap,
     this.onAddtoCart,
   });
+
 
   @override
   Widget build(BuildContext context) {
