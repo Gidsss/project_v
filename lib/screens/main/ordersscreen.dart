@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/widgets/Layout/headerfooter.dart';
 
-class ordersScreen extends StatefulWidget {
-  const ordersScreen({super.key});
+class OrdersScreen extends StatefulWidget {
+  const OrdersScreen({super.key});
 
   @override
-  State<ordersScreen> createState() => _ordersScreenState();
+  State<OrdersScreen> createState() => _OrdersScreenState();
 }
 
-class _ordersScreenState extends State<ordersScreen> {
+class _OrdersScreenState extends State<OrdersScreen> {
   @override
   Widget build(BuildContext context) {
     // Note that the header for this page is different. May need to create variant of headerfooter that has tabs 'Completed, 'Cancelled' and 'Active'
