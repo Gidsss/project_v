@@ -36,8 +36,19 @@ class AppConstants {
   static const String wayfarerBestSellerIconPath = 'assets/images/BestSellerWayfarer.jpg';
   static const String readingBestSellerIconPath = 'assets/images/BestSellerReading.jpg';
 
-  // Schedule Screen Images
+  // Schedule Screen Images & Booking Screen Step One Images
   static const String eyeExamIconPath = 'assets/images/EyeExam.jpg';
+  static const String FollowUpCareImagePath = 'assets/images/FollowUpCareImage.jpg';
+  static const String PrescriptionVerificationImagePath = 'assets/images/PrescriptionVerificationImage.jpg';
+  static const String ContactLensFittingImagePath = 'assets/images/ContactLensFittingImage.jpeg';
+  static const String LensReplacementImagePath = 'assets/images/LensReplacementImage.jpg';
+  static const String LensFittingImagePath = 'assets/images/LensFittingImage.jpg';
+  static const String EyeExaminationImagePath = 'assets/images/EyeExaminationImage.jpg';
+  static const String FrameFittingImagePath = 'assets/images/FrameFittingImage.jpg';
+  static const String PrescriptionFillingImagePath = 'assets/images/PrescriptionFillingImage.jpg';
+  static const String FrameRepairImagePath = 'assets/images/FrameRepairImage.jpg';
+
+
 
   // Color constants
   static const Color primaryColor = Colors.blue;

@@ -12,6 +12,7 @@ class HomeScreen extends StatelessWidget {
         context: context,
         title: "HeaderFooter",
         buttonStatus: const [true, false, false, false, false],
+
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -197,7 +198,7 @@ Widget itemHeader(String title) {
         style: const TextStyle(
             fontSize: 20, fontFamily: "Inter", fontWeight: FontWeight.w600),
       ),
-      GestureDetector(
+      InkWell(
         onTap: () {
           // Argument goes here. Navigate to Product Listings Page with Eyeglasses, or contact lenses category selected. (May need a new page that lists all subcategories of eyeglass, contact lenses?)
         },
@@ -220,7 +221,7 @@ Widget itemHeader(String title) {
 Widget itemCreate(String image, String label) {
   return SizedBox(
     width: 70,
-    child: GestureDetector(
+    child: InkWell(
       onTap: () {
         // Argument goes here. Navigate to Product Listings Page with the relevant category selected.
       },
@@ -276,7 +277,7 @@ Widget createBestSellerItem(String productName, String productPrice,
                           fontSize: 16),
                       overflow: TextOverflow.ellipsis),
                 ),
-                GestureDetector(
+                InkWell(
                     onTap: () {
                       // Logic to Follow
                     },

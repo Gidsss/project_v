@@ -12,7 +12,7 @@ class _ExploreScreenState extends State<ExploreScreen>{
 
   @override
   Widget build(BuildContext context) {
-    return HeaderFooter(context: context, body: const Text("Explore"), title: "ExploreScreen", buttonStatus: const [false, true, false, false, false]);
+    return HeaderFooter(context: context, body: const Text("Explore"), title: "ExploreScreen", buttonStatus: const [false, true, false, false, false],);
   }}
 
 
