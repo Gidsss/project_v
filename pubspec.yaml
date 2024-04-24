@@ -38,7 +38,6 @@ dependencies:
   flutter_svg: ^2.0.10+1
   
   syncfusion_flutter_datepicker: ^25.1.41
-=======
   flutter_launcher_icons: ^0.13.1
   
 flutter_launcher_icons:
