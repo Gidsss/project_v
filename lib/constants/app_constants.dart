@@ -12,6 +12,11 @@ class AppConstants {
   // Previous Icon
   static const String backIconPath = 'assets/images/previous.png';
 
+  // Explore Screen Icons and Images
+  static const String dropdownIconPath = 'assets/images/dropdown-arrow.png';
+  static const String searchIconPath = 'assets/images/search.png';
+  static const String addtoCartIconPath = 'assets/images/add-to-cart-icon.png';
+
   // User Profile Images
   static const String profileIconPath = 'assets/images/user.png';
   static const String editIconPath = 'assets/cameraicon.svg';
@@ -35,6 +40,20 @@ class AppConstants {
   static const String koreanBestSellerIconPath = 'assets/images/BestSellerKorean.jpg';
   static const String wayfarerBestSellerIconPath = 'assets/images/BestSellerWayfarer.jpg';
   static const String readingBestSellerIconPath = 'assets/images/BestSellerReading.jpg';
+
+  // Schedule Screen Images & Booking Screen Step One Images
+  static const String eyeExamIconPath = 'assets/images/EyeExam.jpg';
+  static const String FollowUpCareImagePath = 'assets/images/FollowUpCareImage.jpg';
+  static const String PrescriptionVerificationImagePath = 'assets/images/PrescriptionVerificationImage.jpg';
+  static const String ContactLensFittingImagePath = 'assets/images/ContactLensFittingImage.jpeg';
+  static const String LensReplacementImagePath = 'assets/images/LensReplacementImage.jpg';
+  static const String LensFittingImagePath = 'assets/images/LensFittingImage.jpg';
+  static const String EyeExaminationImagePath = 'assets/images/EyeExaminationImage.jpg';
+  static const String FrameFittingImagePath = 'assets/images/FrameFittingImage.jpg';
+  static const String PrescriptionFillingImagePath = 'assets/images/PrescriptionFillingImage.jpg';
+  static const String FrameRepairImagePath = 'assets/images/FrameRepairImage.jpg';
+
+
 
   // Color constants
   static const Color primaryColor = Colors.blue;
