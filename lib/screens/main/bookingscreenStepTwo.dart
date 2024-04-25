@@ -5,6 +5,8 @@ import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/Layout/footer.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:project_v/screens/main/bookingscreenStepThree.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter/scheduler.dart';
 
 class BookingScreenStepTwo extends StatefulWidget {
   const BookingScreenStepTwo({Key? key}) : super(key: key);
@@ -15,7 +17,19 @@ class BookingScreenStepTwo extends StatefulWidget {
 
 class _BookingScreenStepTwoState extends State<BookingScreenStepTwo> {
   final TextEditingController dateController = TextEditingController();
+  final DateRangePickerController daterangeController =
+      DateRangePickerController();
   final TextEditingController timeController = TextEditingController();
+
+String _date = DateFormat('dd, MMMM yyyy').format(DateTime.now()).toString();
+
+  void selectionChanged(DateRangePickerSelectionChangedArgs args) {
+    SchedulerBinding.instance!.addPostFrameCallback((duration) {
+      setState(() {
+        _date = DateFormat('dd, MMMM yyyy').format(args.value).toString();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +61,7 @@ class _BookingScreenStepTwoState extends State<BookingScreenStepTwo> {
             Expanded(
                 child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
+                padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Container(
                   child: Column(
                     children: [
@@ -67,20 +81,50 @@ class _BookingScreenStepTwoState extends State<BookingScreenStepTwo> {
                               suffixIcon: InkWell(
                                 child: Icon(Icons.calendar_month),
                                 onTap: () {
-                                  showDialog<Widget>(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return SfDateRangePicker(
-                                          showActionButtons: true,
-                                          onSubmit: (value) {
-                                            // Return value and update textformfield
-                                            Navigator.pop(context);
-                                          },
-                                          onCancel: () {
-                                            Navigator.pop(context);
-                                          },
-                                        );
-                                      });
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Dialog(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(100)),
+                                          height: 300, // Set the desired height
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.8, // Set the desired width
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: SfDateRangePicker(
+                                              enablePastDates: false,
+                                              todayHighlightColor: Colors.black,
+                                              backgroundColor: Colors.white,
+                                              selectionColor: Colors.black,
+                                              headerStyle: DateRangePickerHeaderStyle(backgroundColor: Colors.white, textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600) ),
+                                              initialSelectedDate:
+                                                  DateTime.now(),
+                                              controller: daterangeController,
+                                              onSelectionChanged:
+                                                  selectionChanged,
+                                              showActionButtons: true,
+                                              onSubmit: (value) {
+                                                // Update textFormField value with selected date
+                                                dateController.text =
+                                                    value.toString();
+                                                Navigator.pop(context);
+                                              },
+                                              onCancel: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                  ;
                                 },
                               ),
                               border: const OutlineInputBorder(),
@@ -113,7 +157,7 @@ class _BookingScreenStepTwoState extends State<BookingScreenStepTwo> {
                         ),
                       ),
                       SizedBox(
-                        height: 40,
+                        height: 20,
                       ),
                       createHeader("3. Review your appointment details"),
                       SizedBox(
@@ -140,7 +184,8 @@ class _BookingScreenStepTwoState extends State<BookingScreenStepTwo> {
                               SizedBox(
                                 height: 10,
                               ),
-                              createTextFormField("Type of Appointment", context, null),
+                              createTextFormField(
+                                  "Type of Appointment", context, null),
                               SizedBox(
                                 height: 15,
                               ),
@@ -152,8 +197,10 @@ class _BookingScreenStepTwoState extends State<BookingScreenStepTwo> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  createTextFormField("06/24/2024", context, 145.0),
-                                  createTextFormField("10:00 AM", context, 145.0)
+                                  createTextFormField(
+                                      "06/24/2024", context, 145.0),
+                                  createTextFormField(
+                                      "10:00 AM", context, 145.0)
                                 ],
                               ),
                               SizedBox(
@@ -171,7 +218,8 @@ class _BookingScreenStepTwoState extends State<BookingScreenStepTwo> {
                               SizedBox(
                                 height: 10,
                               ),
-                              createTextFormField("Dr. Aidan Valdancio", context, null),
+                              createTextFormField(
+                                  "Dr. Aidan Valdancio", context, null),
                               SizedBox(
                                 height: 10,
                               ),
@@ -215,7 +263,7 @@ Widget floatBar(context) {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const BookingScreenStepThree()),
+                    builder: (context) => BookingScreenStepThree()),
               );
             },
             child: const Text(
