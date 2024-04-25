@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/screens/main/explorescreen.dart';
@@ -17,41 +16,59 @@ class HeaderFooter extends StatefulWidget {
   final bool hasFloatbar;
   final Widget? floatbar;
 
-  const HeaderFooter(
-      {super.key,
-      this.floatbar,
-      this.hasFloatbar = false,
-      this.mainHeader = true,
-      this.hasDrawer = false,
-      required this.body,
-      required this.title,
-      required this.context,
-      required this.buttonStatus,
-      });
+  const HeaderFooter({
+    super.key,
+    this.floatbar,
+    this.hasFloatbar = false,
+    this.mainHeader = true,
+    this.hasDrawer = false,
+    required this.body,
+    required this.title,
+    required this.context,
+    required this.buttonStatus,
+  });
 
   @override
   State<HeaderFooter> createState() => _HeaderFooterState();
 }
 
-class _HeaderFooterState extends State<HeaderFooter> {
+class _HeaderFooterState extends State<HeaderFooter>
+    with TickerProviderStateMixin {
+  late TabController _scheduleTabController;
+  late TabController _ordersTabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scheduleTabController = TabController(length: 2, vsync: this);
+    _ordersTabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _scheduleTabController.dispose();
+    _ordersTabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return widget.mainHeader
         ? Scaffold(
             resizeToAvoidBottomInset: false,
             body: Column(
-            children: [
-              buildmainHeader(),
-              Expanded(
-                child: Container(
-                  child: widget.body,
+              children: [
+                buildmainHeader(),
+                Expanded(
+                  child: Container(
+                    child: widget.body,
+                  ),
                 ),
-              ),
-              buildFooter(widget.buttonStatus, widget.context),
-            ],
-          ))
+                buildFooter(widget.buttonStatus, widget.context),
+              ],
+            ),
+          )
         : DefaultTabController(
-            initialIndex: 1,
             length: 2,
             child: Scaffold(
               resizeToAvoidBottomInset: false,
@@ -62,32 +79,62 @@ class _HeaderFooterState extends State<HeaderFooter> {
                   width: 40,
                   height: 40,
                 ),
-                bottom: const TabBar(
-                  labelColor: Colors.black,
-                  indicatorColor: Colors.black,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  tabs: [
-                    Tab(text: "Upcoming"),
-                    Tab(text: "Completed"),
-                  ],
-                ),
+                bottom: widget.title == "Schedule"
+                    ? TabBar(
+                        controller: _scheduleTabController,
+                        labelColor: Colors.black,
+                        indicatorColor: Colors.black,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        tabs: const [
+                          Tab(text: "Upcoming"),
+                          Tab(text: "Completed"),
+                        ],
+                      )
+                    : TabBar(
+                        controller: _ordersTabController,
+                        labelColor: Colors.black,
+                        indicatorColor: Colors.black,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        tabs: const [
+                          Tab(text: "Active"),
+                          Tab(text: "Completed"),
+                        ],
+                      ),
               ),
               body: Column(
                 children: [
                   Expanded(
-                    child: Container(
-                      child: widget.body,
+                    child: TabBarView(
+                      controller: widget.title == "Schedule"
+                          ? _scheduleTabController
+                          : _ordersTabController,
+                      children: [
+                        Container(
+                          child: widget.body,
+                        ),
+                        Container(
+                          child: widget.body,
+                        ),
+                      ],
                     ),
                   ),
-                  widget.hasFloatbar ? SizedBox(height: 55,) : Container(),
+                  _buildSpacing(), // Call the method to build spacing widget
                   buildFooter(widget.buttonStatus, widget.context),
                 ],
               ),
-              floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-              floatingActionButton: widget.hasFloatbar
-                  ? widget.floatbar 
-                  : null,
-            ));
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              floatingActionButton: widget.hasFloatbar ? widget.floatbar : null,
+            ),
+          );
+  }
+
+  Widget _buildSpacing() {
+    if (widget.title == "Schedule") {
+      return const SizedBox(height: 55); // Height for Schedule
+    } else {
+      return const SizedBox(height: 0); // Height for Orders
+    }
   }
 
   Widget buildmainHeader() {

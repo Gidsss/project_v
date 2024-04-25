@@ -1,8 +1,5 @@
-import 'dart:js';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/Layout/headerfooter.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -22,19 +19,33 @@ TextEditingController typecontroller = TextEditingController();
 
 DateRangePickerController daterangeController = DateRangePickerController();
 
-class _ScheduleScreenState extends State<ScheduleScreen> {
+class _ScheduleScreenState extends State<ScheduleScreen> with TickerProviderStateMixin{
+  late TabController _scheduleTabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scheduleTabController = TabController(length: 2, vsync: this); // Define the number of tabs here
+  }
+
+  @override
+  void dispose() {
+    _scheduleTabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return HeaderFooter(
       hasFloatbar: true,
       mainHeader: false,
       context: context,
-      title: "Screen",
+      title: "Schedule",
       buttonStatus: const [false, false, true, false, false],
       floatbar: floatBar(context),
       body: Column(
         children: [
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: Row(
@@ -51,7 +62,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               ],
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: Row(
@@ -59,7 +70,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 Expanded(
                     child: createTextFormField("Type", context, null,
                         Icons.description, false, typecontroller, null)),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Expanded(
                     child: createTextFormField("Number", context, null,
                         Icons.description, false, numbercontroller, null)),
@@ -73,7 +84,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   padding: const EdgeInsets.all(15.0),
                   child: ListView.separated(
                     itemCount: 10,
-                    separatorBuilder: (context, index) => SizedBox(height: 15),
+                    separatorBuilder: (context, index) => const SizedBox(height: 15),
                     itemBuilder: (context, index) =>
                         createScheduleItem(context),
                   ),
@@ -82,7 +93,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   padding: const EdgeInsets.all(15.0),
                   child: ListView.separated(
                     itemCount: 10,
-                    separatorBuilder: (context, index) => SizedBox(height: 15),
+                    separatorBuilder: (context, index) => const SizedBox(height: 15),
                     itemBuilder: (context, index) =>
                         createScheduleItem(context),
                   ),
@@ -106,7 +117,7 @@ Widget createScheduleItem(BuildContext context) {
               color: Colors.black.withOpacity(0.2),
               spreadRadius: -1,
               blurRadius: 4,
-              offset: Offset(0, 3),
+              offset: const Offset(0, 3),
             ),
           ]),
       alignment: Alignment.center,
@@ -117,37 +128,37 @@ Widget createScheduleItem(BuildContext context) {
             height: 70,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(
+              image: const DecorationImage(
                 image: AssetImage(AppConstants.eyeExamIconPath),
                 fit: BoxFit.fitHeight,
               ),
             ),
           ),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           SizedBox(
             width: 190,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text("Mar 23, 2024",
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontFamily: "Inter",
                             fontSize: 14),
                         overflow: TextOverflow.ellipsis),
                     Text("10:00 A.M.",
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontFamily: "Inter",
                             fontSize: 14),
                         overflow: TextOverflow.ellipsis)
                   ],
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -171,7 +182,7 @@ Widget createScheduleItem(BuildContext context) {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 30,
           ),
           IconButton(
@@ -181,7 +192,7 @@ Widget createScheduleItem(BuildContext context) {
                     MaterialPageRoute(
                         builder: (context) => const ViewAppointmentOne()));
               },
-              icon: Icon(Icons.chevron_right),
+              icon: const Icon(Icons.chevron_right),
               padding: const EdgeInsets.all(0),
               constraints: const BoxConstraints(),
               style: const ButtonStyle(
@@ -201,7 +212,7 @@ Widget floatBar(context) {
             style: ButtonStyle(
                 foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                fixedSize: MaterialStateProperty.all<Size>(Size(185, 45))),
+                fixedSize: MaterialStateProperty.all<Size>(const Size(185, 45))),
             onPressed: () {
               Navigator.push(
                 context,
@@ -233,9 +244,11 @@ Widget createTextFormField(
     width: width,
     child: TextFormField(
       controller: textcontroller,
-      style: TextStyle(fontSize: 14, height: 1),
+      style: const TextStyle(fontSize: 14, height: 1),
       onSaved: (String? value) {},
-      validator: (value) {},
+      validator: (value) {
+        return null;
+      },
       decoration: InputDecoration(
           suffixIcon: InkWell(
             child: Icon(icon),
@@ -258,7 +271,7 @@ Widget createTextFormField(
                                 todayHighlightColor: Colors.black,
                                 backgroundColor: Colors.white,
                                 selectionColor: Colors.black,
-                                headerStyle: DateRangePickerHeaderStyle(
+                                headerStyle: const DateRangePickerHeaderStyle(
                                     backgroundColor: Colors.white,
                                     textStyle: TextStyle(
                                         fontSize: 16,
@@ -285,8 +298,8 @@ Widget createTextFormField(
           ),
           border: const OutlineInputBorder(),
           labelText: text,
-          hintStyle: TextStyle(fontSize: 14, height: 1),
-          labelStyle: TextStyle(fontSize: 14, height: 1),
+          hintStyle: const TextStyle(fontSize: 14, height: 1),
+          labelStyle: const TextStyle(fontSize: 14, height: 1),
           contentPadding: const EdgeInsets.all(8)),
     ),
   );

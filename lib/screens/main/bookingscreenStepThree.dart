@@ -4,7 +4,9 @@ import 'package:project_v/widgets/Layout/footer.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class BookingScreenStepThree extends StatelessWidget {
-  final String qrData = "Your QR Code Data"; // Assign the actual QR code data here
+  final String qrData = "Your QR Code Data";
+
+  const BookingScreenStepThree({super.key}); // Assign the actual QR code data here
 
   @override
   Widget build(BuildContext context) {
@@ -21,20 +23,20 @@ class BookingScreenStepThree extends StatelessWidget {
           width: 40,
           height: 40,
         ),
-        bottom: PreferredSize(
+        bottom: const PreferredSize(
+          preferredSize: Size.zero,
           child: Text(
             "Set An Appointment",
             style: TextStyle(fontWeight: FontWeight.w600),
           ),
-          preferredSize: Size.zero,
         ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 40),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 40),
             child: Text(
               "Successfully set an appointment.",
               style: TextStyle(
@@ -44,20 +46,20 @@ class BookingScreenStepThree extends StatelessWidget {
               ),
             ),
           ),
-          Text("Please do not be late to your appointment."),
-          SizedBox(height: 5),
-          Text("This is your appointment QR code:"),
-          SizedBox(height: 20),
+          const Text("Please do not be late to your appointment."),
+          const SizedBox(height: 5),
+          const Text("This is your appointment QR code:"),
+          const SizedBox(height: 20),
           QrImageView(
             data: qrData,
             version: QrVersions.auto,
             size: 250.0,
           ),
-          SizedBox(height: 20),
-          Divider(),
-          SizedBox(height: 20),
-          Text("Your Appointment Number is:", style: TextStyle(fontSize: 16)),
-          Text("123456", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 20),
+          const Divider(),
+          const SizedBox(height: 20),
+          const Text("Your Appointment Number is:", style: TextStyle(fontSize: 16)),
+          const Text("123456", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
           Expanded(child: Container()), // To push footer to the bottom
           buildFooter(
             [false, false, true, false, false],
