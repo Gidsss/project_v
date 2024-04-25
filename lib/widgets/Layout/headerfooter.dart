@@ -38,6 +38,7 @@ class _HeaderFooterState extends State<HeaderFooter> {
   Widget build(BuildContext context) {
     return widget.mainHeader
         ? Scaffold(
+            resizeToAvoidBottomInset: false,
             body: Column(
             children: [
               buildmainHeader(),
@@ -53,6 +54,7 @@ class _HeaderFooterState extends State<HeaderFooter> {
             initialIndex: 1,
             length: 2,
             child: Scaffold(
+              resizeToAvoidBottomInset: false,
               appBar: AppBar(
                 centerTitle: true,
                 title: Image.asset(
