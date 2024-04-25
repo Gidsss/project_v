@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/widgets/Layout/headerfooter.dart';
 import 'package:project_v/screens/main/aboutus.dart';
+import 'package:project_v/screens/main/ordersscreen.dart';
+import 'package:project_v/screens/main/schedulescreen.dart';
+import 'package:project_v/screens/main/editprofile.dart';
+import 'package:project_v/screens/main/securitysettings.dart';
+import 'package:project_v/screens/main/notificationsettings.dart';
+
 
 class ProfileScreen extends StatefulWidget{
   const ProfileScreen({super.key});
@@ -283,7 +289,10 @@ class _ProfileScreenState extends State<ProfileScreen>{
                     // Order Button
                     ElevatedButton(
                       onPressed: () {
-                        // Add button functionality here
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => OrdersScreen()),
+                        );
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.grey.shade50), // Button background color
@@ -344,7 +353,10 @@ class _ProfileScreenState extends State<ProfileScreen>{
                     // View Appointment Button
                     ElevatedButton(
                       onPressed: () {
-                        // Add button functionality here
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ScheduleScreen()),
+                        );
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.grey.shade50), // Button background color
@@ -439,7 +451,10 @@ class _ProfileScreenState extends State<ProfileScreen>{
                     //Edit Profile Button
                     ElevatedButton(
                       onPressed: () {
-                        // Add button functionality here
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => EditProfile()),
+                        );
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.grey.shade50), // Button background color
@@ -500,7 +515,10 @@ class _ProfileScreenState extends State<ProfileScreen>{
                     // Security Settings Button
                     ElevatedButton(
                       onPressed: () {
-                        // Add button functionality here
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => SecuritySettings()),
+                        );
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.grey.shade50), // Button background color
@@ -561,7 +579,10 @@ class _ProfileScreenState extends State<ProfileScreen>{
                     // Notifications Button
                     ElevatedButton(
                       onPressed: () {
-                        // Add button functionality here
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => NotificationSettings()),
+                        );
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.grey.shade50), // Button background color
