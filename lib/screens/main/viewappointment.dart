@@ -3,13 +3,19 @@ import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/Layout/footer.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class BookingScreenStepThree extends StatelessWidget {
-  final String qrData = "Your QR Code Data";
 
-  const BookingScreenStepThree({super.key}); // Assign the actual QR code data here
+class ViewAppointmentOne extends StatefulWidget{
+  const ViewAppointmentOne({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<ViewAppointmentOne> createState() => ViewAppointmentOneState();
+}
+
+class ViewAppointmentOneState extends State<ViewAppointmentOne>{
+  final String qrData = "Your QR Code Data"; 
+
+  @override
+  Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
@@ -70,3 +76,5 @@ class BookingScreenStepThree extends StatelessWidget {
     );
   }
 }
+
+

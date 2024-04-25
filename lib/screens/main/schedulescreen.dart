@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/Layout/headerfooter.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:project_v/screens/main/bookingscreenStepOne.dart';
+import 'package:project_v/screens/main/viewappointment.dart';
 
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({super.key});
@@ -13,32 +13,92 @@ class ScheduleScreen extends StatefulWidget {
   State<ScheduleScreen> createState() => _ScheduleScreenState();
 }
 
-class _ScheduleScreenState extends State<ScheduleScreen> {
+TextEditingController datecontroller = TextEditingController();
+TextEditingController numbercontroller = TextEditingController();
+TextEditingController typecontroller = TextEditingController();
+
+DateRangePickerController daterangeController = DateRangePickerController();
+
+class _ScheduleScreenState extends State<ScheduleScreen> with TickerProviderStateMixin{
+  late TabController _scheduleTabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scheduleTabController = TabController(length: 2, vsync: this); // Define the number of tabs here
+  }
+
+  @override
+  void dispose() {
+    _scheduleTabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return HeaderFooter(
       hasFloatbar: true,
       mainHeader: false,
       context: context,
-      title: "Screen",
+      title: "Schedule",
       buttonStatus: const [false, false, true, false, false],
       floatbar: floatBar(context),
-      body: TabBarView(
+      body: Column(
         children: [
+          const SizedBox(height: 10),
           Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: ListView.separated(
-              itemCount: 10,
-              separatorBuilder: (context, index) => SizedBox(height: 15),
-              itemBuilder: (context, index) => createScheduleItem(),
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            child: Row(
+              children: [
+                Expanded(
+                    child: createTextFormField(
+                        "Choose a date",
+                        context,
+                        null,
+                        Icons.calendar_month,
+                        true,
+                        datecontroller,
+                        daterangeController)),
+              ],
             ),
           ),
+          const SizedBox(height: 10),
           Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: ListView.separated(
-              itemCount: 10,
-              separatorBuilder: (context, index) => SizedBox(height: 15),
-              itemBuilder: (context, index) => createScheduleItem(),
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            child: Row(
+              children: [
+                Expanded(
+                    child: createTextFormField("Type", context, null,
+                        Icons.description, false, typecontroller, null)),
+                const SizedBox(width: 10),
+                Expanded(
+                    child: createTextFormField("Number", context, null,
+                        Icons.description, false, numbercontroller, null)),
+              ],
+            ),
+          ),
+          Expanded(
+            child: TabBarView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: ListView.separated(
+                    itemCount: 10,
+                    separatorBuilder: (context, index) => const SizedBox(height: 15),
+                    itemBuilder: (context, index) =>
+                        createScheduleItem(context),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: ListView.separated(
+                    itemCount: 10,
+                    separatorBuilder: (context, index) => const SizedBox(height: 15),
+                    itemBuilder: (context, index) =>
+                        createScheduleItem(context),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -47,7 +107,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   }
 }
 
-Widget createScheduleItem() {
+Widget createScheduleItem(BuildContext context) {
   return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -57,7 +117,7 @@ Widget createScheduleItem() {
               color: Colors.black.withOpacity(0.2),
               spreadRadius: -1,
               blurRadius: 4,
-              offset: Offset(0, 3),
+              offset: const Offset(0, 3),
             ),
           ]),
       alignment: Alignment.center,
@@ -68,37 +128,37 @@ Widget createScheduleItem() {
             height: 70,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(
+              image: const DecorationImage(
                 image: AssetImage(AppConstants.eyeExamIconPath),
                 fit: BoxFit.fitHeight,
               ),
             ),
           ),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           SizedBox(
             width: 190,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text("Mar 23, 2024",
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontFamily: "Inter",
                             fontSize: 14),
                         overflow: TextOverflow.ellipsis),
                     Text("10:00 A.M.",
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontFamily: "Inter",
                             fontSize: 14),
                         overflow: TextOverflow.ellipsis)
                   ],
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -122,12 +182,17 @@ Widget createScheduleItem() {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 30,
           ),
           IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.chevron_right),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ViewAppointmentOne()));
+              },
+              icon: const Icon(Icons.chevron_right),
               padding: const EdgeInsets.all(0),
               constraints: const BoxConstraints(),
               style: const ButtonStyle(
@@ -147,11 +212,12 @@ Widget floatBar(context) {
             style: ButtonStyle(
                 foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                fixedSize: MaterialStateProperty.all<Size>(Size(185, 45))),
+                fixedSize: MaterialStateProperty.all<Size>(const Size(185, 45))),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const BookingScreenStepOne()),
+                MaterialPageRoute(
+                    builder: (context) => const BookingScreenStepOne()),
               );
             },
             child: const Text(
@@ -161,6 +227,80 @@ Widget floatBar(context) {
           ),
         ),
       ],
+    ),
+  );
+}
+
+Widget createTextFormField(
+    String text,
+    BuildContext context,
+    width,
+    IconData icon,
+    bool hasCalendar,
+    TextEditingController textcontroller,
+    DateRangePickerController? datecontroller) {
+  return SizedBox(
+    height: 35,
+    width: width,
+    child: TextFormField(
+      controller: textcontroller,
+      style: const TextStyle(fontSize: 14, height: 1),
+      onSaved: (String? value) {},
+      validator: (value) {
+        return null;
+      },
+      decoration: InputDecoration(
+          suffixIcon: InkWell(
+            child: Icon(icon),
+            onTap: () {
+              hasCalendar
+                  ? showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Dialog(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100)),
+                            height: 300, // Set the desired height
+                            width: MediaQuery.of(context).size.width *
+                                0.8, // Set the desired width
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: SfDateRangePicker(
+                                enablePastDates: false,
+                                todayHighlightColor: Colors.black,
+                                backgroundColor: Colors.white,
+                                selectionColor: Colors.black,
+                                headerStyle: const DateRangePickerHeaderStyle(
+                                    backgroundColor: Colors.white,
+                                    textStyle: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600)),
+                                initialSelectedDate: DateTime.now(),
+                                controller: datecontroller,
+                                showActionButtons: true,
+                                onSubmit: (value) {
+                                  // Update textFormField value with selected date
+                                  textcontroller.text = value.toString();
+                                  Navigator.pop(context);
+                                },
+                                onCancel: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                  : null;
+            },
+          ),
+          border: const OutlineInputBorder(),
+          labelText: text,
+          hintStyle: const TextStyle(fontSize: 14, height: 1),
+          labelStyle: const TextStyle(fontSize: 14, height: 1),
+          contentPadding: const EdgeInsets.all(8)),
     ),
   );
 }

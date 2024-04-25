@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/screens/main/explorescreen.dart';
@@ -15,141 +14,153 @@ class HeaderFooter extends StatefulWidget {
   final BuildContext context;
   final bool mainHeader;
   final bool hasFloatbar;
-  final bool isProfileFloatbar;
   final Widget? floatbar;
-  final Widget? ProfileFloatbar;
+  final bool isProfileFloatbar;
+  final Widget? profileFloatbar;
 
-  const HeaderFooter(
-      {super.key,
-        this.floatbar,
-        this.ProfileFloatbar,
-        this.hasFloatbar = false,
-        this.isProfileFloatbar = false,
-        this.mainHeader = true,
-        this.hasDrawer = false,
-        required this.body,
-        required this.title,
-        required this.context,
-        required this.buttonStatus,
-      });
+  const HeaderFooter({
+    super.key,
+    this.floatbar,
+    this.hasFloatbar = false,
+    this.mainHeader = true,
+    this.hasDrawer = false,
+    required this.body,
+    required this.title,
+    required this.context,
+    required this.buttonStatus,
+    this.isProfileFloatbar = false,
+    this.profileFloatbar,
+  });
 
   @override
   State<HeaderFooter> createState() => _HeaderFooterState();
 }
 
-class _HeaderFooterState extends State<HeaderFooter> {
+class _HeaderFooterState extends State<HeaderFooter>
+    with TickerProviderStateMixin {
+  late TabController _scheduleTabController;
+  late TabController _ordersTabController;
+  late TabController _profileTabController;
+
   @override
-  Widget build(BuildContext context) {
-    if (widget.isProfileFloatbar) {
-      // Render profile header widget when isProfileFloatbar is true
-      return buildProfileHeader(context);
-    }
-    return widget.mainHeader
-        ? Scaffold(
-        body: Column(
-          children: [
-            buildmainHeader(),
-            Expanded(
-              child: Container(
-                child: widget.body,
-              ),
-            ),
-            buildFooter(widget.buttonStatus, widget.context),
-          ],
-        ))
-        : DefaultTabController(
-        initialIndex: 1,
-        length: 2,
-        child: Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: Image.asset(
-              AppConstants.logoImagePath,
-              width: 40,
-              height: 40,
-            ),
-            bottom: const TabBar(
-              labelColor: Colors.black,
-              indicatorColor: Colors.black,
-              indicatorSize: TabBarIndicatorSize.tab,
-              tabs: [
-                Tab(text: "Upcoming"),
-                Tab(text: "Completed"),
-              ],
-            ),
-          ),
-          body: Column(
-            children: [
-              Expanded(
-                child: Container(
-                  child: widget.body,
-                ),
-              ),
-              widget.hasFloatbar ? SizedBox(height: 55,) : Container(),
-              buildFooter(widget.buttonStatus, widget.context),
-            ],
-          ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: widget.hasFloatbar
-              ? widget.floatbar
-              : null,
-        ));
+  void initState() {
+    super.initState();
+    _scheduleTabController = TabController(length: 2, vsync: this);
+    _ordersTabController = TabController(length: 2, vsync: this);
+    _profileTabController = TabController(length: 2, vsync: this);
   }
 
-  Widget buildProfileHeader(BuildContext context) {
+  @override
+  void dispose() {
+    _scheduleTabController.dispose();
+    _ordersTabController.dispose();
+    _profileTabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return widget.mainHeader
         ? Scaffold(
-      body: Column(
-        children: [
-          buildmainHeader(),
-          Expanded(
-            child: Container(
-              child: widget.body,
+            resizeToAvoidBottomInset: false,
+            body: Column(
+              children: [
+                buildmainHeader(),
+                Expanded(
+                  child: Container(
+                    child: widget.body,
+                  ),
+                ),
+                buildFooter(widget.buttonStatus, widget.context),
+              ],
             ),
-          ),
-          buildFooter(widget.buttonStatus, widget.context),
-        ],
-      ),
-    )
-        : Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Column(
-          children: [
-            Image.asset(
-              AppConstants.logoImagePath,
-              width: 33,
-              height: 31,
-            ),
-            SizedBox(height: 5), // Add space between logo and text
-            Text(
-              'Profile Page', // Add your text here
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                fontFamily: "Inter",
-                color: Colors.black,
+          )
+        : DefaultTabController(
+            length: 3,
+            child: Scaffold(
+              resizeToAvoidBottomInset: false,
+              appBar: AppBar(
+                centerTitle: true,
+                title: Image.asset(
+                  AppConstants.logoImagePath,
+                  width: 40,
+                  height: 40,
+                ),
+                bottom: widget.title == "Schedule"
+                    ? TabBar(
+                        controller: _scheduleTabController,
+                        labelColor: Colors.black,
+                        indicatorColor: Colors.black,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        tabs: const [
+                          Tab(text: "Upcoming"),
+                          Tab(text: "Completed"),
+                        ],
+                      )
+                    : widget.title == "Orders"
+                        ? TabBar(
+                            controller: _ordersTabController,
+                            labelColor: Colors.black,
+                            indicatorColor: Colors.black,
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            tabs: const [
+                              Tab(text: "Active"),
+                              Tab(text: "Completed"),
+                            ],
+                          )
+                        : TabBar(
+                            controller: _profileTabController,
+                            labelColor: Colors.black,
+                            indicatorColor: Colors.black,
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            tabs: const [
+                              Tab(text: "Profile"),
+                              Tab(text: "Settings"),
+                            ],
+                          ),
               ),
+              body: Column(
+                children: [
+                  Expanded(
+                    child: TabBarView(
+                      controller: widget.title == "Schedule"
+                          ? _scheduleTabController
+                          : widget.title == "Orders"
+                              ? _ordersTabController
+                              : _profileTabController,
+                      children: [
+                        Container(
+                          child: widget.body,
+                        ),
+                        Container(
+                          child: widget.body,
+                        ),
+                      ],
+                    ),
+                  ),
+                  _buildSpacing(), // Call the method to build spacing widget
+                  buildFooter(widget.buttonStatus, widget.context),
+                ],
+              ),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerDocked,
+              floatingActionButton: widget.hasFloatbar
+                  ? (widget.isProfileFloatbar
+                      ? widget.profileFloatbar
+                      : widget.floatbar)
+                  : null,
             ),
-          ],
-        ),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Container(
-              child: widget.body,
-            ),
-          ),
-          widget.hasFloatbar ? SizedBox(height: 55,) : Container(),
-          buildFooter(widget.buttonStatus, widget.context),
-        ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: widget.isProfileFloatbar
-          ? widget.ProfileFloatbar
-          : null,
-    );
+          );
+  }
+
+  Widget _buildSpacing() {
+    if (widget.title == "Schedule") {
+      return const SizedBox(height: 55); // Height for Schedule
+    } else {
+      return const SizedBox(height: 0); // Height for Orders and Profile
+    }
+  }
+}
   }
 
 

@@ -1,13 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/Layout/footer.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:project_v/screens/main/bookingscreenStepThree.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter/scheduler.dart';
 
 class BookingScreenStepTwo extends StatefulWidget {
-  const BookingScreenStepTwo({Key? key}) : super(key: key);
+  const BookingScreenStepTwo({super.key});
 
   @override
   State<BookingScreenStepTwo> createState() => _BookingScreenStepTwoState();
@@ -15,7 +15,19 @@ class BookingScreenStepTwo extends StatefulWidget {
 
 class _BookingScreenStepTwoState extends State<BookingScreenStepTwo> {
   final TextEditingController dateController = TextEditingController();
+  final DateRangePickerController daterangeController =
+      DateRangePickerController();
   final TextEditingController timeController = TextEditingController();
+
+String _date = DateFormat('dd, MMMM yyyy').format(DateTime.now()).toString();
+
+  void selectionChanged(DateRangePickerSelectionChangedArgs args) {
+    SchedulerBinding.instance.addPostFrameCallback((duration) {
+      setState(() {
+        _date = DateFormat('dd, MMMM yyyy').format(args.value).toString();
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,28 +44,28 @@ class _BookingScreenStepTwoState extends State<BookingScreenStepTwo> {
             width: 40,
             height: 40,
           ),
-          bottom: PreferredSize(
+          bottom: const PreferredSize(
+            preferredSize: Size.zero,
             child: Text(
               "Set An Appointment",
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
-            preferredSize: Size.zero,
           ),
         ),
         resizeToAvoidBottomInset: false,
         body: Column(
           children: [
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             Expanded(
                 child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(30, 15, 30, 0),
+                padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Container(
                   child: Column(
                     children: [
                       createHeader(
                           "2. When would you like to set the appointment?"),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       SizedBox(
@@ -61,62 +73,95 @@ class _BookingScreenStepTwoState extends State<BookingScreenStepTwo> {
                         child: TextFormField(
                           controller: dateController,
                           onSaved: (String? value) {},
-                          style: TextStyle(fontSize: 14, height: 1),
-                          validator: (value) {},
+                          style: const TextStyle(fontSize: 14, height: 1),
+                          validator: (value) {
+                            return null;
+                          },
                           decoration: InputDecoration(
                               suffixIcon: InkWell(
-                                child: Icon(Icons.calendar_month),
+                                child: const Icon(Icons.calendar_month),
                                 onTap: () {
-                                  showDialog<Widget>(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return SfDateRangePicker(
-                                          showActionButtons: true,
-                                          onSubmit: (value) {
-                                            // Return value and update textformfield
-                                            Navigator.pop(context);
-                                          },
-                                          onCancel: () {
-                                            Navigator.pop(context);
-                                          },
-                                        );
-                                      });
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Dialog(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(100)),
+                                          height: 300, // Set the desired height
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.8, // Set the desired width
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: SfDateRangePicker(
+                                              enablePastDates: false,
+                                              todayHighlightColor: Colors.black,
+                                              backgroundColor: Colors.white,
+                                              selectionColor: Colors.black,
+                                              headerStyle: const DateRangePickerHeaderStyle(backgroundColor: Colors.white, textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600) ),
+                                              initialSelectedDate:
+                                                  DateTime.now(),
+                                              controller: daterangeController,
+                                              onSelectionChanged:
+                                                  selectionChanged,
+                                              showActionButtons: true,
+                                              onSubmit: (value) {
+                                                // Update textFormField value with selected date
+                                                dateController.text =
+                                                    value.toString();
+                                                Navigator.pop(context);
+                                              },
+                                              onCancel: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
                                 },
                               ),
                               border: const OutlineInputBorder(),
                               labelText: "Choose a date",
-                              hintStyle: TextStyle(fontSize: 14, height: 1),
-                              labelStyle: TextStyle(fontSize: 14, height: 1),
+                              hintStyle: const TextStyle(fontSize: 14, height: 1),
+                              labelStyle: const TextStyle(fontSize: 14, height: 1),
                               contentPadding: const EdgeInsets.all(8)),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       SizedBox(
                         height: 35,
                         child: TextFormField(
-                          style: TextStyle(fontSize: 14, height: 1),
+                          style: const TextStyle(fontSize: 14, height: 1),
                           controller: timeController,
                           onSaved: (String? value) {},
-                          validator: (value) {},
+                          validator: (value) {
+                            return null;
+                          },
                           decoration: InputDecoration(
                               suffixIcon: InkWell(
-                                child: Icon(Icons.schedule),
+                                child: const Icon(Icons.schedule),
                                 onTap: () {},
                               ),
                               border: const OutlineInputBorder(),
                               labelText: "Choose a time",
-                              hintStyle: TextStyle(fontSize: 14, height: 1),
-                              labelStyle: TextStyle(fontSize: 14, height: 1),
+                              hintStyle: const TextStyle(fontSize: 14, height: 1),
+                              labelStyle: const TextStyle(fontSize: 14, height: 1),
                               contentPadding: const EdgeInsets.all(8)),
                         ),
                       ),
-                      SizedBox(
-                        height: 40,
+                      const SizedBox(
+                        height: 20,
                       ),
                       createHeader("3. Review your appointment details"),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       Container(
@@ -129,7 +174,7 @@ class _BookingScreenStepTwoState extends State<BookingScreenStepTwo> {
                                 color: Colors.black.withOpacity(0.2),
                                 spreadRadius: -1,
                                 blurRadius: 4,
-                                offset: Offset(0, 3),
+                                offset: const Offset(0, 3),
                               ),
                             ]),
                         child: Padding(
@@ -137,49 +182,53 @@ class _BookingScreenStepTwoState extends State<BookingScreenStepTwo> {
                           child: Column(
                             children: [
                               createHeader("Type of Appointment"),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
-                              createTextFormField("Type of Appointment", context, null),
-                              SizedBox(
+                              createTextFormField(
+                                  "Type of Appointment", context, null),
+                              const SizedBox(
                                 height: 15,
                               ),
                               createHeader("Date & Time of Appointment"),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  createTextFormField("06/24/2024", context, 145.0),
-                                  createTextFormField("10:00 AM", context, 145.0)
+                                  createTextFormField(
+                                      "06/24/2024", context, 145.0),
+                                  createTextFormField(
+                                      "10:00 AM", context, 145.0)
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 15,
                               ),
                               createHeader("Store Location"),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               createTextFormField("Address", context, null),
-                              SizedBox(
+                              const SizedBox(
                                 height: 15,
                               ),
                               createHeader("Optometrician"),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
-                              createTextFormField("Dr. Aidan Valdancio", context, null),
-                              SizedBox(
+                              createTextFormField(
+                                  "Dr. Aidan Valdancio", context, null),
+                              const SizedBox(
                                 height: 10,
                               ),
                             ],
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 70,
                       )
                     ],
@@ -210,7 +259,7 @@ Widget floatBar(context) {
             style: ButtonStyle(
                 foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                fixedSize: MaterialStateProperty.all<Size>(Size(185, 45))),
+                fixedSize: MaterialStateProperty.all<Size>(const Size(185, 45))),
             onPressed: () {
               Navigator.push(
                 context,
@@ -243,14 +292,16 @@ Widget createTextFormField(String text, context, width) {
     height: 35,
     width: width,
     child: TextFormField(
-      style: TextStyle(fontSize: 14, height: 1),
+      style: const TextStyle(fontSize: 14, height: 1),
       onSaved: (String? value) {},
-      validator: (value) {},
+      validator: (value) {
+        return null;
+      },
       decoration: InputDecoration(
           border: const OutlineInputBorder(),
           labelText: text,
-          hintStyle: TextStyle(fontSize: 14, height: 1),
-          labelStyle: TextStyle(fontSize: 14, height: 1),
+          hintStyle: const TextStyle(fontSize: 14, height: 1),
+          labelStyle: const TextStyle(fontSize: 14, height: 1),
           contentPadding: const EdgeInsets.all(8)),
     ),
   );
