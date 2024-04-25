@@ -7,7 +7,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:project_v/screens/main/bookingscreenStepOne.dart';
 import 'package:project_v/screens/main/viewappointment.dart';
 
-class ScheduleScreen extends StatefulWidget { 
+class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen(
       {Key? key, this.isNavigatedfromCancel, this.setIsNavigatedFromCancel});
   final bool? isNavigatedfromCancel;
@@ -24,8 +24,8 @@ TextEditingController typecontroller = TextEditingController();
 DateRangePickerController daterangeController = DateRangePickerController();
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
-  @override 
-  void initState(){
+  @override
+  void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       if (widget.isNavigatedfromCancel == true) {
@@ -94,7 +94,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
     return HeaderFooter(
       hasFloatbar: true,
       mainHeader: false,

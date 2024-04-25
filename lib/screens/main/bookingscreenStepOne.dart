@@ -4,7 +4,7 @@ import 'package:project_v/screens/main/bookingscreenStepTwo.dart';
 import 'package:project_v/widgets/Layout/footer.dart';
 
 class BookingScreenStepOne extends StatefulWidget {
-  const BookingScreenStepOne({Key? key}) : super(key: key);
+  const BookingScreenStepOne({super.key});
 
   @override
   State<BookingScreenStepOne> createState() => _BookingScreenStepOneState();
@@ -26,17 +26,17 @@ class _BookingScreenStepOneState extends State<BookingScreenStepOne> {
           width: 40,
           height: 40,
         ),
-        bottom: PreferredSize(
+        bottom: const PreferredSize(
+          preferredSize: Size.zero,
           child: Text(
             "Set An Appointment",
             style: TextStyle(fontWeight: FontWeight.w600),
           ),
-          preferredSize: Size.zero,
         ),
       ),
       body: Column(
         children: [
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           Expanded(
               child: SingleChildScrollView(
             child: Padding(
@@ -44,7 +44,7 @@ class _BookingScreenStepOneState extends State<BookingScreenStepOne> {
               child: Container(
                 child: Column(
                   children: [
-                    Text(
+                    const Text(
                       "1. What type of appointment would you like to set?",
                     ),
                     Padding(
@@ -126,7 +126,7 @@ Widget createAppointmentItem(String labelText, String image, context) {
                 color: Colors.black.withOpacity(0.2),
                 spreadRadius: 2,
                 blurRadius: 6,
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
               ),
             ]),
         alignment: Alignment.center,
@@ -135,10 +135,6 @@ Widget createAppointmentItem(String labelText, String image, context) {
             Container(
               width: 155,
               height: 100,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Align(alignment: Alignment.topLeft , child: Text(labelText, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,color: Colors.white.withOpacity(0.9)))),
-              ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
@@ -146,6 +142,10 @@ Widget createAppointmentItem(String labelText, String image, context) {
                   colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.4), BlendMode.darken),
                   fit: BoxFit.fitWidth,
                 ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Align(alignment: Alignment.topLeft , child: Text(labelText, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,color: Colors.white.withOpacity(0.9)))),
               ),
             ),
           ],

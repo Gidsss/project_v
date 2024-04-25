@@ -12,6 +12,11 @@ class AppConstants {
   // Previous Icon
   static const String backIconPath = 'assets/images/previous.png';
 
+  // Explore Screen Icons and Images
+  static const String dropdownIconPath = 'assets/images/dropdown-arrow.png';
+  static const String searchIconPath = 'assets/images/search.png';
+  static const String addtoCartIconPath = 'assets/images/add-to-cart-icon.png';
+
   // User Profile Images
   static const String profileIconPath = 'assets/images/user.png';
   static const String editIconPath = 'assets/cameraicon.svg';
@@ -48,6 +53,8 @@ class AppConstants {
   static const String PrescriptionFillingImagePath = 'assets/images/PrescriptionFillingImage.jpg';
   static const String FrameRepairImagePath = 'assets/images/FrameRepairImage.jpg';
 
+  // Order Screen Images
+  static const String orderIconPath = 'assets/images/order.png';
 
 
   // Color constants
