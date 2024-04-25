@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/widgets/Layout/headerfooter.dart';
 import 'package:project_v/screens/main/aboutus.dart';
+import 'package:project_v/screens/main/ordersscreen.dart';
+import 'package:project_v/screens/main/schedulescreen.dart';
 
 class ProfileScreen extends StatefulWidget{
   const ProfileScreen({super.key});
@@ -283,7 +285,10 @@ class _ProfileScreenState extends State<ProfileScreen>{
                     // Order Button
                     ElevatedButton(
                       onPressed: () {
-                        // Add button functionality here
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => OrdersScreen()),
+                        );
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.grey.shade50), // Button background color
@@ -344,7 +349,10 @@ class _ProfileScreenState extends State<ProfileScreen>{
                     // View Appointment Button
                     ElevatedButton(
                       onPressed: () {
-                        // Add button functionality here
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ScheduleScreen()),
+                        );
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.grey.shade50), // Button background color
