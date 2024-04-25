@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/Layout/footer.dart';
 
-class NotificationSettings extends StatefulWidget {
-  const NotificationSettings({super.key});
+class SecuritySettings extends StatefulWidget {
+  const SecuritySettings({super.key});
 
   @override
-  State<NotificationSettings> createState() => _NotificationSettingsState();
+  State<SecuritySettings> createState() => _SecuritySettingsState();
 }
 
-class _NotificationSettingsState extends State<NotificationSettings> {
+class _SecuritySettingsState extends State<SecuritySettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +28,7 @@ class _NotificationSettingsState extends State<NotificationSettings> {
         bottom: const PreferredSize(
           preferredSize: Size.zero,
           child: Text(
-            "Notification Settings",
+            "Security Settings",
             style: TextStyle(fontWeight: FontWeight.w600),
           ),
         ),
@@ -54,7 +54,6 @@ class _NotificationSettingsState extends State<NotificationSettings> {
           ),
         ],
       ),
-      // Call the method using the instance
     );
   }
 }
