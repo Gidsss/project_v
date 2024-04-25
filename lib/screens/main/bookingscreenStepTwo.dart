@@ -251,7 +251,7 @@ String _date = DateFormat('dd, MMMM yyyy').format(DateTime.now()).toString();
 
 Widget floatBar(context) {
   return Padding(
-    padding: const EdgeInsets.only(bottom: 90.0, left: 15, right: 15),
+    padding: const EdgeInsets.only(bottom: 90.0, left: 30, right: 30),
     child: Row(
       children: [
         Expanded(
