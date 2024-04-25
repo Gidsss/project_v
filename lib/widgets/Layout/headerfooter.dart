@@ -15,18 +15,22 @@ class HeaderFooter extends StatefulWidget {
   final BuildContext context;
   final bool mainHeader;
   final bool hasFloatbar;
+  final bool isProfileFloatbar;
   final Widget? floatbar;
+  final Widget? ProfileFloatbar;
 
   const HeaderFooter(
       {super.key,
-      this.floatbar,
-      this.hasFloatbar = false,
-      this.mainHeader = true,
-      this.hasDrawer = false,
-      required this.body,
-      required this.title,
-      required this.context,
-      required this.buttonStatus,
+        this.floatbar,
+        this.ProfileFloatbar,
+        this.hasFloatbar = false,
+        this.isProfileFloatbar = false,
+        this.mainHeader = true,
+        this.hasDrawer = false,
+        required this.body,
+        required this.title,
+        required this.context,
+        required this.buttonStatus,
       });
 
   @override
@@ -36,124 +40,185 @@ class HeaderFooter extends StatefulWidget {
 class _HeaderFooterState extends State<HeaderFooter> {
   @override
   Widget build(BuildContext context) {
+    if (widget.isProfileFloatbar) {
+      // Render profile header widget when isProfileFloatbar is true
+      return buildProfileHeader(context);
+    }
     return widget.mainHeader
         ? Scaffold(
-            body: Column(
+        body: Column(
+          children: [
+            buildmainHeader(),
+            Expanded(
+              child: Container(
+                child: widget.body,
+              ),
+            ),
+            buildFooter(widget.buttonStatus, widget.context),
+          ],
+        ))
+        : DefaultTabController(
+        initialIndex: 1,
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: Image.asset(
+              AppConstants.logoImagePath,
+              width: 40,
+              height: 40,
+            ),
+            bottom: const TabBar(
+              labelColor: Colors.black,
+              indicatorColor: Colors.black,
+              indicatorSize: TabBarIndicatorSize.tab,
+              tabs: [
+                Tab(text: "Upcoming"),
+                Tab(text: "Completed"),
+              ],
+            ),
+          ),
+          body: Column(
             children: [
-              buildmainHeader(),
               Expanded(
                 child: Container(
                   child: widget.body,
                 ),
               ),
+              widget.hasFloatbar ? SizedBox(height: 55,) : Container(),
               buildFooter(widget.buttonStatus, widget.context),
             ],
-          ))
-        : DefaultTabController(
-            initialIndex: 1,
-            length: 2,
-            child: Scaffold(
-              appBar: AppBar(
-                centerTitle: true,
-                title: Image.asset(
-                  AppConstants.logoImagePath,
-                  width: 40,
-                  height: 40,
-                ),
-                bottom: const TabBar(
-                  labelColor: Colors.black,
-                  indicatorColor: Colors.black,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  tabs: [
-                    Tab(text: "Upcoming"),
-                    Tab(text: "Completed"),
-                  ],
-                ),
-              ),
-              body: Column(
-                children: [
-                  Expanded(
-                    child: Container(
-                      child: widget.body,
-                    ),
-                  ),
-                  widget.hasFloatbar ? SizedBox(height: 55,) : Container(),
-                  buildFooter(widget.buttonStatus, widget.context),
-                ],
-              ),
-              floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-              floatingActionButton: widget.hasFloatbar
-                  ? widget.floatbar 
-                  : null,
-            ));
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: widget.hasFloatbar
+              ? widget.floatbar
+              : null,
+        ));
   }
+
+  Widget buildProfileHeader(BuildContext context) {
+    return widget.mainHeader
+        ? Scaffold(
+      body: Column(
+        children: [
+          buildmainHeader(),
+          Expanded(
+            child: Container(
+              child: widget.body,
+            ),
+          ),
+          buildFooter(widget.buttonStatus, widget.context),
+        ],
+      ),
+    )
+        : Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Column(
+          children: [
+            Image.asset(
+              AppConstants.logoImagePath,
+              width: 33,
+              height: 31,
+            ),
+            SizedBox(height: 5), // Add space between logo and text
+            Text(
+              'Profile Page', // Add your text here
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                fontFamily: "Inter",
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+              child: widget.body,
+            ),
+          ),
+          widget.hasFloatbar ? SizedBox(height: 55,) : Container(),
+          buildFooter(widget.buttonStatus, widget.context),
+        ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: widget.isProfileFloatbar
+          ? widget.ProfileFloatbar
+          : null,
+    );
+  }
+
 
   Widget buildmainHeader() {
     return Material(
         child: Container(
-      decoration: BoxDecoration(boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.5),
-          spreadRadius: 4,
-          blurRadius: 4,
-          offset: const Offset(0, -2),
-        ),
-      ], color: Colors.white),
-      child: Expanded(
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
+          decoration: BoxDecoration(boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 4,
+              blurRadius: 4,
+              offset: const Offset(0, -2),
+            ),
+          ], color: Colors.white),
+          child: Expanded(
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Image.asset(
-                      AppConstants.logoImagePath,
-                      width: 60,
-                      height: 60,
+                    Row(
+                      children: [
+                        Image.asset(
+                          AppConstants.logoImagePath,
+                          width: 60,
+                          height: 60,
+                        ),
+                        const SizedBox(width: 8),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text("Valdopeña",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: "Times New Roman",
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500)),
+                              Text("Opticals",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: "Times New Roman",
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500)),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 8),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text("Valdopeña",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: "Times New Roman",
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500)),
-                          Text("Opticals",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: "Times New Roman",
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500)),
-                        ],
-                      ),
+                    const SizedBox(width: 20),
+                    Row(
+                      children: [
+                        headerIconButton(Icons.mark_unread_chat_alt_outlined),
+                        const SizedBox(width: 8),
+                        headerIconButton(Icons.notifications_outlined),
+                        const SizedBox(width: 8),
+                        headerIconButton(Icons.favorite_border),
+                        const SizedBox(width: 8),
+                        headerIconButton(Icons.shopping_bag_outlined)
+                      ],
                     ),
                   ],
                 ),
-                const SizedBox(width: 20),
-                Row(
-                  children: [
-                    headerIconButton(Icons.mark_unread_chat_alt_outlined),
-                    const SizedBox(width: 8),
-                    headerIconButton(Icons.notifications_outlined),
-                    const SizedBox(width: 8),
-                    headerIconButton(Icons.favorite_border),
-                    const SizedBox(width: 8),
-                    headerIconButton(Icons.shopping_bag_outlined)
-                  ],
-                ),
-              ],
+              ),
             ),
           ),
-        ),
-      ),
-    ));
+        ));
   }
 
   Widget buildFooter(List<bool> buttonStatus, BuildContext context) {
@@ -175,53 +240,53 @@ class _HeaderFooterState extends State<HeaderFooter> {
             buttonStatus[0]
                 ? buildButton("Home", Icons.home, buttonStatus[0], () {})
                 : buildButton("Home", Icons.home_outlined, buttonStatus[0], () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomeScreen()));
-                  }),
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const HomeScreen()));
+            }),
             buttonStatus[1]
                 ? buildButton("Explore", Icons.explore, buttonStatus[1], () {})
                 : buildButton(
-                    "Explore", Icons.explore_outlined, buttonStatus[1], () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ExploreScreen()));
-                  }),
+                "Explore", Icons.explore_outlined, buttonStatus[1], () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ExploreScreen()));
+            }),
             buttonStatus[2]
                 ? buildButton(
-                    "Schedule", Icons.calendar_month, buttonStatus[2], () {})
+                "Schedule", Icons.calendar_month, buttonStatus[2], () {})
                 : buildButton(
-                    "Schedule", Icons.calendar_month_outlined, buttonStatus[2],
+                "Schedule", Icons.calendar_month_outlined, buttonStatus[2],
                     () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ScheduleScreen()));
-                  }),
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ScheduleScreen()));
+                }),
             buttonStatus[3]
                 ? buildButton(
-                    "Orders", Icons.local_shipping, buttonStatus[3], () {})
+                "Orders", Icons.local_shipping, buttonStatus[3], () {})
                 : buildButton(
-                    "Orders", Icons.local_shipping_outlined, buttonStatus[3],
+                "Orders", Icons.local_shipping_outlined, buttonStatus[3],
                     () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const OrdersScreen()));
-                  }),
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const OrdersScreen()));
+                }),
             buttonStatus[4]
                 ? buildButton(
-                    "Profile", Icons.account_circle, buttonStatus[4], () {})
+                "Profile", Icons.account_circle, buttonStatus[4], () {})
                 : buildButton(
-                    "Profile", Icons.account_circle_outlined, buttonStatus[4],
+                "Profile", Icons.account_circle_outlined, buttonStatus[4],
                     () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ProfileScreen()));
-                  }),
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProfileScreen()));
+                }),
           ],
         ),
       ),
@@ -234,74 +299,74 @@ class _HeaderFooterState extends State<HeaderFooter> {
       // If isScreen is true, the button has a top border and different background color. Else button no border and white bg color.
       child: isScreen
           ? Container(
-              decoration: const BoxDecoration(
-                  border: Border(top: BorderSide(width: 1.5))),
-              child: TextButton(
-                  onPressed: () {
-                    navigate();
-                  },
-                  style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.zero)),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color(0xFFF4F4F4))),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      Icon(
-                        icon,
-                        size: 34,
-                        color: Colors.black,
-                      ),
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      Text(
-                        label,
-                        style:
-                            const TextStyle(fontSize: 13, color: Colors.black),
-                      ),
-                    ],
-                  )),
-            )
+        decoration: const BoxDecoration(
+            border: Border(top: BorderSide(width: 1.5))),
+        child: TextButton(
+            onPressed: () {
+              navigate();
+            },
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero)),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    const Color(0xFFF4F4F4))),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 4,
+                ),
+                Icon(
+                  icon,
+                  size: 34,
+                  color: Colors.black,
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                Text(
+                  label,
+                  style:
+                  const TextStyle(fontSize: 13, color: Colors.black),
+                ),
+              ],
+            )),
+      )
           : TextButton(
-              onPressed: () {
-                navigate(); // Pass argument here to Navigate to screen Logic which is to follow
-              },
-              style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.zero)),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white)),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  Icon(
-                    icon,
-                    size: 34,
-                    color: Colors.black,
-                  ),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  Text(
-                    label,
-                    style: const TextStyle(fontSize: 13, color: Colors.black),
-                  ),
-                ],
-              )),
+          onPressed: () {
+            navigate(); // Pass argument here to Navigate to screen Logic which is to follow
+          },
+          style: ButtonStyle(
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.zero)),
+              backgroundColor:
+              MaterialStateProperty.all<Color>(Colors.white)),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 4,
+              ),
+              Icon(
+                icon,
+                size: 34,
+                color: Colors.black,
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Text(
+                label,
+                style: const TextStyle(fontSize: 13, color: Colors.black),
+              ),
+            ],
+          )),
     );
   }
 
   Widget headerIconButton(
-    IconData icon,
-  ) {
+      IconData icon,
+      ) {
     return IconButton(
       onPressed: () {
         // Pass argument here to Navigate to screen Logic which is to follow
