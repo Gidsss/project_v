@@ -139,11 +139,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_web_plugins:
-    dependency: transitive
-    description: flutter
-    source: sdk
-    version: "0.0.0"
   http:
     dependency: transitive
     description:
@@ -288,14 +283,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
-  qr_code_scanner:
-    dependency: "direct main"
-    description:
-      name: qr_code_scanner
-      sha256: "5867784caf161bc5d262d35a0bb88864b50d60abdef739d3b46156f54fe7867a"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.5.2"
   qr_flutter:
     dependency: "direct main"
     description:

@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -9,8 +7,11 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:project_v/screens/main/bookingscreenStepOne.dart';
 import 'package:project_v/screens/main/viewappointment.dart';
 
-class ScheduleScreen extends StatefulWidget {
-  const ScheduleScreen({super.key});
+class ScheduleScreen extends StatefulWidget { 
+  const ScheduleScreen(
+      {Key? key, this.isNavigatedfromCancel, this.setIsNavigatedFromCancel});
+  final bool? isNavigatedfromCancel;
+  final Function(bool)? setIsNavigatedFromCancel;
 
   @override
   State<ScheduleScreen> createState() => _ScheduleScreenState();
@@ -23,8 +24,77 @@ TextEditingController typecontroller = TextEditingController();
 DateRangePickerController daterangeController = DateRangePickerController();
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
+  @override 
+  void initState(){
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (widget.isNavigatedfromCancel == true) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog(
+              child: Container(
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(100)),
+                  height: 185, // Set the desired height
+                  width: MediaQuery.of(context).size.width *
+                      0.67, // Set the desired width
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Appointment Cancelled",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                          "Should you need to reschedule, place another appointment.",
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.25,
+                              child: ElevatedButton(
+                                  style: ButtonStyle(
+                                      elevation: MaterialStatePropertyAll(4),
+                                      backgroundColor: MaterialStatePropertyAll(
+                                          Colors.black)),
+                                  onPressed: () {
+                                    if (widget.setIsNavigatedFromCancel !=
+                                        null) {
+                                      widget.setIsNavigatedFromCancel!(false);
+                                    }
+                                    Navigator.pop(
+                                      context,
+                                    );
+                                  },
+                                  child: Text(
+                                    "Okay",
+                                    style: TextStyle(color: Colors.white),
+                                  ))),
+                        )
+                      ],
+                    ),
+                  )),
+            );
+          },
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    
     return HeaderFooter(
       hasFloatbar: true,
       mainHeader: false,
@@ -193,7 +263,7 @@ Widget createScheduleItem(BuildContext context) {
 
 Widget floatBar(context) {
   return Padding(
-    padding: const EdgeInsets.only(bottom: 90.0, left: 15, right: 15),
+    padding: const EdgeInsets.only(bottom: 90.0, left: 30, right: 30),
     child: Row(
       children: [
         Expanded(
