@@ -60,7 +60,7 @@ Widget buildFooter(List<bool> buttonStatus, BuildContext context) {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const ordersScreen()));
+                            builder: (context) => const OrdersScreen()));
                   }),
             buttonStatus[4]
                 ? buildButton(

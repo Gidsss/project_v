@@ -6,6 +6,11 @@ import 'package:project_v/screens/main/ordersscreen.dart';
 import 'package:project_v/screens/main/profilescreen.dart';
 import 'package:project_v/screens/main/homescreen.dart';
 import 'package:project_v/screens/main/schedulescreen.dart';
+import 'package:project_v/screens/main/chatscreen.dart';
+import 'package:project_v/screens/main/wishlistscreen.dart';
+
+import '../../screens/interactions/cart/cartscreen.dart';
+import '../../screens/main/notificationsscreen.dart';
 
 class HeaderFooter extends StatefulWidget {
   final Widget? body;
@@ -38,6 +43,7 @@ class _HeaderFooterState extends State<HeaderFooter> {
   Widget build(BuildContext context) {
     return widget.mainHeader
         ? Scaffold(
+            resizeToAvoidBottomInset: false,
             body: Column(
             children: [
               buildmainHeader(),
@@ -53,6 +59,7 @@ class _HeaderFooterState extends State<HeaderFooter> {
             initialIndex: 1,
             length: 2,
             child: Scaffold(
+              resizeToAvoidBottomInset: false,
               appBar: AppBar(
                 centerTitle: true,
                 title: Image.asset(
@@ -85,7 +92,8 @@ class _HeaderFooterState extends State<HeaderFooter> {
               floatingActionButton: widget.hasFloatbar
                   ? widget.floatbar 
                   : null,
-            ));
+            )
+        );
   }
 
   Widget buildmainHeader() {
@@ -139,13 +147,13 @@ class _HeaderFooterState extends State<HeaderFooter> {
                 const SizedBox(width: 20),
                 Row(
                   children: [
-                    headerIconButton(Icons.mark_unread_chat_alt_outlined),
+                    headerIconButton(Icons.mark_unread_chat_alt_outlined, const ChatScreen()),
                     const SizedBox(width: 8),
-                    headerIconButton(Icons.notifications_outlined),
+                    headerIconButton(Icons.notifications_outlined, const NotificationsScreen()),
                     const SizedBox(width: 8),
-                    headerIconButton(Icons.favorite_border),
+                    headerIconButton(Icons.favorite_border, WishlistScreen()),
                     const SizedBox(width: 8),
-                    headerIconButton(Icons.shopping_bag_outlined)
+                    headerIconButton(Icons.shopping_bag_outlined, const CartScreen()),
                   ],
                 ),
               ],
@@ -300,12 +308,12 @@ class _HeaderFooterState extends State<HeaderFooter> {
   }
 
   Widget headerIconButton(
-    IconData icon,
-  ) {
+      IconData icon, Widget page,
+      ) {
     return IconButton(
-      onPressed: () {
-        // Pass argument here to Navigate to screen Logic which is to follow
-      },
+        onPressed: () {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => page));
+    },
       icon: Icon(
         icon,
         size: 30,
