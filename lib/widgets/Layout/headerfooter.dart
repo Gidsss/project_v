@@ -76,7 +76,7 @@ class _HeaderFooterState extends State<HeaderFooter>
             ),
           )
         : DefaultTabController(
-            length: 3,
+            length: 2,
             child: Scaffold(
               resizeToAvoidBottomInset: false,
               appBar: AppBar(
@@ -161,7 +161,7 @@ class _HeaderFooterState extends State<HeaderFooter>
     }
   }
 }
-  }
+  
 
 
   Widget buildmainHeader() {
@@ -394,4 +394,4 @@ class _HeaderFooterState extends State<HeaderFooter>
       ),
     );
   }
-}
+
