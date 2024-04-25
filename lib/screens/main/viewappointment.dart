@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/screens/main/cancelappointment.dart';
 import 'package:project_v/widgets/Layout/footer.dart';
@@ -30,17 +29,17 @@ class ViewAppointmentOneState extends State<ViewAppointmentOne> {
           width: 40,
           height: 40,
         ),
-        bottom: PreferredSize(
+        bottom: const PreferredSize(
+          preferredSize: Size.zero,
           child: Text(
             "View Appointment",
             style: TextStyle(fontWeight: FontWeight.w600),
           ),
-          preferredSize: Size.zero,
         ),
       ),
       body: Column(
         children: [
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Expanded(
@@ -59,7 +58,7 @@ class ViewAppointmentOneState extends State<ViewAppointmentOne> {
                               color: Colors.black.withOpacity(0.2),
                               spreadRadius: -1,
                               blurRadius: 4,
-                              offset: Offset(0, 3),
+                              offset: const Offset(0, 3),
                             ),
                           ]),
                       child: Padding(
@@ -67,23 +66,23 @@ class ViewAppointmentOneState extends State<ViewAppointmentOne> {
                         child: Column(
                           children: [
                             createHeader("Appointment Number"),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             createTextFormField("#123456", context, null),
-                            SizedBox(
+                            const SizedBox(
                               height: 15,
                             ),
                             createHeader("Type of Appointment"),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             createTextFormField("Type of Appointment", context, null),
-                            SizedBox(
+                            const SizedBox(
                               height: 15,
                             ),
                             createHeader("Date & Time of Appointment"),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             Row(
@@ -93,23 +92,23 @@ class ViewAppointmentOneState extends State<ViewAppointmentOne> {
                                 createTextFormField("10:00 AM", context, 145.0)
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 15,
                             ),
                             createHeader("Store Location"),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             createTextFormField("Address", context, null),
-                            SizedBox(
+                            const SizedBox(
                               height: 15,
                             ),
                             createHeader("Optometrician"),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             createTextFormField("Dr. Aidan Valdancio", context, null),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             createHeader("QR Code:"),
@@ -123,7 +122,7 @@ class ViewAppointmentOneState extends State<ViewAppointmentOne> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 100,)
+                    const SizedBox(height: 100,)
                   ],
                 ),
               ),
@@ -156,14 +155,16 @@ Widget createTextFormField(String text, context, width) {
     height: 35,
     width: width,
     child: TextFormField(
-      style: TextStyle(fontSize: 14, height: 1),
+      style: const TextStyle(fontSize: 14, height: 1),
       onSaved: (String? value) {},
-      validator: (value) {},
+      validator: (value) {
+        return null;
+      },
       decoration: InputDecoration(
           border: const OutlineInputBorder(),
           labelText: text,
-          hintStyle: TextStyle(fontSize: 14, height: 1),
-          labelStyle: TextStyle(fontSize: 14, height: 1),
+          hintStyle: const TextStyle(fontSize: 14, height: 1),
+          labelStyle: const TextStyle(fontSize: 14, height: 1),
           contentPadding: const EdgeInsets.all(8)),
     ),
   );
@@ -179,7 +180,7 @@ Widget floatBar(context) {
             style: ButtonStyle(
                 foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                fixedSize: MaterialStateProperty.all<Size>(Size(185, 45))),
+                fixedSize: MaterialStateProperty.all<Size>(const Size(185, 45))),
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => const CancelAppointment()));
             },

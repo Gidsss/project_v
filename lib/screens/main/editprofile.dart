@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/textfields/textfield.dart';
@@ -46,21 +45,21 @@ class _EditProfileState extends State<EditProfile> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   Padding(
-                    padding: EdgeInsets.only(left: 22), // left padding
+                    padding: const EdgeInsets.only(left: 22), // left padding
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CircleAvatar(
+                        const CircleAvatar(
                           radius: 70,
                           backgroundImage: AssetImage('assets/images/user.png'),
                         ),
-                        SizedBox(width: 25), // Add some space between the image and text
+                        const SizedBox(width: 25), // Add some space between the image and text
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: 45), // Adjust the vertical spacing if needed
+                            const SizedBox(height: 45), // Adjust the vertical spacing if needed
                             ElevatedButton(
                               onPressed: () {
                                 // Add button functionality here
@@ -81,12 +80,12 @@ class _EditProfileState extends State<EditProfile> {
                                     return Colors.black; // Set default overlay color
                                   },
                                 ),
-                                minimumSize: MaterialStateProperty.all(Size(125, 40)), // Adjust the width and height
+                                minimumSize: MaterialStateProperty.all(const Size(125, 40)), // Adjust the width and height
                               ),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Edit Photo',
                                     style: TextStyle(
                                       color: Colors.white,
@@ -95,7 +94,7 @@ class _EditProfileState extends State<EditProfile> {
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  SizedBox(width: 20), // Add some space between the icon and text
+                                  const SizedBox(width: 20), // Add some space between the icon and text
                                   SizedBox(
                                     width: 18,
                                     height: 17,
@@ -108,7 +107,7 @@ class _EditProfileState extends State<EditProfile> {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 70),
+                            const SizedBox(height: 70),
                           ],
                         ),
                       ],
@@ -116,13 +115,13 @@ class _EditProfileState extends State<EditProfile> {
                   ),
                   // EDIT NAME
                   Padding(
-                    padding: EdgeInsets.only(left: 15, top: 10), // Adjust horizontal padding as needed
+                    padding: const EdgeInsets.only(left: 15, top: 10), // Adjust horizontal padding as needed
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
-                            Text(
+                            const Text(
                               "Name",
                               style: TextStyle(
                                 color: Colors.black,
@@ -131,7 +130,7 @@ class _EditProfileState extends State<EditProfile> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            SizedBox(width: 6), // Add some space between the icon and text
+                            const SizedBox(width: 6), // Add some space between the icon and text
                             SizedBox(
                               width: 18,
                               height: 17,
@@ -143,7 +142,7 @@ class _EditProfileState extends State<EditProfile> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 10), // Add vertical space between the text and text field
+                        const SizedBox(height: 10), // Add vertical space between the text and text field
                         MyTextField(
                           controller: editNameController, // Pass the controller
                           hintText: 'Enter your name',
@@ -153,20 +152,20 @@ class _EditProfileState extends State<EditProfile> {
                             labelText: 'Name',
                           ),
                         ),
-                        SizedBox(height: 14),
+                        const SizedBox(height: 14),
                       ],
                     ),
                   ),
 
                   //EDIT EMAIL
                   Padding(
-                    padding: EdgeInsets.only(left: 15, top: 10), // Adjust horizontal padding as needed
+                    padding: const EdgeInsets.only(left: 15, top: 10), // Adjust horizontal padding as needed
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
-                            Text(
+                            const Text(
                               "Email",
                               style: TextStyle(
                                 color: Colors.black,
@@ -175,7 +174,7 @@ class _EditProfileState extends State<EditProfile> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            SizedBox(width: 6), // Add some space between the icon and text
+                            const SizedBox(width: 6), // Add some space between the icon and text
                             SizedBox(
                               width: 18,
                               height: 17,
@@ -187,7 +186,7 @@ class _EditProfileState extends State<EditProfile> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 10), // Add vertical space between the text and text field
+                        const SizedBox(height: 10), // Add vertical space between the text and text field
                         MyTextField(
                           controller: editEmailController, // Pass the controller
                           hintText: 'Enter your email',
@@ -197,20 +196,20 @@ class _EditProfileState extends State<EditProfile> {
                             labelText: 'Email',
                           ),
                         ),
-                        SizedBox(height: 14),
+                        const SizedBox(height: 14),
                       ],
                     ),
                   ),
 
                   //EDIT ADDRESS
                   Padding(
-                    padding: EdgeInsets.only(left: 15, top: 10), // Adjust horizontal padding as needed
+                    padding: const EdgeInsets.only(left: 15, top: 10), // Adjust horizontal padding as needed
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
-                            Text(
+                            const Text(
                               "Address",
                               style: TextStyle(
                                 color: Colors.black,
@@ -219,7 +218,7 @@ class _EditProfileState extends State<EditProfile> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            SizedBox(width: 6), // Add some space between the icon and text
+                            const SizedBox(width: 6), // Add some space between the icon and text
                             SizedBox(
                               width: 18,
                               height: 17,
@@ -231,7 +230,7 @@ class _EditProfileState extends State<EditProfile> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 10), // Add vertical space between the text and text field
+                        const SizedBox(height: 10), // Add vertical space between the text and text field
                         MyTextField(
                           controller: editAddressController, // Pass the controller
                           hintText: 'Enter your address',
@@ -241,7 +240,7 @@ class _EditProfileState extends State<EditProfile> {
                             labelText: 'Address',
                           ),
                         ),
-                        SizedBox(height: 50),
+                        const SizedBox(height: 50),
 
                         //Save Edit Button
                         Center( // Center widget added here
@@ -265,9 +264,9 @@ class _EditProfileState extends State<EditProfile> {
                                   return Colors.black; // Set default overlay color
                                 },
                               ),
-                              minimumSize: MaterialStateProperty.all(Size(290, 40)), // Adjust the width and height
+                              minimumSize: MaterialStateProperty.all(const Size(290, 40)), // Adjust the width and height
                             ),
-                            child: Row(
+                            child: const Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Text(
@@ -283,7 +282,7 @@ class _EditProfileState extends State<EditProfile> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 70),
+                        const SizedBox(height: 70),
                       ],
                     ),
                   ),

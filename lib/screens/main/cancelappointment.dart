@@ -1,13 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/screens/main/schedulescreen.dart';
 import 'package:project_v/widgets/Layout/footer.dart';
 
 class CancelAppointment extends StatefulWidget {
-  const CancelAppointment({Key? key}) : super(key: key);
+  const CancelAppointment({super.key});
 
   @override
   State<CancelAppointment> createState() => CancelAppointmentState();
@@ -32,24 +29,24 @@ class CancelAppointmentState extends State<CancelAppointment> {
           width: 40,
           height: 40,
         ),
-        bottom: PreferredSize(
+        bottom: const PreferredSize(
+          preferredSize: Size.zero,
           child: Text(
             "Cancel Appointment",
             style: TextStyle(fontWeight: FontWeight.w600),
           ),
-          preferredSize: Size.zero,
         ),
       ),
       body: Column(
         children: [
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Container(
+                    SizedBox(
                       width: double.infinity,
                       child: Padding(
                         padding: const EdgeInsets.all(15.0),
@@ -57,29 +54,29 @@ class CancelAppointmentState extends State<CancelAppointment> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text("Kindly choose a reason for cancellation:"),
-                            SizedBox(height: 15),
+                            const Text("Kindly choose a reason for cancellation:"),
+                            const SizedBox(height: 15),
                             createToggleItem("Change of Schedule", 1),
-                            SizedBox(height: 5),
+                            const SizedBox(height: 5),
                             createToggleItem("Weather Conditions", 2),
-                            SizedBox(height: 5),
+                            const SizedBox(height: 5),
                             createToggleItem("Unexpected Work", 3),
-                            SizedBox(height: 5),
+                            const SizedBox(height: 5),
                             createToggleItem("Travel Delays", 4),
-                            SizedBox(height: 5),
+                            const SizedBox(height: 5),
                             createToggleItem("Others", 5),
-                            SizedBox(height: 5),
-                            SizedBox(
+                            const SizedBox(height: 5),
+                            const SizedBox(
                               height: 15,
                             ),
-                            Divider(),
-                            SizedBox(
+                            const Divider(),
+                            const SizedBox(
                               height: 5,
                             ),
-                            Align(
+                            const Align(
                                 alignment: Alignment.topLeft,
                                 child: Text("Others")),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             Container(
@@ -91,20 +88,20 @@ class CancelAppointmentState extends State<CancelAppointment> {
                                         color: Colors.black.withOpacity(0.2),
                                         spreadRadius: -1,
                                         blurRadius: 4,
-                                        offset: Offset(0, 3),
+                                        offset: const Offset(0, 3),
                                       ),
                                     ]),
                                 width: double.infinity,
                                 height: 300,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(10.0),
                                   child: TextField(
                                       decoration: InputDecoration(
                                           isCollapsed: true,
                                           border: InputBorder.none,
                                           hintText: "Enter your reason...")),
                                 )),
-                            SizedBox(
+                            const SizedBox(
                               height: 80,
                             )
                           ],
@@ -146,7 +143,7 @@ class CancelAppointmentState extends State<CancelAppointment> {
             },
           ),
         ),
-        SizedBox(
+        const SizedBox(
           width: 5,
         ),
         Text(label)
@@ -165,7 +162,7 @@ Widget floatBar(context) {
             style: ButtonStyle(
               foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
               backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
-              fixedSize: MaterialStateProperty.all<Size>(Size(185, 45)),
+              fixedSize: MaterialStateProperty.all<Size>(const Size(185, 45)),
             ),
             onPressed: () {
               showDialog(
@@ -183,19 +180,19 @@ Widget floatBar(context) {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
+                              const Text(
                                 "Cancel Appointment?",
                                 style: TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 15,
                               ),
-                              Text(
+                              const Text(
                                 "Are you sure you want to cancel your Appointment?",
                                 textAlign: TextAlign.center,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               Padding(
@@ -207,20 +204,20 @@ Widget floatBar(context) {
                                         width: MediaQuery.of(context).size.width *
                                             0.28,
                                         child: ElevatedButton(
-                                          style: ButtonStyle(elevation: MaterialStatePropertyAll(4), backgroundColor: MaterialStatePropertyAll(Colors.white)),
+                                          style: const ButtonStyle(elevation: MaterialStatePropertyAll(4), backgroundColor: MaterialStatePropertyAll(Colors.white)),
                                             onPressed: () {
                                               Navigator.pop(context);
                                             },
-                                            child: Text("No", style: TextStyle(color: Colors.black),))),
+                                            child: const Text("No", style: TextStyle(color: Colors.black),))),
                                      SizedBox(
                                         width: MediaQuery.of(context).size.width *
                                             0.25,
                                         child: ElevatedButton(
-                                          style: ButtonStyle(elevation: MaterialStatePropertyAll(4), backgroundColor: MaterialStatePropertyAll(Colors.black)),
+                                          style: const ButtonStyle(elevation: MaterialStatePropertyAll(4), backgroundColor: MaterialStatePropertyAll(Colors.black)),
                                             onPressed: () {
                                               Navigator.push(context, MaterialPageRoute(builder: (context) => const ScheduleScreen(isNavigatedfromCancel: true)));
                                             },
-                                            child: Text("Yes", style: TextStyle(color: Colors.white),))),
+                                            child: const Text("Yes", style: TextStyle(color: Colors.white),))),
                                   ],
                                 ),
                               )

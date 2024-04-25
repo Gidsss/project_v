@@ -35,7 +35,7 @@ class _SecuritySettingsState extends State<SecuritySettings> {
       ),
       body: Column(
         children: [
-          Expanded(
+          const Expanded(
             child: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),

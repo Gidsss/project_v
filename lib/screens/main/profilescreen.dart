@@ -30,8 +30,8 @@ class _ProfileScreenState extends State<ProfileScreen>{
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 20),
-            Padding(
+            const SizedBox(height: 20),
+            const Padding(
               padding: EdgeInsets.only(left: 22), // left padding
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,8 +73,8 @@ class _ProfileScreenState extends State<ProfileScreen>{
                 ],
               ),
             ),
-            SizedBox(height: 40),
-            Padding(
+            const SizedBox(height: 40),
+            const Padding(
               padding: EdgeInsets.only(left: 22),
               child: Text(
                 "My Activities",
@@ -85,15 +85,15 @@ class _ProfileScreenState extends State<ProfileScreen>{
                 ),
               ),
             ),
-            SizedBox(height: 10.0), // space between the image and the new container
+            const SizedBox(height: 10.0), // space between the image and the new container
             // My Activities Buttons
             Container(
-                margin: EdgeInsets.symmetric(horizontal: 20.0),
-                padding: EdgeInsets.all(20.0),
+                margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8.0),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.transparent, // Set shadow color to transparent
                       spreadRadius: 0,
@@ -125,7 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                             return Colors.grey.shade50; // Set default overlay color
                           },
                         ),
-                        minimumSize: MaterialStateProperty.all(Size(1000, 50)), // Adjust the width and height
+                        minimumSize: MaterialStateProperty.all(const Size(1000, 50)), // Adjust the width and height
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -139,8 +139,8 @@ class _ProfileScreenState extends State<ProfileScreen>{
                               height: 26,
                             ),
                           ),
-                          SizedBox(width: 8), // Add some space between the icon and text
-                          Text(
+                          const SizedBox(width: 8), // Add some space between the icon and text
+                          const Text(
                             'Chat & Notification',
                             style: TextStyle(
                               color: Colors.black,
@@ -149,7 +149,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(width: 35), // Add some space between the icon and text
+                          const SizedBox(width: 35), // Add some space between the icon and text
                           SizedBox(
                             width: 26,
                             height: 26,
@@ -162,7 +162,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                         ],
                       ),
                     ),
-                    SizedBox(height: 10.0), // Add some space between chat & notif button and wishlists button
+                    const SizedBox(height: 10.0), // Add some space between chat & notif button and wishlists button
 
                     // Wishlists Button
                     ElevatedButton(
@@ -185,7 +185,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                             return Colors.grey.shade50; // Set default overlay color
                           },
                         ),
-                        minimumSize: MaterialStateProperty.all(Size(1000, 50)), // Adjust the width and height
+                        minimumSize: MaterialStateProperty.all(const Size(1000, 50)), // Adjust the width and height
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -199,8 +199,8 @@ class _ProfileScreenState extends State<ProfileScreen>{
                               height: 26,
                             ),
                           ),
-                          SizedBox(width: 8), // Add some space between the icon and text
-                          Text(
+                          const SizedBox(width: 8), // Add some space between the icon and text
+                          const Text(
                             'Wishlists',
                             style: TextStyle(
                               color: Colors.black,
@@ -209,7 +209,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(width: 120), // Add some space between the icon and text
+                          const SizedBox(width: 120), // Add some space between the icon and text
                           SizedBox(
                             width: 26,
                             height: 26,
@@ -223,7 +223,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                       ),
                     ),
 
-                    SizedBox(height: 10.0), // Add some space between wishlists button and shopping carts button
+                    const SizedBox(height: 10.0), // Add some space between wishlists button and shopping carts button
 
                     // Shopping Carts Button
                     ElevatedButton(
@@ -246,7 +246,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                             return Colors.grey.shade50; // Set default overlay color
                           },
                         ),
-                        minimumSize: MaterialStateProperty.all(Size(1000, 50)), // Adjust the width and height
+                        minimumSize: MaterialStateProperty.all(const Size(1000, 50)), // Adjust the width and height
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -260,8 +260,8 @@ class _ProfileScreenState extends State<ProfileScreen>{
                               height: 26,
                             ),
                           ),
-                          SizedBox(width: 8), // Add some space between the icon and text
-                          Text(
+                          const SizedBox(width: 8), // Add some space between the icon and text
+                          const Text(
                             'Shopping Carts',
                             style: TextStyle(
                               color: Colors.black,
@@ -270,7 +270,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(width: 65), // Add some space between the icon and text
+                          const SizedBox(width: 65), // Add some space between the icon and text
                           SizedBox(
                             width: 26,
                             height: 26,
@@ -284,14 +284,14 @@ class _ProfileScreenState extends State<ProfileScreen>{
                       ),
                     ),
 
-                    SizedBox(height: 10.0), // Add some space between shopping carts button and order button
+                    const SizedBox(height: 10.0), // Add some space between shopping carts button and order button
 
                     // Order Button
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => OrdersScreen()),
+                          MaterialPageRoute(builder: (context) => const OrdersScreen()),
                         );
                       },
                       style: ButtonStyle(
@@ -310,7 +310,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                             return Colors.grey.shade50; // Set default overlay color
                           },
                         ),
-                        minimumSize: MaterialStateProperty.all(Size(1000, 50)), // Adjust the width and height
+                        minimumSize: MaterialStateProperty.all(const Size(1000, 50)), // Adjust the width and height
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -324,8 +324,8 @@ class _ProfileScreenState extends State<ProfileScreen>{
                               height: 26,
                             ),
                           ),
-                          SizedBox(width: 8), // Add some space between the icon and text
-                          Text(
+                          const SizedBox(width: 8), // Add some space between the icon and text
+                          const Text(
                             'Order',
                             style: TextStyle(
                               color: Colors.black,
@@ -334,7 +334,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(width: 152), // Add some space between the icon and text
+                          const SizedBox(width: 152), // Add some space between the icon and text
                           SizedBox(
                             width: 26,
                             height: 26,
@@ -348,14 +348,14 @@ class _ProfileScreenState extends State<ProfileScreen>{
                       ),
                     ),
 
-                    SizedBox(height: 10.0), // Add some space between order button and view appointment button
+                    const SizedBox(height: 10.0), // Add some space between order button and view appointment button
 
                     // View Appointment Button
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ScheduleScreen()),
+                          MaterialPageRoute(builder: (context) => const ScheduleScreen()),
                         );
                       },
                       style: ButtonStyle(
@@ -374,7 +374,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                             return Colors.grey.shade50; // Set default overlay color
                           },
                         ),
-                        minimumSize: MaterialStateProperty.all(Size(1000, 50)), // Adjust the width and height
+                        minimumSize: MaterialStateProperty.all(const Size(1000, 50)), // Adjust the width and height
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -388,8 +388,8 @@ class _ProfileScreenState extends State<ProfileScreen>{
                               height: 26,
                             ),
                           ),
-                          SizedBox(width: 8), // Add some space between the icon and text
-                          Text(
+                          const SizedBox(width: 8), // Add some space between the icon and text
+                          const Text(
                             'View Appointment',
                             style: TextStyle(
                               color: Colors.black,
@@ -398,7 +398,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(width: 37), // Add some space between the icon and text
+                          const SizedBox(width: 37), // Add some space between the icon and text
                           SizedBox(
                             width: 26,
                             height: 26,
@@ -417,8 +417,8 @@ class _ProfileScreenState extends State<ProfileScreen>{
 
 
             // My Settings
-            SizedBox(height: 40),
-            Padding(
+            const SizedBox(height: 40),
+            const Padding(
               padding: EdgeInsets.only(left: 22),
               child: Text(
                 "My Settings",
@@ -429,15 +429,15 @@ class _ProfileScreenState extends State<ProfileScreen>{
                 ),
               ),
             ),
-            SizedBox(height: 10.0), // space between the image and the new container
+            const SizedBox(height: 10.0), // space between the image and the new container
             // My Settings Buttons
             Container(
-                margin: EdgeInsets.symmetric(horizontal: 20.0),
-                padding: EdgeInsets.all(20.0),
+                margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.all(20.0),
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8.0),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.transparent, // Set shadow color to transparent
                       spreadRadius: 0,
@@ -453,7 +453,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => EditProfile()),
+                          MaterialPageRoute(builder: (context) => const EditProfile()),
                         );
                       },
                       style: ButtonStyle(
@@ -472,7 +472,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                             return Colors.grey.shade50; // Set default overlay color
                           },
                         ),
-                        minimumSize: MaterialStateProperty.all(Size(1000, 50)), // Adjust the width and height
+                        minimumSize: MaterialStateProperty.all(const Size(1000, 50)), // Adjust the width and height
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -486,8 +486,8 @@ class _ProfileScreenState extends State<ProfileScreen>{
                               height: 26,
                             ),
                           ),
-                          SizedBox(width: 8), // Add some space between the icon and text
-                          Text(
+                          const SizedBox(width: 8), // Add some space between the icon and text
+                          const Text(
                             'Edit Profile',
                             style: TextStyle(
                               color: Colors.black,
@@ -496,7 +496,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(width: 107), // Add some space between the icon and text
+                          const SizedBox(width: 107), // Add some space between the icon and text
                           SizedBox(
                             width: 26,
                             height: 26,
@@ -510,14 +510,14 @@ class _ProfileScreenState extends State<ProfileScreen>{
                       ),
                     ),
 
-                    SizedBox(height: 10.0), // Add some space between Edit Profile button and Security Settings button
+                    const SizedBox(height: 10.0), // Add some space between Edit Profile button and Security Settings button
 
                     // Security Settings Button
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => SecuritySettings()),
+                          MaterialPageRoute(builder: (context) => const SecuritySettings()),
                         );
                       },
                       style: ButtonStyle(
@@ -536,7 +536,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                             return Colors.grey.shade50; // Set default overlay color
                           },
                         ),
-                        minimumSize: MaterialStateProperty.all(Size(1000, 50)), // Adjust the width and height
+                        minimumSize: MaterialStateProperty.all(const Size(1000, 50)), // Adjust the width and height
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -550,8 +550,8 @@ class _ProfileScreenState extends State<ProfileScreen>{
                               height: 26,
                             ),
                           ),
-                          SizedBox(width: 8), // Add some space between the icon and text
-                          Text(
+                          const SizedBox(width: 8), // Add some space between the icon and text
+                          const Text(
                             'Security Settings',
                             style: TextStyle(
                               color: Colors.black,
@@ -560,7 +560,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(width: 50), // Add some space between the icon and text
+                          const SizedBox(width: 50), // Add some space between the icon and text
                           SizedBox(
                             width: 26,
                             height: 26,
@@ -574,14 +574,14 @@ class _ProfileScreenState extends State<ProfileScreen>{
                       ),
                     ),
 
-                    SizedBox(height: 10.0), // Add some space between security settings button and notifications carts button
+                    const SizedBox(height: 10.0), // Add some space between security settings button and notifications carts button
 
                     // Notifications Button
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => NotificationSettings()),
+                          MaterialPageRoute(builder: (context) => const NotificationSettings()),
                         );
                       },
                       style: ButtonStyle(
@@ -600,7 +600,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                             return Colors.grey.shade50; // Set default overlay color
                           },
                         ),
-                        minimumSize: MaterialStateProperty.all(Size(1000, 50)), // Adjust the width and height
+                        minimumSize: MaterialStateProperty.all(const Size(1000, 50)), // Adjust the width and height
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -614,8 +614,8 @@ class _ProfileScreenState extends State<ProfileScreen>{
                               height: 26,
                             ),
                           ),
-                          SizedBox(width: 8), // Add some space between the icon and text
-                          Text(
+                          const SizedBox(width: 8), // Add some space between the icon and text
+                          const Text(
                             'Notifications',
                             style: TextStyle(
                               color: Colors.black,
@@ -624,7 +624,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(width: 90), // Add some space between the icon and text
+                          const SizedBox(width: 90), // Add some space between the icon and text
                           SizedBox(
                             width: 26,
                             height: 26,
@@ -638,14 +638,14 @@ class _ProfileScreenState extends State<ProfileScreen>{
                       ),
                     ),
 
-                    SizedBox(height: 10.0), // Add some space between Notifications button and About Us button
+                    const SizedBox(height: 10.0), // Add some space between Notifications button and About Us button
 
                     // About Us
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => AboutUs()),
+                          MaterialPageRoute(builder: (context) => const AboutUs()),
                         );
                       },
                       style: ButtonStyle(
@@ -664,7 +664,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                             return Colors.grey.shade50; // Set default overlay color
                           },
                         ),
-                        minimumSize: MaterialStateProperty.all(Size(1000, 50)), // Adjust the width and height
+                        minimumSize: MaterialStateProperty.all(const Size(1000, 50)), // Adjust the width and height
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -678,8 +678,8 @@ class _ProfileScreenState extends State<ProfileScreen>{
                               height: 26,
                             ),
                           ),
-                          SizedBox(width: 8), // Add some space between the icon and text
-                          Text(
+                          const SizedBox(width: 8), // Add some space between the icon and text
+                          const Text(
                             'About Us',
                             style: TextStyle(
                               color: Colors.black,
@@ -688,7 +688,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(width: 122), // Add some space between the icon and text
+                          const SizedBox(width: 122), // Add some space between the icon and text
                           SizedBox(
                             width: 26,
                             height: 26,
@@ -702,7 +702,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                       ),
                     ),
 
-                    SizedBox(height: 10.0), // Add some space between About Us button and Log-out button
+                    const SizedBox(height: 10.0), // Add some space between About Us button and Log-out button
 
                     // Log-out Button
                     ElevatedButton(
@@ -725,7 +725,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                             return Colors.grey.shade50; // Set default overlay color
                           },
                         ),
-                        minimumSize: MaterialStateProperty.all(Size(1000, 50)), // Adjust the width and height
+                        minimumSize: MaterialStateProperty.all(const Size(1000, 50)), // Adjust the width and height
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -739,8 +739,8 @@ class _ProfileScreenState extends State<ProfileScreen>{
                               height: 26,
                             ),
                           ),
-                          SizedBox(width: 8), // Add some space between the icon and text
-                          Text(
+                          const SizedBox(width: 8), // Add some space between the icon and text
+                          const Text(
                             'Log-out',
                             style: TextStyle(
                               color: Colors.black,
@@ -749,7 +749,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(width: 132), // Add some space between the icon and text
+                          const SizedBox(width: 132), // Add some space between the icon and text
                           SizedBox(
                             width: 26,
                             height: 26,
@@ -767,8 +767,8 @@ class _ProfileScreenState extends State<ProfileScreen>{
             ),
 
             // Customer Assistance
-            SizedBox(height: 40),
-            Padding(
+            const SizedBox(height: 40),
+            const Padding(
               padding: EdgeInsets.only(left: 22),
               child: Text(
                 "Customer Assistance",
@@ -779,15 +779,15 @@ class _ProfileScreenState extends State<ProfileScreen>{
                 ),
               ),
             ),
-            SizedBox(height: 10.0), // Space between the image and the new container
+            const SizedBox(height: 10.0), // Space between the image and the new container
             // Customer Assistance Buttons
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 20.0),
-              padding: EdgeInsets.all(20.0),
+              margin: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: const EdgeInsets.all(20.0),
               decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8.0),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.transparent, // Set shadow color to transparent
                     spreadRadius: 0,
@@ -819,7 +819,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                           return Colors.grey.shade50; // Set default overlay color
                         },
                       ),
-                      minimumSize: MaterialStateProperty.all(Size(1000, 50)), // Adjust the width and height
+                      minimumSize: MaterialStateProperty.all(const Size(1000, 50)), // Adjust the width and height
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -833,8 +833,8 @@ class _ProfileScreenState extends State<ProfileScreen>{
                             height: 26,
                           ),
                         ),
-                        SizedBox(width: 8), // Add some space between the icon and text
-                        Text(
+                        const SizedBox(width: 8), // Add some space between the icon and text
+                        const Text(
                           'Contact Us',
                           style: TextStyle(
                             color: Colors.black,
@@ -843,7 +843,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(width: 104), // Add some space between the icon and text
+                        const SizedBox(width: 104), // Add some space between the icon and text
                         SizedBox(
                           width: 26,
                           height: 26,
@@ -859,7 +859,7 @@ class _ProfileScreenState extends State<ProfileScreen>{
                 ],
               ),
             ),
-            SizedBox(height: 70.0), // Additional vertical space after the Container
+            const SizedBox(height: 70.0), // Additional vertical space after the Container
           ],
         ),
       ),

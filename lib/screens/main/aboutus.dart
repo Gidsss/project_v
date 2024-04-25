@@ -41,7 +41,7 @@ class _AboutUsState extends State<AboutUs> {
               children: [
                 // Background image container
                 Container(
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage("assets/images/AboutUsBG.png"),
                       fit: BoxFit.cover,
@@ -53,10 +53,10 @@ class _AboutUsState extends State<AboutUs> {
                 SingleChildScrollView(
                   child: Column(
                     children: [
-                      SizedBox(height: 40),
+                      const SizedBox(height: 40),
                       Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20.0),
-                        padding: EdgeInsets.all(20.0),
+                        margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                        padding: const EdgeInsets.all(20.0),
                         decoration: BoxDecoration(
                           color: Colors.black,
                           borderRadius: BorderRadius.circular(30.0),
@@ -67,7 +67,7 @@ class _AboutUsState extends State<AboutUs> {
                         ),
                         child: Column(
                           children: [
-                            Center(
+                            const Center(
                               child: Text(
                                 "Valdopeña Optical Shop",
                                 style: TextStyle(
@@ -78,7 +78,7 @@ class _AboutUsState extends State<AboutUs> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 15), // Adjust the height as needed
+                            const SizedBox(height: 15), // Adjust the height as needed
                             // Add the image below the text
                             Center(
                               child: Image.asset(
@@ -87,9 +87,9 @@ class _AboutUsState extends State<AboutUs> {
                                 height: 189, // Set the height as needed
                               ),
                             ),
-                            SizedBox(height: 15), // Add some space between the image and text
+                            const SizedBox(height: 15), // Add some space between the image and text
                             // Center the text below the image
-                            Center(
+                            const Center(
                               child: Text(
                                 "Welcome to Valdopeña Optical Shop, your trusted destination for premium eyewear solutions. At Valdopeña, we blend expertise with a passion for vision care to provide a personalized and seamless optical experience.",
                                 style: TextStyle(
@@ -104,13 +104,13 @@ class _AboutUsState extends State<AboutUs> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 25.0), // space between the image and the new container
+                      const SizedBox(height: 25.0), // space between the image and the new container
                       // Our Community
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 20.0),
-                          padding: EdgeInsets.all(20.0),
+                          margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: const EdgeInsets.all(20.0),
                           decoration: BoxDecoration(
                             color: Colors.black,
                             borderRadius: BorderRadius.circular(30.0),
@@ -119,7 +119,7 @@ class _AboutUsState extends State<AboutUs> {
                               width: 2, // Set the width of the border
                             ),
                           ),
-                          child: Column(
+                          child: const Column(
                             children: [
                               Text(
                                 "Our Community",
@@ -134,13 +134,13 @@ class _AboutUsState extends State<AboutUs> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       // Our Community Contents
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 20.0),
-                          padding: EdgeInsets.all(20.0),
+                          margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: const EdgeInsets.all(20.0),
                           decoration: BoxDecoration(
                             color: Colors.black,
                             borderRadius: BorderRadius.circular(30.0),
@@ -149,7 +149,7 @@ class _AboutUsState extends State<AboutUs> {
                               width: 2, // Set the width of the border
                             ),
                           ),
-                          child: Column(
+                          child: const Column(
                             children: [
                               Center(
                                 child: Text(
@@ -167,13 +167,13 @@ class _AboutUsState extends State<AboutUs> {
                         ),
                       ),
 
-                      SizedBox(height: 40.0), // space between the image and the new container
+                      const SizedBox(height: 40.0), // space between the image and the new container
                       // Expert Craftsmanship
                       Align(
                         alignment: Alignment.centerRight,
                         child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 20.0),
-                          padding: EdgeInsets.all(20.0),
+                          margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: const EdgeInsets.all(20.0),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(30.0),
@@ -182,7 +182,7 @@ class _AboutUsState extends State<AboutUs> {
                               width: 2, // Set the width of the border
                             ),
                           ),
-                          child: Column(
+                          child: const Column(
                             children: [
                               Text(
                                 "Expert Craftsmanship",
@@ -197,13 +197,13 @@ class _AboutUsState extends State<AboutUs> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       // Expert Craftsmanship Contents
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 20.0),
-                          padding: EdgeInsets.all(20.0),
+                          margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: const EdgeInsets.all(20.0),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(30.0),
@@ -212,7 +212,7 @@ class _AboutUsState extends State<AboutUs> {
                               width: 2, // Set the width of the border
                             ),
                           ),
-                          child: Column(
+                          child: const Column(
                             children: [
                               Center(
                                 child: Text(
@@ -229,13 +229,13 @@ class _AboutUsState extends State<AboutUs> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 40.0), // space between the image and the new container
+                      const SizedBox(height: 40.0), // space between the image and the new container
                       // Visit Us Today
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 20.0),
-                          padding: EdgeInsets.all(20.0),
+                          margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: const EdgeInsets.all(20.0),
                           decoration: BoxDecoration(
                             color: Colors.black,
                             borderRadius: BorderRadius.circular(30.0),
@@ -244,7 +244,7 @@ class _AboutUsState extends State<AboutUs> {
                               width: 2, // Set the width of the border
                             ),
                           ),
-                          child: Column(
+                          child: const Column(
                             children: [
                               Text(
                                 "Visit Us Today!",
@@ -259,13 +259,13 @@ class _AboutUsState extends State<AboutUs> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       // Visit Us Today Contents
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 20.0),
-                          padding: EdgeInsets.all(20.0),
+                          margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                          padding: const EdgeInsets.all(20.0),
                           decoration: BoxDecoration(
                             color: Colors.black,
                             borderRadius: BorderRadius.circular(30.0),
@@ -274,7 +274,7 @@ class _AboutUsState extends State<AboutUs> {
                               width: 2, // Set the width of the border
                             ),
                           ),
-                          child: Column(
+                          child: const Column(
                             children: [
                               Center(
                                 child: Text(
@@ -294,7 +294,7 @@ class _AboutUsState extends State<AboutUs> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 50.0),
+                      const SizedBox(height: 50.0),
                     ],
                   ),
                 ),
