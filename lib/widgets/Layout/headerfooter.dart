@@ -46,7 +46,7 @@ class _HeaderFooterState extends State<HeaderFooter> {
             resizeToAvoidBottomInset: false,
             body: Column(
             children: [
-              buildmainHeader(),
+              buildmainHeader(context),
               Expanded(
                 child: Container(
                   child: widget.body,
@@ -96,7 +96,7 @@ class _HeaderFooterState extends State<HeaderFooter> {
         );
   }
 
-  Widget buildmainHeader() {
+  Widget buildmainHeader(BuildContext context) {
     return Material(
         child: Container(
       decoration: BoxDecoration(boxShadow: [
@@ -147,13 +147,13 @@ class _HeaderFooterState extends State<HeaderFooter> {
                 const SizedBox(width: 20),
                 Row(
                   children: [
-                    headerIconButton(Icons.mark_unread_chat_alt_outlined, const ChatScreen()),
-                    const SizedBox(width: 8),
-                    headerIconButton(Icons.notifications_outlined, const NotificationsScreen()),
-                    const SizedBox(width: 8),
-                    headerIconButton(Icons.favorite_border, WishlistScreen()),
-                    const SizedBox(width: 8),
-                    headerIconButton(Icons.shopping_bag_outlined, const CartScreen()),
+                    headerIconButton( context, Icons.mark_unread_chat_alt_outlined, const ChatScreen()),
+                    const SizedBox(width: 6),
+                    headerIconButton( context, Icons.notifications_outlined, const NotificationsScreen()),
+                    const SizedBox(width: 6),
+                    headerIconButton( context, Icons.favorite_border, WishlistScreen()),
+                    const SizedBox(width: 6),
+                    headerIconButton( context, Icons.shopping_bag_outlined, const CartScreen()),
                   ],
                 ),
               ],
@@ -307,7 +307,7 @@ class _HeaderFooterState extends State<HeaderFooter> {
     );
   }
 
-  Widget headerIconButton(
+  Widget headerIconButton( BuildContext context,
       IconData icon, Widget page,
       ) {
     return IconButton(
