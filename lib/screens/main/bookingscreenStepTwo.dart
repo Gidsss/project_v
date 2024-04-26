@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/Layout/footer.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -9,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/scheduler.dart';
 
 class BookingScreenStepTwo extends StatefulWidget {
-  const BookingScreenStepTwo({Key? key}) : super(key: key);
+  const BookingScreenStepTwo({super.key});
 
   @override
   State<BookingScreenStepTwo> createState() => _BookingScreenStepTwoState();
@@ -24,7 +22,7 @@ class _BookingScreenStepTwoState extends State<BookingScreenStepTwo> {
 String _date = DateFormat('dd, MMMM yyyy').format(DateTime.now()).toString();
 
   void selectionChanged(DateRangePickerSelectionChangedArgs args) {
-    SchedulerBinding.instance!.addPostFrameCallback((duration) {
+    SchedulerBinding.instance.addPostFrameCallback((duration) {
       setState(() {
         _date = DateFormat('dd, MMMM yyyy').format(args.value).toString();
       });
@@ -46,18 +44,18 @@ String _date = DateFormat('dd, MMMM yyyy').format(DateTime.now()).toString();
             width: 40,
             height: 40,
           ),
-          bottom: PreferredSize(
+          bottom: const PreferredSize(
+            preferredSize: Size.zero,
             child: Text(
               "Set An Appointment",
               style: TextStyle(fontWeight: FontWeight.w600),
             ),
-            preferredSize: Size.zero,
           ),
         ),
         resizeToAvoidBottomInset: false,
         body: Column(
           children: [
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             Expanded(
                 child: SingleChildScrollView(
               child: Padding(
@@ -67,7 +65,7 @@ String _date = DateFormat('dd, MMMM yyyy').format(DateTime.now()).toString();
                     children: [
                       createHeader(
                           "2. When would you like to set the appointment?"),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       SizedBox(
@@ -75,11 +73,13 @@ String _date = DateFormat('dd, MMMM yyyy').format(DateTime.now()).toString();
                         child: TextFormField(
                           controller: dateController,
                           onSaved: (String? value) {},
-                          style: TextStyle(fontSize: 14, height: 1),
-                          validator: (value) {},
+                          style: const TextStyle(fontSize: 14, height: 1),
+                          validator: (value) {
+                            return null;
+                          },
                           decoration: InputDecoration(
                               suffixIcon: InkWell(
-                                child: Icon(Icons.calendar_month),
+                                child: const Icon(Icons.calendar_month),
                                 onTap: () {
                                   showDialog(
                                     context: context,
@@ -102,7 +102,7 @@ String _date = DateFormat('dd, MMMM yyyy').format(DateTime.now()).toString();
                                               todayHighlightColor: Colors.black,
                                               backgroundColor: Colors.white,
                                               selectionColor: Colors.black,
-                                              headerStyle: DateRangePickerHeaderStyle(backgroundColor: Colors.white, textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600) ),
+                                              headerStyle: const DateRangePickerHeaderStyle(backgroundColor: Colors.white, textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600) ),
                                               initialSelectedDate:
                                                   DateTime.now(),
                                               controller: daterangeController,
@@ -124,43 +124,44 @@ String _date = DateFormat('dd, MMMM yyyy').format(DateTime.now()).toString();
                                       );
                                     },
                                   );
-                                  ;
                                 },
                               ),
                               border: const OutlineInputBorder(),
                               labelText: "Choose a date",
-                              hintStyle: TextStyle(fontSize: 14, height: 1),
-                              labelStyle: TextStyle(fontSize: 14, height: 1),
+                              hintStyle: const TextStyle(fontSize: 14, height: 1),
+                              labelStyle: const TextStyle(fontSize: 14, height: 1),
                               contentPadding: const EdgeInsets.all(8)),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       SizedBox(
                         height: 35,
                         child: TextFormField(
-                          style: TextStyle(fontSize: 14, height: 1),
+                          style: const TextStyle(fontSize: 14, height: 1),
                           controller: timeController,
                           onSaved: (String? value) {},
-                          validator: (value) {},
+                          validator: (value) {
+                            return null;
+                          },
                           decoration: InputDecoration(
                               suffixIcon: InkWell(
-                                child: Icon(Icons.schedule),
+                                child: const Icon(Icons.schedule),
                                 onTap: () {},
                               ),
                               border: const OutlineInputBorder(),
                               labelText: "Choose a time",
-                              hintStyle: TextStyle(fontSize: 14, height: 1),
-                              labelStyle: TextStyle(fontSize: 14, height: 1),
+                              hintStyle: const TextStyle(fontSize: 14, height: 1),
+                              labelStyle: const TextStyle(fontSize: 14, height: 1),
                               contentPadding: const EdgeInsets.all(8)),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       createHeader("3. Review your appointment details"),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       Container(
@@ -173,7 +174,7 @@ String _date = DateFormat('dd, MMMM yyyy').format(DateTime.now()).toString();
                                 color: Colors.black.withOpacity(0.2),
                                 spreadRadius: -1,
                                 blurRadius: 4,
-                                offset: Offset(0, 3),
+                                offset: const Offset(0, 3),
                               ),
                             ]),
                         child: Padding(
@@ -181,16 +182,16 @@ String _date = DateFormat('dd, MMMM yyyy').format(DateTime.now()).toString();
                           child: Column(
                             children: [
                               createHeader("Type of Appointment"),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               createTextFormField(
                                   "Type of Appointment", context, null),
-                              SizedBox(
+                              const SizedBox(
                                 height: 15,
                               ),
                               createHeader("Date & Time of Appointment"),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               Row(
@@ -203,31 +204,31 @@ String _date = DateFormat('dd, MMMM yyyy').format(DateTime.now()).toString();
                                       "10:00 AM", context, 145.0)
                                 ],
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 15,
                               ),
                               createHeader("Store Location"),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               createTextFormField("Address", context, null),
-                              SizedBox(
+                              const SizedBox(
                                 height: 15,
                               ),
                               createHeader("Optometrician"),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                               createTextFormField(
                                   "Dr. Aidan Valdancio", context, null),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
                             ],
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 70,
                       )
                     ],
@@ -250,7 +251,7 @@ String _date = DateFormat('dd, MMMM yyyy').format(DateTime.now()).toString();
 
 Widget floatBar(context) {
   return Padding(
-    padding: const EdgeInsets.only(bottom: 90.0, left: 15, right: 15),
+    padding: const EdgeInsets.only(bottom: 90.0, left: 30, right: 30),
     child: Row(
       children: [
         Expanded(
@@ -258,12 +259,12 @@ Widget floatBar(context) {
             style: ButtonStyle(
                 foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                fixedSize: MaterialStateProperty.all<Size>(Size(185, 45))),
+                fixedSize: MaterialStateProperty.all<Size>(const Size(185, 45))),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => BookingScreenStepThree()),
+                    builder: (context) => const BookingScreenStepThree()),
               );
             },
             child: const Text(
@@ -291,14 +292,16 @@ Widget createTextFormField(String text, context, width) {
     height: 35,
     width: width,
     child: TextFormField(
-      style: TextStyle(fontSize: 14, height: 1),
+      style: const TextStyle(fontSize: 14, height: 1),
       onSaved: (String? value) {},
-      validator: (value) {},
+      validator: (value) {
+        return null;
+      },
       decoration: InputDecoration(
           border: const OutlineInputBorder(),
           labelText: text,
-          hintStyle: TextStyle(fontSize: 14, height: 1),
-          labelStyle: TextStyle(fontSize: 14, height: 1),
+          hintStyle: const TextStyle(fontSize: 14, height: 1),
+          labelStyle: const TextStyle(fontSize: 14, height: 1),
           contentPadding: const EdgeInsets.all(8)),
     ),
   );

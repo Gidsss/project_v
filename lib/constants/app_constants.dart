@@ -53,6 +53,8 @@ class AppConstants {
   static const String PrescriptionFillingImagePath = 'assets/images/PrescriptionFillingImage.jpg';
   static const String FrameRepairImagePath = 'assets/images/FrameRepairImage.jpg';
 
+  // Order Screen Images
+  static const String orderIconPath = 'assets/images/order.png';
 
 
   // Color constants
