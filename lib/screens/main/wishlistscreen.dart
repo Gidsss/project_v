@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../constants/app_constants.dart';
-import '../chat/chatdetailscreen.dart';
 
 class WishlistScreen extends StatefulWidget {
-  const WishlistScreen({Key? key}) : super(key: key);
+  const WishlistScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _WishlistScreenState createState() => _WishlistScreenState();
 }
 
@@ -16,7 +15,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
   bool _discounted = false;
   String _status = 'Status';
   String _category = 'Category';
-  List<bool> _selected = List.generate(10, (index) => false);
+  final List<bool> _selected = List.generate(10, (index) => false);
 
   @override
   Widget build(BuildContext context) {
@@ -33,18 +32,18 @@ class _WishlistScreenState extends State<WishlistScreen> {
           width: 40,
           height: 40,
         ),
-        bottom: PreferredSize(
+        bottom: const PreferredSize(
+          preferredSize: Size.zero,
           child: Text(
             "Wishlist",
             style: TextStyle(fontWeight: FontWeight.w600),
           ),
-          preferredSize: Size.zero,
         ),
       ),
       body: ListView(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
             child: TextField(
               decoration: InputDecoration(
                 hintText: 'Search for something...',
@@ -55,12 +54,13 @@ class _WishlistScreenState extends State<WishlistScreen> {
               ),
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Row(
             mainAxisSize: MainAxisSize.min, // Ensures the row takes up only as much space as its children require
             children: <Widget>[
+              const SizedBox(width: 5),
               FilterChip(
-                label: Text('All'),
+                label: const Text('All'),
                 selected: _all,
                 onSelected: (bool value) {
                   setState(() {
@@ -68,9 +68,9 @@ class _WishlistScreenState extends State<WishlistScreen> {
                   });
                 },
               ),
-              SizedBox(width: 15),
+              const SizedBox(width: 5),
               FilterChip(
-                label: Text('Discounted'),
+                label: const Text('Discounted'),
                 selected: _discounted,
                 onSelected: (bool value) {
                   setState(() {
@@ -78,7 +78,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                   });
                 },
               ),
-              SizedBox(width: 15),
+              const SizedBox(width: 10),
               DropdownButton<String>(
                 value: _status,
                 onChanged: (String? newValue) {
@@ -94,7 +94,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                   );
                 }).toList(),
               ),
-              SizedBox(width: 15),
+              const SizedBox(width: 15),
               DropdownButton<String>(
                 value: _category,
                 onChanged: (String? newValue) {
@@ -112,15 +112,16 @@ class _WishlistScreenState extends State<WishlistScreen> {
               ),
             ],
           ),
-          Container(
+          SizedBox(
             height: MediaQuery.of(context).size.height,
             child: GridView.builder(
               shrinkWrap: true,
               itemCount: 4,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
               ),
               itemBuilder: (BuildContext context, int index) {
+                // ignore: prefer_typing_uninitialized_variables
                 var onAddtoCart;
                 return Card(
                   child: Column(
@@ -144,7 +145,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                       ),Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
+                          const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('Wayfarer Sunglasses', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.0),),
@@ -202,7 +203,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
             ),
           ),
           Center(
-            child: Container(
+            child: SizedBox(
               width: 200,  // Adjust width as needed
               height: 50,  // Adjust height as needed
               child: ElevatedButton(
@@ -217,7 +218,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                     ),
                   ),
                 ),
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Icon(Icons.add, color: Colors.white),  // Plus icon

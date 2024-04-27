@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project_v/constants/app_constants.dart';
-import 'package:project_v/models/product_model.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final String imageURL;

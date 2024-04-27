@@ -60,179 +60,177 @@ String _date = DateFormat('dd, MMMM yyyy').format(DateTime.now()).toString();
                 child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Container(
-                  child: Column(
-                    children: [
-                      createHeader(
-                          "2. When would you like to set the appointment?"),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      SizedBox(
-                        height: 35,
-                        child: TextFormField(
-                          controller: dateController,
-                          onSaved: (String? value) {},
-                          style: const TextStyle(fontSize: 14, height: 1),
-                          validator: (value) {
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                              suffixIcon: InkWell(
-                                child: const Icon(Icons.calendar_month),
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return Dialog(
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(100)),
-                                          height: 300, // Set the desired height
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.8, // Set the desired width
-                                          child: ClipRRect(
+                child: Column(
+                  children: [
+                    createHeader(
+                        "2. When would you like to set the appointment?"),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    SizedBox(
+                      height: 35,
+                      child: TextFormField(
+                        controller: dateController,
+                        onSaved: (String? value) {},
+                        style: const TextStyle(fontSize: 14, height: 1),
+                        validator: (value) {
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                            suffixIcon: InkWell(
+                              child: const Icon(Icons.calendar_month),
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Dialog(
+                                      child: Container(
+                                        decoration: BoxDecoration(
                                             borderRadius:
-                                                BorderRadius.circular(10),
-                                            child: SfDateRangePicker(
-                                              enablePastDates: false,
-                                              todayHighlightColor: Colors.black,
-                                              backgroundColor: Colors.white,
-                                              selectionColor: Colors.black,
-                                              headerStyle: const DateRangePickerHeaderStyle(backgroundColor: Colors.white, textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600) ),
-                                              initialSelectedDate:
-                                                  DateTime.now(),
-                                              controller: daterangeController,
-                                              onSelectionChanged:
-                                                  selectionChanged,
-                                              showActionButtons: true,
-                                              onSubmit: (value) {
-                                                // Update textFormField value with selected date
-                                                dateController.text =
-                                                    value.toString();
-                                                Navigator.pop(context);
-                                              },
-                                              onCancel: () {
-                                                Navigator.pop(context);
-                                              },
-                                            ),
+                                                BorderRadius.circular(100)),
+                                        height: 300, // Set the desired height
+                                        width: MediaQuery.of(context)
+                                                .size
+                                                .width *
+                                            0.8, // Set the desired width
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: SfDateRangePicker(
+                                            enablePastDates: false,
+                                            todayHighlightColor: Colors.black,
+                                            backgroundColor: Colors.white,
+                                            selectionColor: Colors.black,
+                                            headerStyle: const DateRangePickerHeaderStyle(backgroundColor: Colors.white, textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w600) ),
+                                            initialSelectedDate:
+                                                DateTime.now(),
+                                            controller: daterangeController,
+                                            onSelectionChanged:
+                                                selectionChanged,
+                                            showActionButtons: true,
+                                            onSubmit: (value) {
+                                              // Update textFormField value with selected date
+                                              dateController.text =
+                                                  value.toString();
+                                              Navigator.pop(context);
+                                            },
+                                            onCancel: () {
+                                              Navigator.pop(context);
+                                            },
                                           ),
                                         ),
-                                      );
-                                    },
-                                  );
-                                },
-                              ),
-                              border: const OutlineInputBorder(),
-                              labelText: "Choose a date",
-                              hintStyle: const TextStyle(fontSize: 14, height: 1),
-                              labelStyle: const TextStyle(fontSize: 14, height: 1),
-                              contentPadding: const EdgeInsets.all(8)),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                            border: const OutlineInputBorder(),
+                            labelText: "Choose a date",
+                            hintStyle: const TextStyle(fontSize: 14, height: 1),
+                            labelStyle: const TextStyle(fontSize: 14, height: 1),
+                            contentPadding: const EdgeInsets.all(8)),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      height: 35,
+                      child: TextFormField(
+                        style: const TextStyle(fontSize: 14, height: 1),
+                        controller: timeController,
+                        onSaved: (String? value) {},
+                        validator: (value) {
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                            suffixIcon: InkWell(
+                              child: const Icon(Icons.schedule),
+                              onTap: () {},
+                            ),
+                            border: const OutlineInputBorder(),
+                            labelText: "Choose a time",
+                            hintStyle: const TextStyle(fontSize: 14, height: 1),
+                            labelStyle: const TextStyle(fontSize: 14, height: 1),
+                            contentPadding: const EdgeInsets.all(8)),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    createHeader("3. Review your appointment details"),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white.withOpacity(0.95),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              spreadRadius: -1,
+                              blurRadius: 4,
+                              offset: const Offset(0, 3),
+                            ),
+                          ]),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          children: [
+                            createHeader("Type of Appointment"),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            createTextFormField(
+                                "Type of Appointment", context, null),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            createHeader("Date & Time of Appointment"),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                              children: [
+                                createTextFormField(
+                                    "06/24/2024", context, 145.0),
+                                createTextFormField(
+                                    "10:00 AM", context, 145.0)
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            createHeader("Store Location"),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            createTextFormField("Address", context, null),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            createHeader("Optometrician"),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            createTextFormField(
+                                "Dr. Aidan Valdancio", context, null),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      SizedBox(
-                        height: 35,
-                        child: TextFormField(
-                          style: const TextStyle(fontSize: 14, height: 1),
-                          controller: timeController,
-                          onSaved: (String? value) {},
-                          validator: (value) {
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                              suffixIcon: InkWell(
-                                child: const Icon(Icons.schedule),
-                                onTap: () {},
-                              ),
-                              border: const OutlineInputBorder(),
-                              labelText: "Choose a time",
-                              hintStyle: const TextStyle(fontSize: 14, height: 1),
-                              labelStyle: const TextStyle(fontSize: 14, height: 1),
-                              contentPadding: const EdgeInsets.all(8)),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      createHeader("3. Review your appointment details"),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white.withOpacity(0.95),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                spreadRadius: -1,
-                                blurRadius: 4,
-                                offset: const Offset(0, 3),
-                              ),
-                            ]),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Column(
-                            children: [
-                              createHeader("Type of Appointment"),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              createTextFormField(
-                                  "Type of Appointment", context, null),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              createHeader("Date & Time of Appointment"),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  createTextFormField(
-                                      "06/24/2024", context, 145.0),
-                                  createTextFormField(
-                                      "10:00 AM", context, 145.0)
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              createHeader("Store Location"),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              createTextFormField("Address", context, null),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              createHeader("Optometrician"),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              createTextFormField(
-                                  "Dr. Aidan Valdancio", context, null),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 70,
-                      )
-                    ],
-                  ),
+                    ),
+                    const SizedBox(
+                      height: 70,
+                    )
+                  ],
                 ),
               ),
             )),

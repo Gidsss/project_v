@@ -21,7 +21,7 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  List<CartItem> _cartItems = [
+  final List<CartItem> _cartItems = [
     CartItem(name: 'Aviator Glasses', image: 'assets/images/BestSellerAviator.jpg', description: 'Category: Graded (-2.50)', price: 1600.00),
     CartItem(name: 'Korean Glasses', image: 'assets/images/BestSellerKorean.jpg', description: 'Category: Graded (-2.50)', price: 1600.00),
     CartItem(name: 'Aviator Glasses', image: 'assets/images/BestSellerAviator.jpg', description: 'Category: Graded (-2.50)', price: 1600.00),
@@ -37,13 +37,13 @@ class _CartScreenState extends State<CartScreen> {
     return showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
-        return Container(
+        return SizedBox(
           height: 300,
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text('Remove from Cart?',
+                const Text('Remove from Cart?',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0,),),
                 Row(
                   children: <Widget>[
@@ -51,8 +51,8 @@ class _CartScreenState extends State<CartScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('${_cartItems[index].name}'),
-                        Text('${_cartItems[index].description}'),
+                        Text(_cartItems[index].name),
+                        Text(_cartItems[index].description),
                         Text('₱${_cartItems[index].price.toStringAsFixed(2)}'),
                       ],
                     ),
@@ -62,27 +62,27 @@ class _CartScreenState extends State<CartScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     TextButton(
-                      child: Text('Cancel'),
                       style: ButtonStyle(
                           foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
                           backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                          fixedSize: MaterialStateProperty.all<Size>(Size(185, 45))),
+                          fixedSize: MaterialStateProperty.all<Size>(const Size(185, 45))),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
+                      child: const Text('Cancel'),
                     ),
                     TextButton(
-                      child: Text('Yes, Removed'),
                       style: ButtonStyle(
                           foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                           backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                          fixedSize: MaterialStateProperty.all<Size>(Size(185, 45))),
+                          fixedSize: MaterialStateProperty.all<Size>(const Size(185, 45))),
                       onPressed: () {
                         setState(() {
                           _cartItems.removeAt(index);
                         });
                         Navigator.of(context).pop();
                       },
+                      child: const Text('Yes, Removed'),
                     ),
                   ],
                 ),
@@ -109,27 +109,27 @@ class _CartScreenState extends State<CartScreen> {
           width: 40,
           height: 40,
         ),
-        bottom: PreferredSize(
+        bottom: const PreferredSize(
+          preferredSize: Size.zero,
           child: Text(
             "My Cart",
             style: TextStyle(fontWeight: FontWeight.w600),
           ),
-          preferredSize: Size.zero,
         ),
       ),
       body: ListView.separated(
         itemCount: _cartItems.length,
-        separatorBuilder: (context, index) => Divider(),
+        separatorBuilder: (context, index) => const Divider(),
         itemBuilder: (context, index) {
           return Dismissible(
             key: Key(_cartItems[index].name),
             direction: DismissDirection.endToStart,
             background: Container(
               alignment: Alignment.centerRight,
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               color: Colors.red,
               child: IconButton(
-                icon: Icon(Icons.delete, color: Colors.white),
+                icon: const Icon(Icons.delete, color: Colors.white),
                 onPressed: () {
                   _showDeleteConfirmation(index);
                 },
@@ -137,28 +137,28 @@ class _CartScreenState extends State<CartScreen> {
             ),
             confirmDismiss: (direction) => Future.value(false),
             child: ListTile(
-              leading: Container(
+              leading: SizedBox(
                 width: 50.0, // Change this to your desired width
                 height: 50.0, // Change this to your desired height
                 child: Image.asset(_cartItems[index].image),
               ),
               title: Text(
                 _cartItems[index].name,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 15.0, // Change this to your desired font size
                 ),
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('${_cartItems[index].description}',
-                    style: TextStyle(
+                  Text(_cartItems[index].description,
+                    style: const TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 10.0,
                       color: Colors.grey,
                     ),
                   ),
-                  Text('₱${_cartItems[index].price.toStringAsFixed(2)}',style: TextStyle(
+                  Text('₱${_cartItems[index].price.toStringAsFixed(2)}',style: const TextStyle(
                     fontSize: 15.0, // Change this to your desired font size
                   ),
                   ),
@@ -174,7 +174,7 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                     child: IconButton(
 
-                      icon: Icon(Icons.remove),
+                      icon: const Icon(Icons.remove),
                       color: Colors.black,
                         onPressed: () {
                         setState(() {
@@ -186,7 +186,7 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                   Text('${_cartItems[index].quantity}',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0,),),
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0,),),
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.black, // Change this to your desired background color
@@ -194,7 +194,7 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                     child: IconButton(
 
-                      icon: Icon(Icons.add),
+                      icon: const Icon(Icons.add),
                       color: Colors.white,
                       onPressed: () {
                         setState(() {
@@ -217,13 +217,13 @@ class _CartScreenState extends State<CartScreen> {
             color: Colors.grey, // Change this to your desired border color
             width: 2.0, // Change this to your desired border width
           ),
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(20.0),
               topRight: Radius.circular(20.0),
           ), // Change this to your desired border radius
         ),
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -231,18 +231,18 @@ class _CartScreenState extends State<CartScreen> {
                 decoration: InputDecoration(
                   labelText: 'Promo Code',
                   suffixIcon: IconButton(
-                    icon: Icon(Icons.send),
+                    icon: const Icon(Icons.send),
                     onPressed: () {
                       // Handle promo code application
                     },
                   ),
-                  border: OutlineInputBorder(
+                  border: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(40.0)),
                   ),
                 ),
               ),
-              SizedBox(height: 10),
-              Row(
+              const SizedBox(height: 10),
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Column(
@@ -264,12 +264,12 @@ class _CartScreenState extends State<CartScreen> {
                 style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                     backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                    fixedSize: MaterialStateProperty.all<Size>(Size(185, 45))),
+                    fixedSize: MaterialStateProperty.all<Size>(const Size(185, 45))),
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => CheckOutScreen()),
+                        builder: (context) => const CheckOutScreen()),
                   );
                 },
                 child: const Text(

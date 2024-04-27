@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../chat/chatdetailscreen.dart';
 
 class NotificationsScreen extends StatelessWidget {
-  const NotificationsScreen({Key? key}) : super(key: key);
+  const NotificationsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +17,12 @@ class NotificationsScreen extends StatelessWidget {
           width: 40,
           height: 40,
         ),
-        bottom: PreferredSize(
+        bottom: const PreferredSize(
+          preferredSize: Size.zero,
           child: Text(
             "Notifications",
             style: TextStyle(fontWeight: FontWeight.w600),
           ),
-          preferredSize: Size.zero,
         ),
       ),
       body: ListView.builder(
@@ -36,25 +36,25 @@ class NotificationsScreen extends StatelessWidget {
             },
             background: Container(
               alignment: Alignment.centerRight,
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               color: Colors.red,
               child: IconButton(
-                icon: Icon(Icons.delete, color: Colors.white),
+                icon: const Icon(Icons.delete, color: Colors.white),
                 onPressed: () {
                 },
               ),
             ),
             child: ListTile(
-              leading: CircleAvatar(
+              leading: const CircleAvatar(
                 backgroundImage: AssetImage('assets/images/PrescriptionFillingImage.jpg'),
               ),
               title: Text('Notification ${index + 1}'),
-              subtitle: Text('Notification details...'),
-              trailing: Text('12/02/2021 - 10:00 AM'),
+              subtitle: const Text('Notification details...'),
+              trailing: const Text('12/02/2021 - 10:00 AM'),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ChatDetailScreen()),
+                  MaterialPageRoute(builder: (context) => const ChatDetailScreen()),
                 );
               },
             ),

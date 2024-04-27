@@ -225,7 +225,7 @@ class _HeaderFooterState extends State<HeaderFooter>
                     const SizedBox(width: 6),
                     headerIconButton(context, Icons.notifications_outlined, const NotificationsScreen()),
                     const SizedBox(width: 6),
-                    headerIconButton(context, Icons.favorite_border, WishlistScreen()),
+                    headerIconButton(context, Icons.favorite_border, const WishlistScreen()),
                     const SizedBox(width: 6),
                     headerIconButton(context, Icons.shopping_bag_outlined, const CartScreen()),
                   ],

@@ -21,7 +21,7 @@ class CheckOutScreen extends StatefulWidget {
 
 class _CheckOutScreenState extends State<CheckOutScreen> {
 
-  List<CheckOutItem> _checkoutItems = [
+  final List<CheckOutItem> _checkoutItems = [
     CheckOutItem(name: 'Aviator Glasses', image: 'assets/images/BestSellerAviator.jpg', description: 'Category: Graded (-2.50) || Qty: 1 pc', price: 1600.00),
     CheckOutItem(name: 'Korean Glasses', image: 'assets/images/BestSellerKorean.jpg', description: 'Category: Graded (-2.50) || Qty: 10 pcs', price: 1600.00),
     CheckOutItem(name: 'Aviator Glasses', image: 'assets/images/BestSellerAviator.jpg', description: 'Category: Graded (-2.50) || Qty: 12 pcs', price: 1600.00),
@@ -51,12 +51,12 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
           width: 40,
           height: 40,
         ),
-        bottom: PreferredSize(
+        bottom: const PreferredSize(
+          preferredSize: Size.zero,
           child: Text(
             "Checkout",
             style: TextStyle(fontWeight: FontWeight.w600),
           ),
-          preferredSize: Size.zero,
         ),
       ),
       body: ListView.separated(
@@ -64,7 +64,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
         separatorBuilder: (context, index) => const Divider(),
         itemBuilder: (context, index) {
           if (index == 0) {
-            return ListTile(
+            return const ListTile(
               title: Text(
                 'Store Address',
                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 10.0),
@@ -73,28 +73,28 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
             );
           } else if (index <= _checkoutItems.length) {
             return ListTile(
-              leading: Container(
+              leading: SizedBox(
                 width: 50.0,
                 height: 50.0,
                 child: Image.asset(_checkoutItems[index - 1].image),
               ),
               title: Text(
                 _checkoutItems[index - 1].name,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 15.0,
                 ),
               ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('${_checkoutItems[index - 1].description}',
-                    style: TextStyle(
+                  Text(_checkoutItems[index - 1].description,
+                    style: const TextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: 10.0,
                       color: Colors.grey,
                     ),
                   ),
-                  Text('₱${_checkoutItems[index - 1].price.toStringAsFixed(2)}',style: TextStyle(
+                  Text('₱${_checkoutItems[index - 1].price.toStringAsFixed(2)}',style: const TextStyle(
                     fontSize: 15.0,
                   ),
                   ),
@@ -102,7 +102,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               ),
             );
           } else if (index == _checkoutItems.length + 1) {
-            return ListTile(
+            return const ListTile(
               title: Text(
                 'Expected Pickup Date',
                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 10.0),
@@ -110,7 +110,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               subtitle: Text('24 March 2024 - 27 March 2024'),
             );
           } else if (index == _checkoutItems.length + 2) {
-            return ListTile(
+            return const ListTile(
               title: Text(
                 'Promo Code',
                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 10.0),
@@ -119,7 +119,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
             );
           } else if (index == _checkoutItems.length + 3) {
             return ListTile(
-              title: Text(
+              title: const Text(
                 'Order Details',
                 style: TextStyle(fontWeight: FontWeight.normal, fontSize: 10.0),
               ),
@@ -129,7 +129,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   Text('Sub-Total:                                                            ₱${subTotal.toStringAsFixed(2)}'),
                   Text('Handling Fee:                                                          ₱${handlingFee.toStringAsFixed(2)}'),
                   Text('Discount:                                                                -₱${discount.toStringAsFixed(2)}'),
-                  Divider(),
+                  const Divider(),
                   Text('Total Cost:                                                          ₱${totalCost.toStringAsFixed(2)}'),
                 ],
               ),
@@ -139,7 +139,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               style: ButtonStyle(
                   foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                   backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                  fixedSize: MaterialStateProperty.all<Size>(Size(100, 20))),
+                  fixedSize: MaterialStateProperty.all<Size>(const Size(100, 20))),
               onPressed: () {
                 showDialog(
                   context: context,
@@ -148,7 +148,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
-                      child: Container(
+                      child: SizedBox(
                         height: 250,
                         child: Padding(
                           padding: const EdgeInsets.all(12.0),
@@ -156,15 +156,15 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Center(
+                              const Center(
                                 child: Icon(
                                   Icons.check_circle_outline,
                                   color: Colors.black,
                                   size: 50,
                                 ),
                               ),
-                              SizedBox(height: 20),
-                              Text(
+                              const SizedBox(height: 20),
+                              const Text(
                                 "Checked-Out Successfully!",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -172,8 +172,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(height: 20),
-                              Text(
+                              const SizedBox(height: 20),
+                              const Text(
                                 "Thank you so much for your order.",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -181,18 +181,18 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                   fontSize: 15,
                                 ),
                               ),
-                              SizedBox(height: 20),
+                              const SizedBox(height: 20),
                               Align(
                                 alignment: Alignment.center,
                                 child: ElevatedButton(
                                   style: ButtonStyle(
                                       foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                                       backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                                      fixedSize: MaterialStateProperty.all<Size>(Size(150, 35))),
+                                      fixedSize: MaterialStateProperty.all<Size>(const Size(150, 35))),
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
-                                  child: Text("Close",),
+                                  child: const Text("Close",),
                                 ),
                               ),
                             ],
@@ -203,9 +203,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   },
                 );
               },
-              child: Text('Checkout'),
+              child: const Text('Checkout'),
             );
           }
+          return null;
         },
       ),
     );
