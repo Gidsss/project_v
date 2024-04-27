@@ -131,7 +131,7 @@ class LoginScreen extends StatelessWidget {
               // sign in button
               LoginButton(
                 onTap: (){
-                  // Sign-in, go to Home Screen
+                  // Sign-in, go to Home Screen of Customer or Admin, will add a check for the user type later
                  // Navigator.push(context, MaterialPageRoute(builder: (context)=> const HomeScreen()));
                   Navigator.push(context, MaterialPageRoute(builder: (context)=> const AdminDashboardScreen()));
                 }
