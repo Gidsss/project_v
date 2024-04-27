@@ -96,7 +96,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       hasFloatbar: true,
       mainHeader: false,
       context: context,
-      title: "Screen",
+      title: "Schedule",
       buttonStatus: const [false, false, true, false, false],
       floatbar: floatBar(context),
       body: Column(

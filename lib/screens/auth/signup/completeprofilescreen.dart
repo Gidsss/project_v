@@ -3,6 +3,7 @@ import 'package:project_v/widgets/buttons/auth/donebutton.dart';
 import 'package:project_v/widgets/img/profilepic.dart';
 import 'package:project_v/widgets/textfields/textfield.dart';
 import 'package:project_v/screens/auth/log-in/loginscreen.dart';
+import 'package:project_v/constants/app_constants.dart';
 
 
 class ProfileScreen extends StatelessWidget {
@@ -40,7 +41,7 @@ class ProfileScreen extends StatelessWidget {
               height: 40,
               child: IconButton(
                 iconSize: 24,
-                icon: Image.asset('assets/previous.png'),
+                icon: Image.asset(AppConstants.backIconPath),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

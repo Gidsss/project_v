@@ -19,7 +19,7 @@ class AppConstants {
 
   // User Profile Images
   static const String profileIconPath = 'assets/images/user.png';
-  static const String editIconPath = 'assets/cameraicon.svg';
+  static const String editIconPath = 'assets/images/cameraicon.svg';
 
   // Home Page Images
   static const String menEyeglassCategoryIconPath = 'assets/images/MenCategory.jpg';
