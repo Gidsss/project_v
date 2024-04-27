@@ -5,7 +5,8 @@ import 'package:project_v/widgets/buttons/auth/loginbutton.dart';
 import 'package:project_v/screens/auth/password/forgotpasswordscreen.dart';
 import 'package:project_v/screens/auth/signup/signupscreen.dart';
 import 'package:project_v/constants/app_constants.dart';
-import 'package:project_v/screens/main/homescreen.dart';
+//import 'package:project_v/screens/main/homescreen.dart';
+import 'package:project_v/screens/admin/admindashboard.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key, required String title});
@@ -131,7 +132,8 @@ class LoginScreen extends StatelessWidget {
               LoginButton(
                 onTap: (){
                   // Sign-in, go to Home Screen
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> const HomeScreen()));
+                 // Navigator.push(context, MaterialPageRoute(builder: (context)=> const HomeScreen()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> const AdminDashboardScreen()));
                 }
               ),
 
