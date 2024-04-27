@@ -41,64 +41,62 @@ class _BookingScreenStepOneState extends State<BookingScreenStepOne> {
               child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(15.0),
-              child: Container(
-                child: Column(
-                  children: [
-                    const Text(
-                      "1. What type of appointment would you like to set?",
+              child: Column(
+                children: [
+                  const Text(
+                    "1. What type of appointment would you like to set?",
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20,20, 20, 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        createAppointmentItem("Eye Examination", AppConstants.eyeExamIconPath, context),
+                        createAppointmentItem("Prescription Filling", AppConstants.PrescriptionFillingImagePath, context)
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20,20, 20, 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          createAppointmentItem("Eye Examination", AppConstants.eyeExamIconPath, context),
-                          createAppointmentItem("Prescription Filling", AppConstants.PrescriptionFillingImagePath, context)
-                        ],
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        createAppointmentItem("Frame Styling and Fitting", AppConstants.FrameFittingImagePath, context),
+                        createAppointmentItem("Lens Fitting and adjustment", AppConstants.LensFittingImagePath, context),
+                    
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          createAppointmentItem("Frame Styling and Fitting", AppConstants.FrameFittingImagePath, context),
-                          createAppointmentItem("Lens Fitting and adjustment", AppConstants.LensFittingImagePath, context),
-                      
-                        ],
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        createAppointmentItem("Lens Replacement", AppConstants.LensReplacementImagePath, context),
+                        createAppointmentItem("Frame Repair", AppConstants.FrameRepairImagePath, context),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          createAppointmentItem("Lens Replacement", AppConstants.LensReplacementImagePath, context),
-                          createAppointmentItem("Frame Repair", AppConstants.FrameRepairImagePath, context),
-                        ],
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        createAppointmentItem("Contact Lens Fitting", AppConstants.ContactLensFittingImagePath, context),
+                        createAppointmentItem("Prescription Verification", AppConstants.PrescriptionVerificationImagePath, context),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          createAppointmentItem("Contact Lens Fitting", AppConstants.ContactLensFittingImagePath, context),
-                          createAppointmentItem("Prescription Verification", AppConstants.PrescriptionVerificationImagePath, context),
-                        ],
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        createAppointmentItem("Follow-up Care", AppConstants.FollowUpCareImagePath, context)
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          createAppointmentItem("Follow-up Care", AppConstants.FollowUpCareImagePath, context)
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
             ),
           )),

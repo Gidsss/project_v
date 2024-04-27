@@ -5,6 +5,11 @@ import 'package:project_v/screens/main/ordersscreen.dart';
 import 'package:project_v/screens/main/profilescreen.dart';
 import 'package:project_v/screens/main/homescreen.dart';
 import 'package:project_v/screens/main/schedulescreen.dart';
+import 'package:project_v/screens/main/chatscreen.dart';
+import 'package:project_v/screens/main/wishlistscreen.dart';
+
+import '../../screens/interactions/cart/cartscreen.dart';
+import '../../screens/main/notificationsscreen.dart';
 
 class HeaderFooter extends StatefulWidget {
   final Widget? body;
@@ -65,7 +70,7 @@ class _HeaderFooterState extends State<HeaderFooter>
             resizeToAvoidBottomInset: false,
             body: Column(
               children: [
-                buildmainHeader(),
+                buildmainHeader(context),
                 Expanded(
                   child: Container(
                     child: widget.body,
@@ -149,6 +154,7 @@ class _HeaderFooterState extends State<HeaderFooter>
                       ? widget.profileFloatbar
                       : widget.floatbar)
                   : null,
+
             ),
           );
   }
@@ -164,7 +170,7 @@ class _HeaderFooterState extends State<HeaderFooter>
   
 
 
-  Widget buildmainHeader() {
+  Widget buildmainHeader(BuildContext context) {
     return Material(
         child: Container(
           decoration: BoxDecoration(boxShadow: [
@@ -212,24 +218,23 @@ class _HeaderFooterState extends State<HeaderFooter>
                         ),
                       ],
                     ),
-                    const SizedBox(width: 20),
-                    Row(
-                      children: [
-                        headerIconButton(Icons.mark_unread_chat_alt_outlined),
-                        const SizedBox(width: 8),
-                        headerIconButton(Icons.notifications_outlined),
-                        const SizedBox(width: 8),
-                        headerIconButton(Icons.favorite_border),
-                        const SizedBox(width: 8),
-                        headerIconButton(Icons.shopping_bag_outlined)
-                      ],
-                    ),
+                const SizedBox(width: 20),
+                Row(
+                  children: [
+                    headerIconButton(context, Icons.mark_unread_chat_alt_outlined, const ChatScreen()),
+                    const SizedBox(width: 6),
+                    headerIconButton(context, Icons.notifications_outlined, const NotificationsScreen()),
+                    const SizedBox(width: 6),
+                    headerIconButton(context, Icons.favorite_border, const WishlistScreen()),
+                    const SizedBox(width: 6),
+                    headerIconButton(context, Icons.shopping_bag_outlined, const CartScreen()),
                   ],
                 ),
-              ),
+              ],
             ),
           ),
-        ));
+          )))
+    );
   }
 
   Widget buildFooter(List<bool> buttonStatus, BuildContext context) {
@@ -375,23 +380,19 @@ class _HeaderFooterState extends State<HeaderFooter>
     );
   }
 
-  Widget headerIconButton(
-      IconData icon,
-      ) {
-    return IconButton(
-      onPressed: () {
-        // Pass argument here to Navigate to screen Logic which is to follow
-      },
-      icon: Icon(
-        icon,
-        size: 30,
-      ),
+Widget headerIconButton( BuildContext context, IconData icon, Widget page) {
+  return IconButton(
+    onPressed: () {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => page));
+    },
+    icon: Icon(
+      icon,
+      size: 30,
       color: Colors.black,
-      padding: const EdgeInsets.all(0),
-      constraints: const BoxConstraints(),
-      style: const ButtonStyle(
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      ),
-    );
-  }
+    ),
+    padding: const EdgeInsets.all(0),
+    constraints: const BoxConstraints(),
+  );
+}
+
 

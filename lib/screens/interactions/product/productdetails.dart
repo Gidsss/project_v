@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:project_v/constants/app_constants.dart';
-// import 'package:project_v/models/product_model.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final String imageURL;
@@ -21,7 +19,7 @@ class ProductDetailScreen extends StatelessWidget {
         title: Text(name), // Displays the product name in the AppBar.
         backgroundColor: Colors.white,
         foregroundColor:
-            Colors.black, // Sets text color to black for visibility.
+        Colors.black, // Sets text color to black for visibility.
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -69,9 +67,11 @@ class ProductDetailScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height:8), // Adjust vertical spacing between the label and description
+                  SizedBox(height: 8),
+                  // Adjust vertical spacing between the label and description
                   Text(
-                    "Elevate your eyewear style with our Stylish Metal Rectangle Glasses. These glasses combine modern design with durability, making them a perfect accessory for any occasion. The sleek rectangular frames are crafted from high-quality metal, ensuring both lightweight comfort and lasting strength.", // Adds a description label.
+                    "Elevate your eyewear style with our Stylish Metal Rectangle Glasses. These glasses combine modern design with durability, making them a perfect accessory for any occasion. The sleek rectangular frames are crafted from high-quality metal, ensuring both lightweight comfort and lasting strength.",
+                    // Adds a description label.
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.normal,

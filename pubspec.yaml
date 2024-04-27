@@ -38,6 +38,8 @@ dependencies:
   flutter_svg: ^2.0.10+1
   intl: ^0.19.0
   qr_flutter: ^4.0.0  # Add QR code generation package
+  qr_code_scanner: ^1.0.1  # Add QR code scanning package
+
   
   syncfusion_flutter_datepicker: ^25.1.41
   flutter_launcher_icons: ^0.13.1
