@@ -6,7 +6,10 @@ import 'package:project_v/screens/main/schedulescreen.dart';
 import 'package:project_v/screens/main/editprofile.dart';
 import 'package:project_v/screens/main/securitysettings.dart';
 import 'package:project_v/screens/main/notificationsettings.dart';
-
+import 'package:project_v/screens/main/chatscreen.dart';
+import 'package:project_v/screens/main/wishlistscreen.dart';
+import 'package:project_v/screens/main/contactusscreen.dart';
+import 'package:project_v/screens/interactions/cart/cartscreen.dart';
 
 class ProfileScreen extends StatefulWidget{
   const ProfileScreen({super.key});
@@ -107,7 +110,10 @@ class _ProfileScreenState extends State<ProfileScreen>{
                     //Chat and Notification Button
                     ElevatedButton(
                       onPressed: () {
-                        // Add button functionality here
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const ChatScreen()),
+                        );
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.grey.shade50), // Button background color
@@ -167,7 +173,10 @@ class _ProfileScreenState extends State<ProfileScreen>{
                     // Wishlists Button
                     ElevatedButton(
                       onPressed: () {
-                        // Add button functionality here
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const WishlistScreen()),
+                        );
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.grey.shade50), // Button background color
@@ -228,7 +237,10 @@ class _ProfileScreenState extends State<ProfileScreen>{
                     // Shopping Carts Button
                     ElevatedButton(
                       onPressed: () {
-                        // Add button functionality here
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const CartScreen()),
+                        );
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.grey.shade50), // Button background color
@@ -801,7 +813,10 @@ class _ProfileScreenState extends State<ProfileScreen>{
                   // Contact Us Button
                   ElevatedButton(
                     onPressed: () {
-                      // Add button functionality here
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ContactUsScreen()),
+                      );
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.grey.shade50), // Button background color
