@@ -46,7 +46,7 @@ class _NotificationSettingsState extends State<NotificationSettings> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 50,),
+                    SizedBox(height: 30,),
                     Text(
                       "Manage Notification",
                       style: TextStyle(
