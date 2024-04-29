@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
-import 'package:project_v/widgets/Layout/headerfooter.dart';
-import 'package:project_v/screens/interactions/product/productdetails.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerheaderfooter.dart';
+import 'package:project_v/screens/customer/explore/productdetails.dart';
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});

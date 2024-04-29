@@ -1,8 +1,10 @@
+// ignore_for_file: unused_field
+
 import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
-import 'package:project_v/widgets/Layout/footer.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerfooter.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:project_v/screens/main/bookingscreenStepThree.dart';
+import 'package:project_v/screens/customer/appointment/bookingscreenStepThree.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/scheduler.dart';
 

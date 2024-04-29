@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/textfields/textfield.dart';
-import 'package:project_v/widgets/Layout/footer.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerfooter.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});

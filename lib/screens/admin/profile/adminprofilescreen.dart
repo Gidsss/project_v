@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project_v/widgets/Layout/adminheaderfooter.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminHeader.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminfooter.dart';
 
 class AdminProfileScreen extends StatefulWidget{
   const AdminProfileScreen({super.key});
@@ -11,7 +12,18 @@ class AdminProfileScreen extends StatefulWidget{
 class _AdminProfileScreenState extends State<AdminProfileScreen>{
 
   @override
+  @override
   Widget build(BuildContext context) {
-    return AdminHeaderFooter(context: context, body: const Text("Profile"), title: "AdminProfileScreen", buttonStatus: const [false, false, false, false, true]);
+    return Scaffold(
+        body: Column(
+      children: [
+        AdminHeader(context: context),
+        Expanded(
+          child: Text("Profile"),
+        ),
+        AdminFooter(
+            buttonStatus: [false, false, false, false, true], context: context)
+      ],
+    ));
   }}
 

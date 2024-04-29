@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
-import 'package:project_v/widgets/Layout/headerfooter.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerheaderfooter.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:project_v/screens/main/bookingscreenStepOne.dart';
-import 'package:project_v/screens/main/viewappointment.dart';
+import 'package:project_v/screens/customer/appointment/bookingscreenStepOne.dart';
+import 'package:project_v/screens/customer/appointment/viewappointment.dart';
 
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen(

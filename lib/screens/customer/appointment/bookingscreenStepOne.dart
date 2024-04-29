@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
-import 'package:project_v/screens/main/bookingscreenStepTwo.dart';
-import 'package:project_v/widgets/Layout/footer.dart';
+import 'package:project_v/screens/customer/appointment/bookingscreenStepTwo.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerfooter.dart';
 
 class BookingScreenStepOne extends StatefulWidget {
   const BookingScreenStepOne({super.key});

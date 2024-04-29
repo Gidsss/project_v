@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
-import 'package:project_v/screens/admin/admindashboard.dart';
-import 'package:project_v/screens/admin/calendar/calendarscreen.dart';
-import 'package:project_v/screens/admin/coupons/couponmanagement.dart';
-import 'package:project_v/screens/admin/products/productmanagement.dart';
-import 'package:project_v/screens/admin/profile/adminprofilescreen.dart';
-import 'package:project_v/screens/main/chatscreen.dart';
-import '../../screens/main/notificationsscreen.dart';
+import 'package:project_v/screens/customer/explore/explorescreen.dart';
+import 'package:project_v/screens/customer/orders/ordersscreen.dart';
+import 'package:project_v/screens/customer/profile/profilescreen.dart';
+import 'package:project_v/screens/customer/homescreen.dart';
+import 'package:project_v/screens/customer/appointment/schedulescreen.dart';
+import 'package:project_v/screens/customer/chat/chatscreen.dart';
+import 'package:project_v/screens/customer/wishlistscreen.dart';
 
-class AdminHeaderFooter extends StatefulWidget {
+import '../../screens/customer/cart/cartscreen.dart';
+import '../../screens/customer/notifications/notificationsscreen.dart';
+
+class HeaderFooter extends StatefulWidget {
   final Widget? body;
   final bool hasDrawer;
   final String? title;
@@ -20,7 +23,7 @@ class AdminHeaderFooter extends StatefulWidget {
   final bool isProfileFloatbar;
   final Widget? profileFloatbar;
 
-  const AdminHeaderFooter({
+  const HeaderFooter({
     super.key,
     this.floatbar,
     this.hasFloatbar = false,
@@ -35,10 +38,10 @@ class AdminHeaderFooter extends StatefulWidget {
   });
 
   @override
-  State<AdminHeaderFooter> createState() => _AdminHeaderFooterState();
+  State<HeaderFooter> createState() => _HeaderFooterState();
 }
 
-class _AdminHeaderFooterState extends State<AdminHeaderFooter>
+class _HeaderFooterState extends State<HeaderFooter>
     with TickerProviderStateMixin {
   late TabController _scheduleTabController;
   late TabController _ordersTabController;
@@ -215,13 +218,16 @@ class _AdminHeaderFooterState extends State<AdminHeaderFooter>
                         ),
                       ],
                     ),
-                const SizedBox(width: 100),
+                const SizedBox(width: 20),
                 Row(
                   children: [
                     headerIconButton(context, Icons.mark_unread_chat_alt_outlined, const ChatScreen()),
                     const SizedBox(width: 6),
                     headerIconButton(context, Icons.notifications_outlined, const NotificationsScreen()),
                     const SizedBox(width: 6),
+                    headerIconButton(context, Icons.favorite_border, const WishlistScreen()),
+                    const SizedBox(width: 6),
+                    headerIconButton(context, Icons.shopping_bag_outlined, const CartScreen()),
                   ],
                 ),
               ],
@@ -253,38 +259,38 @@ class _AdminHeaderFooterState extends State<AdminHeaderFooter>
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const AdminDashboardScreen()));
+                      builder: (context) => const HomeScreen()));
             }),
             buttonStatus[1]
-                ? buildButton("Products", Icons.local_offer, buttonStatus[1], () {})
+                ? buildButton("Explore", Icons.explore, buttonStatus[1], () {})
                 : buildButton(
-                "Products", Icons.local_offer_outlined, buttonStatus[1], () {
+                "Explore", Icons.explore_outlined, buttonStatus[1], () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const ProductsScreen()));
+                      builder: (context) => const ExploreScreen()));
             }),
             buttonStatus[2]
                 ? buildButton(
-                "Coupons", Icons.star, buttonStatus[2], () {})
+                "Schedule", Icons.calendar_month, buttonStatus[2], () {})
                 : buildButton(
-                "Coupons", Icons.star_border_outlined, buttonStatus[2],
+                "Schedule", Icons.calendar_month_outlined, buttonStatus[2],
                     () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const CouponsScreen()));
+                          builder: (context) => const ScheduleScreen()));
                 }),
             buttonStatus[3]
                 ? buildButton(
-                "Calendar", Icons.calendar_month, buttonStatus[3], () {})
+                "Orders", Icons.local_shipping, buttonStatus[3], () {})
                 : buildButton(
-                "Calendar", Icons.calendar_month_outlined, buttonStatus[3],
+                "Orders", Icons.local_shipping_outlined, buttonStatus[3],
                     () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const CalendarScreen()));
+                          builder: (context) => const OrdersScreen()));
                 }),
             buttonStatus[4]
                 ? buildButton(
@@ -295,7 +301,7 @@ class _AdminHeaderFooterState extends State<AdminHeaderFooter>
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const AdminProfileScreen()));
+                          builder: (context) => const ProfileScreen()));
                 }),
           ],
         ),

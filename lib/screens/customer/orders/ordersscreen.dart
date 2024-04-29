@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
-import 'package:project_v/screens/interactions/order/orderdetails.dart';
-import 'package:project_v/widgets/Layout/headerfooter.dart';
+import 'package:project_v/screens/customer/orders/orderdetails.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerheaderfooter.dart';
 // import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 // import 'package:project_v/screens/main/bookingscreenStepOne.dart';
 

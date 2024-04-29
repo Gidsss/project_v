@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
-import 'package:project_v/screens/main/schedulescreen.dart';
-import 'package:project_v/widgets/Layout/footer.dart';
+import 'package:project_v/screens/customer/appointment/schedulescreen.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerfooter.dart';
 
 class CancelAppointment extends StatefulWidget {
   const CancelAppointment({super.key});

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:project_v/widgets/Layout/headerfooter.dart';
-import 'package:project_v/screens/main/aboutus.dart';
-import 'package:project_v/screens/main/ordersscreen.dart';
-import 'package:project_v/screens/main/schedulescreen.dart';
-import 'package:project_v/screens/main/editprofile.dart';
-import 'package:project_v/screens/main/securitysettings.dart';
-import 'package:project_v/screens/main/notificationsettings.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerheaderfooter.dart';
+import 'package:project_v/screens/customer/profile/aboutus.dart';
+import 'package:project_v/screens/customer/orders/ordersscreen.dart';
+import 'package:project_v/screens/customer/appointment/schedulescreen.dart';
+import 'package:project_v/screens/customer/profile/editprofile.dart';
+import 'package:project_v/screens/customer/profile/securitysettings.dart';
+import 'package:project_v/screens/customer/profile/notificationsettings.dart';
 
 
 class ProfileScreen extends StatefulWidget{

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
-import 'package:project_v/widgets/Layout/footer.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerfooter.dart';
 
 class AboutUs extends StatefulWidget {
   const AboutUs({super.key});

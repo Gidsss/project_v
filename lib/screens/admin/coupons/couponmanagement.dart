@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project_v/widgets/Layout/adminheaderfooter.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminHeader.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminfooter.dart';
 
 class CouponsScreen extends StatefulWidget{
   const CouponsScreen({super.key});
@@ -11,7 +12,18 @@ class CouponsScreen extends StatefulWidget{
 class _CouponsScreenState extends State<CouponsScreen>{
 
   @override
+  @override
   Widget build(BuildContext context) {
-    return AdminHeaderFooter(context: context, body: const Text("Coupons"), title: "CouponsScreen", buttonStatus: const [false, false, true, false, false]);
+    return Scaffold(
+        body: Column(
+      children: [
+        AdminHeader(context: context),
+        Expanded(
+          child: Text("Coupons"),
+        ),
+        AdminFooter(
+            buttonStatus: [false, false, true, false, false], context: context)
+      ],
+    ));
   }}
 

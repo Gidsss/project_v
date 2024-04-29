@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
-import 'package:project_v/screens/main/cancelappointment.dart';
-import 'package:project_v/widgets/Layout/footer.dart';
+import 'package:project_v/screens/customer/appointment/cancelappointment.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerfooter.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class ViewAppointmentOne extends StatefulWidget {

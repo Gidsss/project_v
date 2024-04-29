@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
-import 'package:project_v/widgets/Layout/headerfooter.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerheaderfooter.dart';
 
 
 class HomeScreen extends StatelessWidget {
