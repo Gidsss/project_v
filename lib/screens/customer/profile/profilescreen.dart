@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerheaderfooter.dart';
 import 'package:project_v/screens/customer/profile/aboutus.dart';
 import 'package:project_v/screens/customer/orders/ordersscreen.dart';
@@ -6,7 +7,10 @@ import 'package:project_v/screens/customer/appointment/schedulescreen.dart';
 import 'package:project_v/screens/customer/profile/editprofile.dart';
 import 'package:project_v/screens/customer/profile/securitysettings.dart';
 import 'package:project_v/screens/customer/profile/notificationsettings.dart';
-
+import 'package:project_v/screens/customer/chat/chatscreen.dart';
+import 'package:project_v/screens/customer/wishlistscreen.dart';
+import 'package:project_v/screens/customer/profile/contactusscreen.dart';
+import 'package:project_v/screens/customer/cart/cartscreen.dart';
 
 class ProfileScreen extends StatefulWidget{
   const ProfileScreen({super.key});
@@ -107,7 +111,10 @@ class _ProfileScreenState extends State<ProfileScreen>{
                     //Chat and Notification Button
                     ElevatedButton(
                       onPressed: () {
-                        // Add button functionality here
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const ChatScreen()),
+                        );
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.grey.shade50), // Button background color
@@ -167,7 +174,10 @@ class _ProfileScreenState extends State<ProfileScreen>{
                     // Wishlists Button
                     ElevatedButton(
                       onPressed: () {
-                        // Add button functionality here
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const WishlistScreen()),
+                        );
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.grey.shade50), // Button background color
@@ -228,7 +238,10 @@ class _ProfileScreenState extends State<ProfileScreen>{
                     // Shopping Carts Button
                     ElevatedButton(
                       onPressed: () {
-                        // Add button functionality here
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const CartScreen()),
+                        );
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.grey.shade50), // Button background color
@@ -801,7 +814,10 @@ class _ProfileScreenState extends State<ProfileScreen>{
                   // Contact Us Button
                   ElevatedButton(
                     onPressed: () {
-                      // Add button functionality here
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const ContactUsScreen()),
+                      );
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.grey.shade50), // Button background color
