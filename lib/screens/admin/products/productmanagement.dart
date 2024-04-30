@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminHeader.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminfooter.dart';
-import 'package:project_v/widgets/CustomWidgets/adminfeatureHeader.dart';
 
 class ProductsScreen extends StatefulWidget {
   const ProductsScreen({super.key});
