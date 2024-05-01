@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 import 'chatdetailscreen.dart';
+
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
@@ -7,24 +9,7 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 4,
-        toolbarHeight: 80,
-        centerTitle: true,
-        title: Image.asset(
-          'assets/logos/logotrans.png',
-          width: 40,
-          height: 40,
-        ),
-        bottom: const PreferredSize(
-          preferredSize: Size.zero,
-          child: Text(
-            "Messages",
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
-        ),
-      ),
+      appBar: Header2(text: "Messages"),
       body: ListView.builder(
         itemCount: 10,
         itemBuilder: (context, index) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 import '../../constants/app_constants.dart';
 
 class WishlistScreen extends StatefulWidget {
@@ -20,26 +21,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        surfaceTintColor: Colors.white,
-        backgroundColor: Colors.white,
-        shadowColor: Colors.black.withOpacity(0.4),
-        elevation: 4,
-        toolbarHeight: 80,
-        centerTitle: true,
-        title: Image.asset(
-          AppConstants.logoImagePath,
-          width: 40,
-          height: 40,
-        ),
-        bottom: const PreferredSize(
-          preferredSize: Size.zero,
-          child: Text(
-            "Wishlist",
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
-        ),
-      ),
+      appBar: Header2(text: "Wishlist"),
       body: ListView(
         children: <Widget>[
           const Padding(

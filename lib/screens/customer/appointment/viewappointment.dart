@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/screens/customer/appointment/cancelappointment.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerfooter.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class ViewAppointmentOne extends StatefulWidget {
@@ -17,26 +18,7 @@ class ViewAppointmentOneState extends State<ViewAppointmentOne> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        surfaceTintColor: Colors.white,
-        backgroundColor: Colors.white,
-        shadowColor: Colors.black.withOpacity(0.4),
-        elevation: 4,
-        toolbarHeight: 80,
-        centerTitle: true,
-        title: Image.asset(
-          AppConstants.logoImagePath,
-          width: 40,
-          height: 40,
-        ),
-        bottom: const PreferredSize(
-          preferredSize: Size.zero,
-          child: Text(
-            "View Appointment",
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
-        ),
-      ),
+      appBar: Header2(text: "View Appointment"),
       body: Column(
         children: [
           const SizedBox(

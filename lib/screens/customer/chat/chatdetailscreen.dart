@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 
 class ChatDetailScreen extends StatelessWidget {
   const ChatDetailScreen({super.key});
@@ -6,25 +7,7 @@ class ChatDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 4,
-        toolbarHeight: 80,
-        centerTitle: true,
-        title: Image.asset(
-          'assets/logos/logotrans.png',
-          width: 40,
-          height: 40,
-        ),
-
-        bottom: const PreferredSize(
-          preferredSize: Size.fromHeight(20.0),
-          child: Text(
-            "Black Luminaire",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
-          ),
-        ),
-      ),
+      appBar: Header2(text: "Black Luminaire"),
       body: ListView(
         children: const <Widget>[
           MessageBubble(

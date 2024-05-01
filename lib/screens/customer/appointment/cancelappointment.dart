@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/screens/customer/appointment/schedulescreen.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerfooter.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 
 class CancelAppointment extends StatefulWidget {
   const CancelAppointment({super.key});
@@ -17,26 +19,7 @@ class CancelAppointmentState extends State<CancelAppointment> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        surfaceTintColor: Colors.white,
-        backgroundColor: Colors.white,
-        shadowColor: Colors.black.withOpacity(0.4),
-        elevation: 4,
-        toolbarHeight: 80,
-        centerTitle: true,
-        title: Image.asset(
-          AppConstants.logoImagePath,
-          width: 40,
-          height: 40,
-        ),
-        bottom: const PreferredSize(
-          preferredSize: Size.zero,
-          child: Text(
-            "Cancel Appointment",
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
-        ),
-      ),
+      appBar: Header2(text: "Cancel Appointment"),
       body: Column(
         children: [
           const SizedBox(height: 20),

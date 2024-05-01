@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:project_v/constants/app_constants.dart';
+import 'package:project_v/screens/admin/products/addproduct.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminHeader.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminfooter.dart';
 
@@ -35,8 +34,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             createButton(
-                                "Add Product", context, Icons.add_circle),
-                            createButton("Edit Product", context, Icons.edit)
+                                "Add Product", context, Icons.add_circle, () {Navigator.push(context, MaterialPageRoute(builder: (context) => const AddProduct()));}),
+                            createButton("Edit Product", context, Icons.edit, () {})
                           ],
                         ),
                         const SizedBox(
@@ -177,7 +176,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
   }
 }
 
-Widget createButton(String text, BuildContext context, IconData icon) {
+Widget createButton(String text, BuildContext context, IconData icon, void Function() onTap) {
   return Container(
     decoration: BoxDecoration(
         boxShadow: [
@@ -193,7 +192,7 @@ Widget createButton(String text, BuildContext context, IconData icon) {
     width: MediaQuery.of(context).size.width * 0.45,
     height: MediaQuery.of(context).size.height * 0.05,
     child: InkWell(
-      onTap: () {},
+      onTap: onTap,
       child: ListTile(
         visualDensity: VisualDensity.compact,
         contentPadding: const EdgeInsets.symmetric(horizontal: 15),

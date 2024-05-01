@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 import '../chat/chatdetailscreen.dart';
 
 class NotificationsScreen extends StatelessWidget {
@@ -7,24 +8,7 @@ class NotificationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 4,
-        toolbarHeight: 80,
-        centerTitle: true,
-        title: Image.asset(
-          'assets/logos/logotrans.png',
-          width: 40,
-          height: 40,
-        ),
-        bottom: const PreferredSize(
-          preferredSize: Size.zero,
-          child: Text(
-            "Notifications",
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
-        ),
-      ),
+      appBar: Header2(text: "Notifications"),
       body: ListView.builder(
         itemCount: 10,
         itemBuilder: (context, index) {

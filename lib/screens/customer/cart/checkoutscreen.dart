@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 import '../../../constants/app_constants.dart';
 
 class CheckOutItem {
@@ -39,26 +41,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     double totalCost = subTotal + handlingFee - discount;
 
     return Scaffold(
-      appBar: AppBar(
-        surfaceTintColor: Colors.white,
-        backgroundColor: Colors.white,
-        shadowColor: Colors.black.withOpacity(0.4),
-        elevation: 4,
-        toolbarHeight: 80,
-        centerTitle: true,
-        title: Image.asset(
-          AppConstants.logoImagePath,
-          width: 40,
-          height: 40,
-        ),
-        bottom: const PreferredSize(
-          preferredSize: Size.zero,
-          child: Text(
-            "Checkout",
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
-        ),
-      ),
+      appBar: Header2(text: "Checkout"),
       body: ListView.separated(
         itemCount: _checkoutItems.length + 5,
         separatorBuilder: (context, index) => const Divider(),
