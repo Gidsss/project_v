@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:project_v/widgets/Layout/adminheaderfooter.dart';
+import 'package:flutter/widgets.dart';
+import 'package:project_v/widgets/CustomWidgets/adminfeatureHeader.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminHeader.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminfooter.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
   const AdminDashboardScreen({super.key});
@@ -88,7 +91,9 @@ class DashboardBox extends StatelessWidget {
             Text(
               title,
               style: const TextStyle(
-                  fontFamily: 'Inter', fontSize: 20.0, fontWeight: FontWeight.normal), // Larger text
+                  fontFamily: 'Inter',
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.normal), // Larger text
             ),
             const SizedBox(height: 20.0),
             Row(
@@ -137,74 +142,70 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     // double screenWidth = screenSize.width;
     //double cardWidth =   (screenWidth - crossAxisSpacing) / 2; // two cards per row
 
-    return AdminHeaderFooter(
-      context: context,
-      title: "Admin Dashboard",
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.all(16.0), // Add some padding around the text
-              child: Text(
-                'Dashboard', // Title text
-                style: TextStyle(
-                  fontFamily: 'Inter',
-                  fontSize: 24.0, // Large text size
-                  fontWeight: FontWeight.w900, // Bold text
-                  color: Colors.black87, // Dark color for the text
-                ),
+    return Scaffold(
+      body: Column(
+        children: [
+          AdminHeader(context: context),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  AdminFeatureHeader(text:"Admin Dashboard"),
+                  Wrap(
+                    spacing: crossAxisSpacing, // horizontal space between cards
+                    runSpacing: mainAxisSpacing, // vertical space between cards
+                    children: [
+                      SizedBox(
+                          width: 200,
+                          height: 120, // Specify the desired width
+                          child: DashboardCard(
+                            title: 'Orders',
+                            value: _numberOfOrders,
+                            icon: Icons.shopping_cart,
+                            change: 15.34,
+                          )),
+                      SizedBox(
+                        width: 200,
+                        height: 120,
+                        child: DashboardCard(
+                          title: 'Users',
+                          value: _numberOfUsers,
+                          icon: Icons.people,
+                          change: 10.25,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 400,
+                        height: 320,
+                        child: DashboardBox(
+                          title: 'Sales',
+                          value: _numberOfSales,
+                          icon: Icons.attach_money,
+                          change: 10.25,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 400,
+                        height: 320,
+                        child: DashboardBox(
+                          title: 'New Users',
+                          value: _numberOfNewUsers,
+                          icon: Icons.person_add,
+                          change: 10.25,
+                        ),
+                      ),
+                      // Add more DashboardCard widgets as needed
+                    ],
+                  ),
+                ],
               ),
             ),
-            Wrap(
-              spacing: crossAxisSpacing, // horizontal space between cards
-              runSpacing: mainAxisSpacing, // vertical space between cards
-              children: [
-                SizedBox(
-                    width: 200,
-                    height: 120, // Specify the desired width
-                    child: DashboardCard(
-                      title: 'Orders',
-                      value: _numberOfOrders,
-                      icon: Icons.shopping_cart,
-                      change: 15.34,
-                    )),
-                SizedBox(
-                  width: 200,
-                  height: 120,
-                  child: DashboardCard(
-                    title: 'Users',
-                    value: _numberOfUsers,
-                    icon: Icons.people,
-                    change: 10.25,
-                  ),
-                ),
-                SizedBox(
-                  width: 400,
-                  height: 320,
-                  child: DashboardBox(
-                    title: 'Sales',
-                    value: _numberOfSales,
-                    icon: Icons.attach_money,
-                    change: 10.25,
-                  ),
-                ),
-                SizedBox(
-                  width: 400,
-                  height: 320,
-                  child: DashboardBox(
-                    title: 'New Users',
-                    value: _numberOfNewUsers,
-                    icon: Icons.person_add,
-                    change: 10.25,
-                  ),
-                ),
-                // Add more DashboardCard widgets as needed
-              ],
-            ),
-          ],
-        ),
+          ),
+          AdminFooter(
+              buttonStatus: [true, false, false, false, false],
+              context: context)
+        ],
       ),
-      buttonStatus: const [true, false, false, false, false],
     );
   }
 }
