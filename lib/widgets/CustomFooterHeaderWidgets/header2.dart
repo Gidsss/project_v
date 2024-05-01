@@ -22,7 +22,7 @@ class Header2 extends StatelessWidget implements PreferredSizeWidget {
       bottom: PreferredSize(
         preferredSize: Size.zero,
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.only(bottom: 5),
           child: Text(
             text,
             style: const TextStyle(fontWeight: FontWeight.w600),
@@ -33,5 +33,5 @@ class Header2 extends StatelessWidget implements PreferredSizeWidget {
   }
   
   @override
-  Size get preferredSize => const Size.fromHeight(90);
+  Size get preferredSize => const Size.fromHeight(85);
 }

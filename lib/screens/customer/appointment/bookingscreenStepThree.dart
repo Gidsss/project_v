@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerfooter.dart';
+import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class BookingScreenStepThree extends StatelessWidget {
@@ -11,26 +12,7 @@ class BookingScreenStepThree extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        surfaceTintColor: Colors.white,
-        backgroundColor: Colors.white,
-        shadowColor: Colors.black.withOpacity(0.4),
-        elevation: 4,
-        toolbarHeight: 80,
-        centerTitle: true,
-        title: Image.asset(
-          AppConstants.logoImagePath,
-          width: 40,
-          height: 40,
-        ),
-        bottom: const PreferredSize(
-          preferredSize: Size.zero,
-          child: Text(
-            "Set An Appointment",
-            style: TextStyle(fontWeight: FontWeight.w600),
-          ),
-        ),
-      ),
+      appBar: Header2(text: "Set an Appointment"),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,

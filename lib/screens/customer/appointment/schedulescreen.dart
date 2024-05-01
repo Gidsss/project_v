@@ -110,7 +110,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     child: createTextFormField(
                         "Choose a date",
                         context,
-                        null,
                         Icons.calendar_month,
                         true,
                         datecontroller,
@@ -124,11 +123,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             child: Row(
               children: [
                 Expanded(
-                    child: createTextFormField("Type", context, null,
+                    child: createTextFormField("Type", context,
                         Icons.description, false, typecontroller, null)),
                 const SizedBox(width: 10),
                 Expanded(
-                    child: createTextFormField("Number", context, null,
+                    child: createTextFormField("Number", context, 
                         Icons.description, false, numbercontroller, null)),
               ],
             ),
@@ -290,14 +289,12 @@ Widget floatBar(context) {
 Widget createTextFormField(
     String text,
     BuildContext context,
-    width,
     IconData icon,
     bool hasCalendar,
     TextEditingController textcontroller,
     DateRangePickerController? datecontroller) {
   return SizedBox(
     height: 35,
-    width: width,
     child: TextFormField(
       controller: textcontroller,
       style: const TextStyle(fontSize: 14, height: 1),
