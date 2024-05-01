@@ -4,13 +4,84 @@ import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminHeader.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminfooter.dart';
 
 class ProductsScreen extends StatefulWidget {
-  const ProductsScreen({super.key});
+  const ProductsScreen(
+      {super.key, this.isNavigatedfromAddProd, this.setIsNavigatedFromaddProd});
+  final bool? isNavigatedfromAddProd;
+  final Function(bool)? setIsNavigatedFromaddProd;
 
   @override
   State<ProductsScreen> createState() => _ProductsScreenState();
 }
 
 class _ProductsScreenState extends State<ProductsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.isNavigatedfromAddProd == true) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog(
+              child: Container(
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(100)),
+                  height: 185, // Set the desired height
+                  width: MediaQuery.of(context).size.width *
+                      0.67, // Set the desired width
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Product Added",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        const Text(
+                          "ProductName was added successfully to the store's catalog.",
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.25,
+                              child: ElevatedButton(
+                                  style: const ButtonStyle(
+                                      elevation: MaterialStatePropertyAll(4),
+                                      backgroundColor: MaterialStatePropertyAll(
+                                          Colors.black)),
+                                  onPressed: () {
+                                    if (widget.setIsNavigatedFromaddProd !=
+                                        null) {
+                                      widget.setIsNavigatedFromaddProd!(false);
+                                    }
+                                    Navigator.pop(
+                                      context,
+                                    );
+                                  },
+                                  child: const Text(
+                                    "Okay",
+                                    style: TextStyle(color: Colors.white),
+                                  ))),
+                        )
+                      ],
+                    ),
+                  )),
+            );
+          },
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,8 +105,15 @@ class _ProductsScreenState extends State<ProductsScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             createButton(
-                                "Add Product", context, Icons.add_circle, () {Navigator.push(context, MaterialPageRoute(builder: (context) => const AddProduct()));}),
-                            createButton("Edit Product", context, Icons.edit, () {})
+                                "Add Product", context, Icons.add_circle, () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const AddProduct()));
+                            }),
+                            createButton(
+                                "Edit Product", context, Icons.edit, () {})
                           ],
                         ),
                         const SizedBox(
@@ -176,7 +254,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
   }
 }
 
-Widget createButton(String text, BuildContext context, IconData icon, void Function() onTap) {
+Widget createButton(
+    String text, BuildContext context, IconData icon, void Function() onTap) {
   return Container(
     decoration: BoxDecoration(
         boxShadow: [
