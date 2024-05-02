@@ -18,11 +18,11 @@ class _AdminProfileScreenState extends State<AdminProfileScreen>{
         body: Column(
       children: [
         AdminHeader(context: context),
-        Expanded(
+        const Expanded(
           child: Text("Profile"),
         ),
         AdminFooter(
-            buttonStatus: [false, false, false, false, true], context: context)
+            buttonStatus: const [false, false, false, false, true], context: context)
       ],
     ));
   }}

@@ -15,7 +15,7 @@ class _BookingScreenStepOneState extends State<BookingScreenStepOne> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Header2(text: "Set an Appointment"),
+      appBar: const Header2(text: "Set an Appointment"),
       body: Column(
         children: [
           const SizedBox(height: 15),

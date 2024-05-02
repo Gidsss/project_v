@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
-import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
-import '../../../constants/app_constants.dart';
 
 class CheckOutItem {
   final String name;
@@ -41,7 +39,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     double totalCost = subTotal + handlingFee - discount;
 
     return Scaffold(
-      appBar: Header2(text: "Checkout"),
+      appBar: const Header2(text: "Checkout"),
       body: ListView.separated(
         itemCount: _checkoutItems.length + 5,
         separatorBuilder: (context, index) => const Divider(),

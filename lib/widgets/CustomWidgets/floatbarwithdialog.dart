@@ -98,7 +98,6 @@ Widget createdialogFloatbar(
                   );
                 },
               );
-              ;
             },
             child: Text(
               text,

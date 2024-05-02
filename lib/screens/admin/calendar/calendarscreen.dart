@@ -16,11 +16,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
         body: Column(
       children: [
         AdminHeader(context: context),
-        Expanded(
+        const Expanded(
           child: Text("Calendar"),
         ),
         AdminFooter(
-            buttonStatus: [false, false, false, true, false], context: context)
+            buttonStatus: const [false, false, false, true, false], context: context)
       ],
     ));
   }

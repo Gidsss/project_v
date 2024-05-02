@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "89918709345",
+    "project_id": "project-valdo",
+    "storage_bucket": "project-valdo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:89918709345:android:b6c5e01f5257c721c75420",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "89918709345-oap3ctt2t1bfjj9enmcm8mepn3hovqhl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAL_2R3GVSn4-lCv6-ppEWcWxZUZU63Q0k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "89918709345-oap3ctt2t1bfjj9enmcm8mepn3hovqhl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "89918709345-drjcd0ha3cl4k6722ac5g1kvc3kd957d.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterApplication1"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

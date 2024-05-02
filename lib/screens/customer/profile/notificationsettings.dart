@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerfooter.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 
@@ -17,19 +16,19 @@ class _NotificationSettingsState extends State<NotificationSettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Header2(text: "Notification Settings"),
+      appBar: const Header2(text: "Notification Settings"),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.0),
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 30,),
-                    Text(
+                    const SizedBox(height: 30,),
+                    const Text(
                       "Manage Notification",
                       style: TextStyle(
                         fontSize: 18,
@@ -38,7 +37,7 @@ class _NotificationSettingsState extends State<NotificationSettings> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(8.5),
@@ -76,8 +75,8 @@ class _NotificationSettingsState extends State<NotificationSettings> {
                                         height: 30,
                                       ),
                                     ),
-                                    SizedBox(width: 10),
-                                    Column(
+                                    const SizedBox(width: 10),
+                                    const Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
@@ -118,7 +117,7 @@ class _NotificationSettingsState extends State<NotificationSettings> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 12,),
+                          const SizedBox(height: 12,),
 
                           //Delivery Notification
                           Container(
@@ -144,8 +143,8 @@ class _NotificationSettingsState extends State<NotificationSettings> {
                                         height: 30,
                                       ),
                                     ),
-                                    SizedBox(width: 10),
-                                    Column(
+                                    const SizedBox(width: 10),
+                                    const Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
@@ -185,7 +184,7 @@ class _NotificationSettingsState extends State<NotificationSettings> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 12,),
+                          const SizedBox(height: 12,),
 
                           //Wishlist Notification
                           Container(
@@ -211,8 +210,8 @@ class _NotificationSettingsState extends State<NotificationSettings> {
                                         height: 30,
                                       ),
                                     ),
-                                    SizedBox(width: 10),
-                                    Column(
+                                    const SizedBox(width: 10),
+                                    const Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
@@ -253,7 +252,7 @@ class _NotificationSettingsState extends State<NotificationSettings> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 15,),
+                          const SizedBox(height: 15,),
                         ],
                       ),
                     ),

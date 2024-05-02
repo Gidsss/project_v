@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/screens/customer/appointment/schedulescreen.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerfooter.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
@@ -19,7 +18,7 @@ class CancelAppointmentState extends State<CancelAppointment> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: Header2(text: "Cancel Appointment"),
+        appBar: const Header2(text: "Cancel Appointment"),
         body: Column(
           children: [
             const SizedBox(height: 20),
