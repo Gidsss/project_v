@@ -25,14 +25,14 @@ enum ColorLabel {
   final Color color;
 } // Should match the colors in categories.
 
-class AddProduct extends StatefulWidget {
-  const AddProduct({super.key});
+class EditProduct extends StatefulWidget {
+  const EditProduct({super.key});
 
   @override
-  State<AddProduct> createState() => AddProductState();
+  State<EditProduct> createState() => EditProductState();
 }
 
-class AddProductState extends State<AddProduct> {
+class EditProductState extends State<EditProduct> {
   bool exists = false;
   bool? isChecked;
   final TextEditingController colorController = TextEditingController();
@@ -81,7 +81,7 @@ class AddProductState extends State<AddProduct> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: const Header2(text: "Add Product"),
+        appBar: const Header2(text: "Edit Product"),
         body: Column(children: [
           Expanded(
               child: SingleChildScrollView(
@@ -240,14 +240,21 @@ class AddProductState extends State<AddProduct> {
                     ),
                     // Should probably validate the inputs, before allowing a navpush
                     CreateButton(
-                        buttontext: "Add Product",
+                        buttontext: "Save Product Changes",
                         navigator: () {
-                          showaddProductDialog(context);
+                          showEditProductDialog(context);
                         },
                         context: context),
+                        
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
+                    Divider(),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    createDeleteButton(context),
+                    SizedBox(height: 30,),
                   ],
                 ),
               )
@@ -279,14 +286,25 @@ Widget createSliderItem(BuildContext context) {
             fit: BoxFit.contain),
       ),
     ),
-    IconButton(
-        onPressed: () {},
-        tooltip: "Add more Images",
-        icon: const Icon(
-          Icons.add_circle,
-          color: Colors.black,
-          size: 30,
-        ))
+    Padding(
+      padding: const EdgeInsets.fromLTRB(10.0, 10, 0, 0),
+      child: InkWell(
+        onTap: () {},
+        child: Container(
+          width: 24,
+          height: 24,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.black,
+          ),
+          child: const Icon(
+            Icons.edit,
+            color: Colors.white, // Set icon color to white
+            size: 16,
+          ),
+        ),
+      ),
+    )
   ]);
 }
 
@@ -316,9 +334,166 @@ Widget createField(double width, double height, String text, int? minlines,
   );
 }
 
-
-Future<void> showaddProductDialog(BuildContext context) async {
+Future<void> showEditProductDialog(BuildContext context) async {
   return showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(100),
+          ),
+          height: 185, // Set the desired height
+          width:
+              MediaQuery.of(context).size.width * 0.67, // Set the desired width
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                  "Save Changes?",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                const Text(
+                  "Are you sure you want to save changes to productName",
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.28,
+                        child: ElevatedButton(
+                          style: const ButtonStyle(
+                            elevation: MaterialStatePropertyAll(4),
+                            backgroundColor:
+                                MaterialStatePropertyAll(Colors.white),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text(
+                            "No",
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        child: ElevatedButton(
+                          style: const ButtonStyle(
+                            elevation: MaterialStatePropertyAll(4),
+                            backgroundColor:
+                                MaterialStatePropertyAll(Colors.black),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Dialog(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
+                                    height: 185, // Set the desired height
+                                    width: MediaQuery.of(context).size.width *
+                                        0.67, // Set the desired width
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          const Text(
+                                            "Saved Successfully!",
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          const Text(
+                                            "Changes to productName successfully saved.",
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 15.0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                SizedBox(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.30,
+                                                  child: ElevatedButton(
+                                                    style: const ButtonStyle(
+                                                      elevation:
+                                                          MaterialStatePropertyAll(
+                                                              4),
+                                                      backgroundColor:
+                                                          MaterialStatePropertyAll(
+                                                              Colors.black),
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: const Text(
+                                                      "Okay",
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: const Text(
+                            "Yes",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
+Widget createDeleteButton(BuildContext context){
+  return InkWell(
+      onTap: () {
+        showDialog(
     context: context,
     builder: (BuildContext context) {
       return Dialog(
@@ -335,14 +510,14 @@ Future<void> showaddProductDialog(BuildContext context) async {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Text(
-                  "Add Product?",
+                  "Delete Product?",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 const Text(
-                  "Are you sure you want to add productName?",
+                  "Are you sure you want to delete productName?",
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(
@@ -374,10 +549,10 @@ Future<void> showaddProductDialog(BuildContext context) async {
                         child: ElevatedButton(
                           style: const ButtonStyle(
                             elevation: MaterialStatePropertyAll(4),
-                            backgroundColor: MaterialStatePropertyAll(Colors.black),
+                            backgroundColor: MaterialStatePropertyAll(const Color.fromARGB(255, 192, 40, 29),),
                           ),
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const ProductsScreen(isNavigatedfromAddProd: true,)));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const ProductsScreen(isNavigatedfromDelProd: true,)));
                           },
                           child: const Text(
                             "Yes",
@@ -395,4 +570,26 @@ Future<void> showaddProductDialog(BuildContext context) async {
       );
     },
   );
+
+
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 192, 40, 29),
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Center(
+          child: Text(
+            "Delete Product",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w300,
+              fontFamily: 'Inter',
+              fontSize: 16,
+            ),
+          ),
+        ),
+      ),
+    );
 }

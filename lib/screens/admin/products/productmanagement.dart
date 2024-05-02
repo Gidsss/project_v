@@ -1,19 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/screens/admin/products/addproduct.dart';
+import 'package:project_v/screens/admin/products/editproduct.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminHeader.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminfooter.dart';
 
 class ProductsScreen extends StatefulWidget {
   const ProductsScreen(
-      {super.key, this.isNavigatedfromAddProd, this.setIsNavigatedFromaddProd});
+      {super.key,
+      this.isNavigatedfromAddProd,
+      this.setIsNavigatedFromaddProd,
+      this.isNavigatedfromDelProd,
+      this.setIsNavigatedFromDelProd});
   final bool? isNavigatedfromAddProd;
   final Function(bool)? setIsNavigatedFromaddProd;
+
+  final bool? isNavigatedfromDelProd;
+  final Function(bool)? setIsNavigatedFromDelProd;
 
   @override
   State<ProductsScreen> createState() => _ProductsScreenState();
 }
 
 class _ProductsScreenState extends State<ProductsScreen> {
+  bool isEdit = false;
+
+  Widget createSwitchButton() {
+    return Switch(
+        trackOutlineColor: MaterialStateProperty.resolveWith<Color?>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.selected)) {
+              return Colors.white.withOpacity(0.1);
+            }
+            return Colors.white.withOpacity(0.1);
+          },
+        ),
+        thumbColor: MaterialStateProperty.resolveWith<Color?>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.selected)) {
+              return Colors.white;
+            }
+            return Colors.white;
+          },
+        ),
+        thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.selected)) {
+              return const Icon(
+                Icons.edit,
+                color: Colors.black,
+              );
+            }
+            return const Icon(Icons.visibility, color: Colors.black);
+          },
+        ),
+        activeTrackColor: Colors.white.withOpacity(0.15),
+        inactiveTrackColor: Colors.white.withOpacity(0.15),
+        value: isEdit,
+        onChanged: (bool value) {
+          setState(() {
+            isEdit = value;
+          });
+        });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -78,6 +127,66 @@ class _ProductsScreenState extends State<ProductsScreen> {
             );
           },
         );
+      } else if (widget.isNavigatedfromDelProd == true) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Dialog(
+              child: Container(
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(100)),
+                  height: 185, // Set the desired height
+                  width: MediaQuery.of(context).size.width *
+                      0.67, // Set the desired width
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Product Deleted",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        const Text(
+                          "ProductName was deleted successfully from the store's catalog.",
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.25,
+                              child: ElevatedButton(
+                                  style: const ButtonStyle(
+                                      elevation: MaterialStatePropertyAll(4),
+                                      backgroundColor: MaterialStatePropertyAll(
+                                          Colors.black)),
+                                  onPressed: () {
+                                    if (widget.setIsNavigatedFromDelProd !=
+                                        null) {
+                                      widget.setIsNavigatedFromDelProd!(false);
+                                    }
+                                    Navigator.pop(
+                                      context,
+                                    );
+                                  },
+                                  child: const Text(
+                                    "Okay",
+                                    style: TextStyle(color: Colors.white),
+                                  ))),
+                        )
+                      ],
+                    ),
+                  )),
+            );
+          },
+        );
       }
     });
   }
@@ -112,8 +221,42 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                       builder: (context) =>
                                           const AddProduct()));
                             }),
-                            createButton(
-                                "Edit Product", context, Icons.edit, () {})
+                            Container(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              width: MediaQuery.of(context).size.width * 0.45,
+                              height: MediaQuery.of(context).size.width * 0.1,
+                              decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.2),
+                                      spreadRadius: 1,
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 3),
+                                    )
+                                  ],
+                                  color: Colors.black.withOpacity(0.8),
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  isEdit
+                                      ? const Text(
+                                          "Edit Mode",
+                                          style: TextStyle(color: Colors.white),
+                                        )
+                                      : const Text(
+                                          "View Mode",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  createSwitchButton()
+                                ],
+                              ),
+                            )
                           ],
                         ),
                         const SizedBox(
@@ -124,18 +267,18 @@ class _ProductsScreenState extends State<ProductsScreen> {
                           height: 15,
                         ),
                         Table(
-                          columnWidths: {
-                            0: const FlexColumnWidth(1),
-                            1: const FlexColumnWidth(2),
-                            2: const FlexColumnWidth(1),
-                            3: const FlexColumnWidth(1),
+                          columnWidths: const {
+                            0: FlexColumnWidth(1),
+                            1: FlexColumnWidth(2),
+                            2: FlexColumnWidth(1),
+                            3: FlexColumnWidth(1),
                           },
                           defaultVerticalAlignment:
                               TableCellVerticalAlignment.middle,
                           children: [
                             TableRow(
-                              children: const [
-                                Align(
+                              children: [
+                                const Align(
                                   alignment: Alignment.center,
                                   child: TableCell(
                                       child: Padding(
@@ -146,7 +289,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                         )),
                                   )),
                                 ),
-                                Align(
+                                const Align(
                                   alignment: Alignment.center,
                                   child: TableCell(
                                       child: Padding(
@@ -157,7 +300,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                         )),
                                   )),
                                 ),
-                                Align(
+                                const Align(
                                   alignment: Alignment.center,
                                   child: TableCell(
                                       child: Padding(
@@ -172,21 +315,26 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                   alignment: Alignment.center,
                                   child: TableCell(
                                       child: Padding(
-                                    padding: EdgeInsets.all(8),
-                                    child: Text("Sold",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        )),
+                                    padding: const EdgeInsets.all(8),
+                                    child: isEdit
+                                        ? const Text("Edit",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ))
+                                        : const Text("Sold",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            )),
                                   )),
-                                ),
+                                )
                               ],
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.vertical(
+                                  borderRadius: const BorderRadius.vertical(
                                       top: Radius.circular(5)),
                                   color: Colors.black.withOpacity(0.9)),
                             ),
                             ...List.generate(
-                                30,
+                                15,
                                 (index) => TableRow(
                                         decoration: BoxDecoration(
                                             border: Border.all(
@@ -221,23 +369,48 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                                   fontWeight: FontWeight.w600),
                                             ),
                                           )),
-                                          const TableCell(
-                                              child: Padding(
-                                            padding: EdgeInsets.all(8),
-                                            child: Text(
-                                              textAlign: TextAlign.center,
-                                              "150",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                          )),
+                                          isEdit
+                                              ? TableCell(
+                                                  verticalAlignment:
+                                                      TableCellVerticalAlignment
+                                                          .fill,
+                                                  child: InkWell(
+                                                    child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.black
+                                                              .withOpacity(0.9),
+                                                        ),
+                                                        child: const Icon(
+                                                          Icons.edit,
+                                                          color: Colors.white,
+                                                        )),
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  EditProduct()));
+                                                    },
+                                                  ))
+                                              : const TableCell(
+                                                  child: Padding(
+                                                  padding: EdgeInsets.all(8),
+                                                  child: Text(
+                                                    textAlign: TextAlign.center,
+                                                    "150",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                ))
                                         ]))
                           ],
                         )
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   )
                 ],
