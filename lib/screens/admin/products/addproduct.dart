@@ -1,16 +1,10 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/screens/admin/products/productmanagement.dart';
-import 'package:project_v/screens/customer/appointment/schedulescreen.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminfooter.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:project_v/widgets/CustomWidgets/UniversalButton.dart';
-import 'package:project_v/widgets/CustomWidgets/labelHeader.dart';
-import 'package:project_v/widgets/textfields/textfield2.dart';
 
 enum ColorLabel {
   blue('Blue', Colors.blue),

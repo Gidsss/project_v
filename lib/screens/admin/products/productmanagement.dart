@@ -124,11 +124,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
                           height: 15,
                         ),
                         Table(
-                          columnWidths: {
-                            0: const FlexColumnWidth(1),
-                            1: const FlexColumnWidth(2),
-                            2: const FlexColumnWidth(1),
-                            3: const FlexColumnWidth(1),
+                          columnWidths: const {
+                            0: FlexColumnWidth(1),
+                            1: FlexColumnWidth(2),
+                            2: FlexColumnWidth(1),
+                            3: FlexColumnWidth(1),
                           },
                           defaultVerticalAlignment:
                               TableCellVerticalAlignment.middle,
@@ -181,7 +181,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                 ),
                               ],
                               decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.vertical(
+                                  borderRadius: const BorderRadius.vertical(
                                       top: Radius.circular(5)),
                                   color: Colors.black.withOpacity(0.9)),
                             ),
@@ -237,7 +237,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   )
                 ],
@@ -309,7 +309,7 @@ Widget createSearchCategory(BuildContext context) {
         visualDensity: VisualDensity.compact,
         minVerticalPadding: 0,
         dense: true,
-        leading: Container(
+        leading: SizedBox(
           width: MediaQuery.of(context).size.width * 0.45,
           height: MediaQuery.of(context).size.height * 0.25,
           child: TextFormField(
