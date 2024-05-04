@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_const
-
 import 'package:flutter/material.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerheaderfooter.dart';
 import 'package:project_v/screens/customer/profile/aboutus.dart';
@@ -14,6 +12,9 @@ import 'package:project_v/screens/customer/profile/contactusscreen.dart';
 import 'package:project_v/screens/customer/cart/cartscreen.dart';
 import 'package:project_v/screens/auth/log-in/loginscreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -25,13 +26,53 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final user = FirebaseAuth.instance.currentUser;
   bool _isSigningOut = false;
+  String? userName;
+  String? userAddress;
+  String? userPhone;
+  String? userProfilePic;
+  File? _imageFile;
+
+  @override
+  void initState() {
+    super.initState();
+    getUserProfile();
+  }
+
+  void getUserProfile() async {
+    if (user != null) {
+      try {
+        var userData = await FirebaseFirestore.instance
+            .collection('customers') // customers table
+            .doc(user?.uid)
+            .get();
+        setState(() {
+          userName = userData.data()?['name'];
+          userAddress = userData.data()?['address'];
+          userPhone = userData.data()?['phoneNumber'];
+          userProfilePic = userData.data()?['profilePic'];
+        });
+      } catch (e) {
+        print('Failed to fetch user data: $e');
+      }
+    }
+  }
+
+  Future<void> pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _imageFile = File(pickedFile.path);
+      });
+    }
+  }
 
   void signOut() async {
     setState(() {
       _isSigningOut = true; // Start the sign-out process
     });
     await Future.delayed(
-        const Duration(seconds: 2)); // added delay for visual effect
+        const Duration(seconds: 1)); // added delay for visual effect
     try {
       await FirebaseAuth.instance.signOut();
       Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -69,11 +110,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   CircleAvatar(
                     radius: 50,
-                    backgroundImage: user?.photoURL != null
-                        ? NetworkImage(user!
-                            .photoURL!) // If the user has a profile photo, display it
-                        : const AssetImage('assets/images/user.png')
-                            as ImageProvider, // Default image
+                    backgroundImage: _imageFile != null
+                        ? FileImage(_imageFile!) as ImageProvider
+                        : user?.photoURL != null
+                            ? NetworkImage(user!.photoURL!)
+                            : userProfilePic != null
+                                ? NetworkImage(userProfilePic!)
+                                : const AssetImage('assets/images/user.png')
+                                    as ImageProvider,
                   ),
                   const SizedBox(
                       width: 15), // Add some space between the image and text
@@ -83,8 +127,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const SizedBox(
                           height: 5), // Adjust the vertical spacing if needed
                       Text(
-                        user?.displayName ??
-                            "Your Name", // Display the user's name
+                        user?.displayName ?? userName ?? "Your Name",
                         style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -101,9 +144,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           fontFamily: "Inter",
                         ),
                       ),
-                      const Text(
-                        "+63-9229329901",
-                        style: TextStyle(
+                      Text(
+                        userAddress ??
+                            "No address provided", // Display the user's email
+                        style: const TextStyle(
+                          fontSize: 11,
+                          fontFamily: "Inter",
+                        ),
+                      ),
+                      Text(
+                        userPhone ?? "+63-9229329901",
+                        style: const TextStyle(
                           fontSize: 11,
                           fontFamily: "Inter",
                         ), // Adjust the font size
@@ -941,7 +992,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               const SizedBox(
                                 width: 26,
                                 height: 26,
-                                child: const CircularProgressIndicator(
+                                child: CircularProgressIndicator(
                                   valueColor: AlwaysStoppedAnimation<Color>(
                                       Colors.black54),
                                   strokeWidth: 3,

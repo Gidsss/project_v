@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "89918709345",
+    "firebase_url": "https://project-valdo-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "project-valdo",
     "storage_bucket": "project-valdo.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "89918709345-r3gn7ogsutbk836b15oe175do7fig7n3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flutter_application_1",
+            "certificate_hash": "f4f4880f2e86e02d17c4a6aac5d9d009fc173f54"
+          }
+        },
         {
           "client_id": "89918709345-oap3ctt2t1bfjj9enmcm8mepn3hovqhl.apps.googleusercontent.com",
           "client_type": 3
