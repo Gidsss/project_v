@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 
 class SquareTile extends StatelessWidget {
   final String imagePath;
+  final Function () onTap;
   const SquareTile({
     super.key,
     required this.imagePath,
+    required this.onTap
   });
 
   @override
@@ -18,16 +20,19 @@ class SquareTile extends StatelessWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.05), // Set opacity to 5%
+            color: Colors.grey.withOpacity(0.2), // Set opacity to 20%
             spreadRadius: 3,
             blurRadius: 7,
             offset: const Offset(0, 3),
           ),
         ],
       ),
-      child: Image.asset(
-        imagePath,
-        height: 40,
+      child: InkWell(
+        onTap: onTap,
+        child: Image.asset(
+          imagePath,
+          height: 40,
+        ),
       ),
     );
   }

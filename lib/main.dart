@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/routes.dart';
 import 'package:project_v/screens/auth/log-in/splashscreen.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
