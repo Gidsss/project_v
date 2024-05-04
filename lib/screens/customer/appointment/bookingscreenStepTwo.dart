@@ -1,7 +1,6 @@
 // ignore_for_file: unused_field
 
 import 'package:flutter/material.dart';
-import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerfooter.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 import 'package:project_v/widgets/CustomWidgets/floatbar.dart';
@@ -38,7 +37,7 @@ class _BookingScreenStepTwoState extends State<BookingScreenStepTwo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Header2(text: "Set an Appointment"),
+        appBar: const Header2(text: "Set an Appointment"),
         resizeToAvoidBottomInset: false,
         body: Column(
           children: [
@@ -49,7 +48,7 @@ class _BookingScreenStepTwoState extends State<BookingScreenStepTwo> {
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Column(
                   children: [
-                    LabelHeader(text: "2. When would you like to set the appointment?"),
+                    const LabelHeader(text: "2. When would you like to set the appointment?"),
                     const SizedBox(
                       height: 15,
                     ),
@@ -152,7 +151,7 @@ class _BookingScreenStepTwoState extends State<BookingScreenStepTwo> {
                     const SizedBox(
                       height: 20,
                     ),
-                    LabelHeader(text: "3. Review your appointment details"),
+                    const LabelHeader(text: "3. Review your appointment details"),
                     const SizedBox(
                       height: 15,
                     ),
@@ -173,7 +172,7 @@ class _BookingScreenStepTwoState extends State<BookingScreenStepTwo> {
                         padding: const EdgeInsets.all(15.0),
                         child: Column(
                           children: [
-                            LabelHeader(text: "Type of Appointment"),
+                            const LabelHeader(text: "Type of Appointment"),
                             const SizedBox(
                               height: 10,
                             ),
@@ -181,7 +180,7 @@ class _BookingScreenStepTwoState extends State<BookingScreenStepTwo> {
                             const SizedBox(
                               height: 15,
                             ),
-                            LabelHeader(text: "Date & Time of Appointment"),
+                            const LabelHeader(text: "Date & Time of Appointment"),
                             const SizedBox(
                               height: 10,
                             ),
@@ -195,7 +194,7 @@ class _BookingScreenStepTwoState extends State<BookingScreenStepTwo> {
                             const SizedBox(
                               height: 15,
                             ),
-                            LabelHeader(text: "Store Location"),
+                            const LabelHeader(text: "Store Location"),
                             const SizedBox(
                               height: 10,
                             ),
@@ -203,7 +202,7 @@ class _BookingScreenStepTwoState extends State<BookingScreenStepTwo> {
                             const SizedBox(
                               height: 15,
                             ),
-                            LabelHeader(text: "Optometrician"),
+                            const LabelHeader(text: "Optometrician"),
                             const SizedBox(
                               height: 10,
                             ),

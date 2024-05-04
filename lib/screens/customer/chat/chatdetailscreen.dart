@@ -7,7 +7,7 @@ class ChatDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Header2(text: "Black Luminaire"),
+      appBar: const Header2(text: "Black Luminaire"),
       body: ListView(
         children: const <Widget>[
           MessageBubble(

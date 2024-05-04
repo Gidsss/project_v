@@ -2,9 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:project_v/routes.dart';
 import 'package:project_v/screens/auth/log-in/splashscreen.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'firebase_options.dart';
+
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FirebaseFirestore.instance.settings = const Settings(
+    persistenceEnabled: true,
+  );  
+  
+
   runApp(const MyApp());
 }
 
@@ -46,7 +62,9 @@ class MyApp extends StatelessWidget {
         //colorScheme: ColorScheme.fromSwatch(primarySwatch: primaryColor),
 
         // Use inter as the main font for the app.
-        textTheme: const TextTheme(bodyLarge: TextStyle(fontFamily: fontFamily), bodySmall: TextStyle(fontFamily: fontFamily)),
+        textTheme: const TextTheme(
+            bodyLarge: TextStyle(fontFamily: fontFamily),
+            bodySmall: TextStyle(fontFamily: fontFamily)),
 
         // Enable Material Design 3
         useMaterial3: true,

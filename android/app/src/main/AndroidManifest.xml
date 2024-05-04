@@ -6,6 +6,7 @@
     <application    
         android:label="Valdopeña Opticals"
         android:name="${applicationName}"
+
         android:icon="@mipmap/launcher_icon">
 
         <meta-data android:name="com.facebook.sdk.ApplicationId" 
@@ -13,6 +14,10 @@
 
         <meta-data android:name="com.facebook.sdk.ClientToken" 
         android:value="@string/facebook_client_token"/> <!-- Facebook-->
+        
+
+        android:icon="@mipmap/launcher_icon"
+        android:requestLegacyExternalStorage="true">
         
 
         <activity

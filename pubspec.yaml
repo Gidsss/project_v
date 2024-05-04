@@ -39,11 +39,20 @@ dependencies:
   intl: ^0.19.0
   qr_flutter: ^4.0.0  # Add QR code generation package
 
-  
   syncfusion_flutter_datepicker: ^25.1.41
   flutter_launcher_icons: ^0.13.1
   carousel_slider: ^4.2.1
+
   flutter_facebook_auth: ^6.2.0
+  image_picker: ^1.1.1 # Add image picker package
+
+  google_sign_in: ^6.2.1  # Add Google sign-in package
+  firebase_core: ^2.30.1  # Add Firebase core package
+  firebase_auth: ^4.2.2   # Add Firebase authentication package
+  cloud_firestore: ^4.17.2  # Add Cloud Firestore, a noSQL database package
+  firebase_storage: ^11.7.4 # Add Firebase storage package
+  
+
   
 flutter_launcher_icons:
   android: "launcher_icon"
