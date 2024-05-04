@@ -16,6 +16,7 @@ A few resources to get you started if this is your first Flutter project:
 
 ## How to Run the Project
 
-1. run `flutter pub get`
-2. run `dart fix --apply`
-3. open on android emulator or web
+1. run `flutter clean`
+2. run `flutter pub get`
+3. run `dart fix --apply`
+4. open on android emulator or web
