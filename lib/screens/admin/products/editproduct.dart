@@ -61,7 +61,7 @@ class _EditProductState extends State<EditProduct> {
 
   Future<void> uploadImage(File image, int index) async {
     String fileName =
-        'product_images/${DateTime.now().millisecondsSinceEpoch}_$index.jpg';
+        'products/${DateTime.now().millisecondsSinceEpoch.toString()}';
     TaskSnapshot snapshot =
         await FirebaseStorage.instance.ref(fileName).putFile(image);
     String downloadUrl = await snapshot.ref.getDownloadURL();
@@ -118,43 +118,41 @@ class _EditProductState extends State<EditProduct> {
     Navigator.pop(context);
   }
 
-  Widget createSliderItem(BuildContext context, int index) {
-    return GestureDetector(
-      onTap: () => pickImage(index),
-      child: Stack(
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.25,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: imageFiles[index] != null
-                    ? FileImage(imageFiles[index]!)
-                    : (imageUrls[index].isNotEmpty
-                            ? NetworkImage(imageUrls[index])
-                            : const AssetImage("assets/placeholder.png"))
-                        as ImageProvider,
-                fit: BoxFit.cover,
-              ),
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.7),
-                  offset: Offset(2, 2),
-                  blurRadius: 3,
-                  spreadRadius: 2,
-                ),
-              ],
-            ),
+  Widget createSliderItem(
+      BuildContext context, int index, VoidCallback pickImage) {
+    return Stack(children: [
+      Container(
+        width: MediaQuery.of(context).size.width * 0.50,
+        height: MediaQuery.of(context).size.height * 0.25,
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+                color: Colors.grey.withOpacity(0.7),
+                offset: const Offset(2, 2),
+                blurRadius: 3,
+                spreadRadius: 2)
+          ],
+          borderRadius: BorderRadius.circular(10),
+          image: DecorationImage(
+            image: imageFiles[index] != null
+                ? FileImage(imageFiles[index]!)
+                : (imageUrls[index].isNotEmpty
+                        ? NetworkImage(imageUrls[index])
+                        : const AssetImage("assets/images/Valdo_LOGO.png"))
+                    as ImageProvider,
+            fit: BoxFit.cover,
           ),
-          Positioned(
-            right: 10,
-            bottom: 10,
-            child: Icon(Icons.edit, color: Colors.white, size: 30),
-          ),
-        ],
+        ),
       ),
-    );
+      Positioned(
+          left: 0,
+          top: 0,
+          child: IconButton(
+            onPressed: pickImage,
+            icon: const Icon(Icons.add_circle, color: Colors.black, size: 30),
+            tooltip: "Add Image",
+          ))
+    ]);
   }
 
   Future<void> showEditProductDialog(BuildContext context) async {
@@ -358,33 +356,34 @@ class _EditProductState extends State<EditProduct> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  CarouselSlider.builder(
-                    itemCount: imageUrls.length,
-                    itemBuilder: (context, index, realIndex) {
-                      return createSliderItem(context, index);
-                    },
+                  CarouselSlider(
                     options: CarouselOptions(
-                      height: 400,
-                      enlargeCenterPage: true,
-                      enableInfiniteScroll: false,
-                      initialPage: 0,
-                    ),
+                        initialPage: 0,
+                        enableInfiniteScroll: false,
+                        viewportFraction: 0.8,
+                        height: MediaQuery.of(context).size.height * 0.30,
+                        enlargeCenterPage: true),
+                    items: [
+                      createSliderItem(context, 0, () => pickImage(0)),
+                      createSliderItem(context, 1, () => pickImage(1)),
+                      createSliderItem(context, 2, () => pickImage(2))
+                    ],
                   ),
                   TextField(
                     controller: nameController,
-                    decoration: InputDecoration(labelText: 'Name'),
+                    decoration: const InputDecoration(labelText: 'Name'),
                   ),
                   TextField(
                     controller: priceController,
-                    decoration: InputDecoration(labelText: 'Price'),
+                    decoration: const InputDecoration(labelText: 'Price'),
                   ),
                   TextField(
                     controller: descriptionController,
-                    decoration: InputDecoration(labelText: 'Description'),
+                    decoration: const InputDecoration(labelText: 'Description'),
                   ),
                   TextField(
                     controller: soldController,
-                    decoration: InputDecoration(labelText: 'Sold'),
+                    decoration: const InputDecoration(labelText: 'Sold'),
                   ),
                   CreateButton(
                       buttontext: "Save Changes",
