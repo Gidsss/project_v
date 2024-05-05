@@ -6,112 +6,50 @@ import 'package:project_v/screens/auth/password/forgotpasswordscreen.dart';
 import 'package:project_v/screens/auth/signup/signupscreen.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/screens/customer/homescreen.dart';
-import 'package:project_v/screens/admin/admindashboard.dart';
+// import 'package:project_v/screens/admin/admindashboard.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-class LoginScreen extends StatefulWidget {
+Future<void> signInWithGoogle(BuildContext context) async {
+  try {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn(
+      scopes: [
+        'email',
+        'https://www.googleapis.com/auth/userinfo.email',
+        'https://www.googleapis.com/auth/userinfo.profile',
+      ],
+    ).signIn();
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    final OAuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    await FirebaseAuth.instance.signInWithCredential(credential);
+
+    // Optionally push to the HomeScreen or handle the authenticated user.
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (_) => const HomeScreen()));
+  } catch (error) {
+    print('Google sign-in error: $error');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Google sign-in failed: $error')),
+    );
+  }
+}
+
+
+class LoginScreen extends StatelessWidget {
   LoginScreen({super.key, required String title});
   static String routeName = "/login";
+  // This widget is the login page of the application.
 
-  @override
-  State<LoginScreen> createState() => LoginScreenState();
-}
-// This widget is the login page of the application.
-
-// This class is the configuration for the state. It holds the values (in this
-// case the title) provided by the parent (in this case the App widget) and
-// used by the build method of the State. Fields in a Widget subclass are
-// always marked "final".
-
-class LoginScreenState extends State<LoginScreen> {
-  Map<String, dynamic>? _userData; // used to store user data.
-  AccessToken? _fbaccessToken;
-
-  // FB LOGIN
-  Future<void> _login(BuildContext context) async {
-    try {
-      final LoginResult fbresult = await FacebookAuth.instance.login();
-
-      if (fbresult.status == LoginStatus.success) {
-        _fbaccessToken = fbresult.accessToken;
-        final userData = await FacebookAuth.instance.getUserData();
-        _userData = userData;
-
-        if (context.mounted) {
-          Navigator.push(context,
-              MaterialPageRoute(builder: ((context) => const HomeScreen())));
-        }
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return Dialog(
-              child: Container(
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(100)),
-                  height: 185, // Set the desired height
-                  width: MediaQuery.of(context).size.width *
-                      0.67, // Set the desired width
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Login Unsuccessful",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        const Text(
-                          "Facebook Login Failed. Please try again or use other login methods.",
-                          textAlign: TextAlign.center,
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                          child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.25,
-                              child: ElevatedButton(
-                                  style: const ButtonStyle(
-                                      elevation: MaterialStatePropertyAll(4),
-                                      backgroundColor: MaterialStatePropertyAll(
-                                          Colors.black)),
-                                  onPressed: () {
-                                    Navigator.pop(
-                                      context,
-                                    );
-                                  },
-                                  child: const Text(
-                                    "Okay",
-                                    style: TextStyle(color: Colors.white),
-                                  ))),
-                        )
-                      ],
-                    ),
-                  )),
-            );
-          },
-        );
-        print("Fail FB Login Status: ${fbresult.status}");
-        print("Fail FB Login Message: ${fbresult.message}");
-      }
-    } catch (e) {
-      print("FB Login Error: $e");
-    }
-  }
-
-  // FB LOGOUT
-  Future<void> _logOut() async {
-    await FacebookAuth.instance.logOut();
-    _fbaccessToken = null;
-    _userData = null;
-    setState(() {});
-  }
+  // This class is the configuration for the state. It holds the values (in this
+  // case the title) provided by the parent (in this case the App widget) and
+  // used by the build method of the State. Fields in a Widget subclass are
+  // always marked "final".
 
   //text editing controllers
   final emailController = TextEditingController();
@@ -285,11 +223,14 @@ class LoginScreenState extends State<LoginScreen> {
                     // google button
                     SquareTile(
                       imagePath: AppConstants.googleIconPath,
-                      onTap: () {},
+                        onTap: () async {
+                        await signInWithGoogle(context);
+                      },
                     ),
                     const SizedBox(width: 25),
                     // facebook button
                     SquareTile(
+
                         imagePath: AppConstants.facebookIconPath,
                         onTap: () {
                           _userData == null ? _login(context) : _logOut();

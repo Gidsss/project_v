@@ -390,7 +390,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                                           context,
                                                           MaterialPageRoute(
                                                               builder: (context) =>
-                                                                  EditProduct()));
+
+                                                                  const EditProduct()));
                                                     },
                                                   ))
                                               : const TableCell(

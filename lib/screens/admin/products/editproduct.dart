@@ -1,5 +1,4 @@
 import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:project_v/constants/app_constants.dart';
@@ -9,8 +8,6 @@ import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminfooter.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:project_v/widgets/CustomWidgets/UniversalButton.dart';
-import 'package:project_v/widgets/CustomWidgets/labelHeader.dart';
-import 'package:project_v/widgets/textfields/textfield2.dart';
 
 enum ColorLabel {
   blue('Blue', Colors.blue),
@@ -249,12 +246,14 @@ class EditProductState extends State<EditProduct> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Divider(),
+                    const Divider(),
+
                     const SizedBox(
                       height: 10,
                     ),
                     createDeleteButton(context),
-                    SizedBox(height: 30,),
+                    const SizedBox(height: 30,),
+
                   ],
                 ),
               )
@@ -293,7 +292,7 @@ Widget createSliderItem(BuildContext context) {
         child: Container(
           width: 24,
           height: 24,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.black,
           ),
@@ -550,6 +549,7 @@ Widget createDeleteButton(BuildContext context){
                           style: const ButtonStyle(
                             elevation: MaterialStatePropertyAll(4),
                             backgroundColor: MaterialStatePropertyAll(const Color.fromARGB(255, 192, 40, 29),),
+
                           ),
                           onPressed: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => const ProductsScreen(isNavigatedfromDelProd: true,)));
