@@ -38,12 +38,11 @@ dependencies:
   flutter_svg: ^2.0.10+1
   intl: ^0.19.0
   qr_flutter: ^4.0.0  # Add QR code generation package
-
+  qr_code_scanner: ^1.0.1  # Add QR code scanning package
+  
   syncfusion_flutter_datepicker: ^25.1.41
   flutter_launcher_icons: ^0.13.1
   carousel_slider: ^4.2.1
-
-  flutter_facebook_auth: ^6.2.0
   image_picker: ^1.1.1 # Add image picker package
 
   google_sign_in: ^6.2.1  # Add Google sign-in package
@@ -89,6 +88,7 @@ flutter:
     - assets/images/
     - assets/logos/
     - assets/fonts/
+    - assets/videos/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
