@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:project_v/screens/admin/manage/management.dart';
 import 'package:project_v/screens/admin/admindashboard.dart';
-import 'package:project_v/screens/admin/calendar/calendarscreen.dart';
-import 'package:project_v/screens/admin/coupons/couponmanagement.dart';
+import 'package:project_v/screens/admin/orders/ordersmadescreen.dart';
 import 'package:project_v/screens/admin/products/productmanagement.dart';
 import 'package:project_v/screens/admin/profile/adminprofilescreen.dart';
 
@@ -52,24 +52,24 @@ Widget buildFooter(List<bool> buttonStatus, BuildContext context) {
                           builder: (context) => const ProductsScreen()));
                 }),
           buttonStatus[2]
-              ? buildButton("Coupons", Icons.star, buttonStatus[2], () {})
+              ? buildButton("Manage", Icons.star, buttonStatus[2], () {})
               : buildButton(
-                  "Coupons", Icons.star_border_outlined, buttonStatus[2], () {
+                  "Manage", Icons.star_border_outlined, buttonStatus[2], () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const CouponsScreen()));
+                          builder: (context) => const ManagementScreen()));
                 }),
           buttonStatus[3]
               ? buildButton(
-                  "Calendar", Icons.calendar_month, buttonStatus[3], () {})
+                  "Orders", Icons.calendar_month, buttonStatus[3], () {})
               : buildButton(
-                  "Calendar", Icons.calendar_month_outlined, buttonStatus[3],
+                  "Orders", Icons.calendar_month_outlined, buttonStatus[3],
                   () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const CalendarScreen()));
+                          builder: (context) => const OrdersMadeScreen()));
                 }),
           buttonStatus[4]
               ? buildButton(

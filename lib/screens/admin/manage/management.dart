@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminHeader.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminfooter.dart';
 
-class CalendarScreen extends StatefulWidget {
-  const CalendarScreen({super.key});
+class ManagementScreen extends StatefulWidget{
+  const ManagementScreen({super.key});
 
   @override
-  State<CalendarScreen> createState() => _CalendarScreenState();
-}
+  State<ManagementScreen> createState() => _ManagementScreenState();
+  }
 
-class _CalendarScreenState extends State<CalendarScreen> {
+class _ManagementScreenState extends State<ManagementScreen>{
+
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,11 +19,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
       children: [
         AdminHeader(context: context),
         const Expanded(
-          child: Text("Calendar"),
+          child: Text("Management"),
         ),
         AdminFooter(
-            buttonStatus: const [false, false, false, true, false], context: context)
+            buttonStatus: const [false, false, true, false, false], context: context)
       ],
     ));
-  }
-}
+  }}
+
