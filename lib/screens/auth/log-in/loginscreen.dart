@@ -9,7 +9,7 @@ import 'package:project_v/screens/auth/signup/signupscreen.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/screens/customer/homescreen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-// import 'package:project_v/screens/admin/admindashboard.dart';
+import 'package:project_v/screens/admin/admindashboard.dart';
 
 Future<void> signInWithGoogle(BuildContext context) async {
   try {
@@ -63,12 +63,21 @@ class LoginScreen extends StatelessWidget {
               email: emailController.text.trim(),
               password: passwordController.text.trim());
 
-      // If successful, navigate to the HomeScreen.
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-      );
-      print("Login successful: ${userCredential.user!.email}");
+      // Check if the email is that of the admin and redirect accordingly.
+      if (userCredential.user!.email == "gideonsalangsang0428@gmail.com") // supposedly valdopeñamerchant
+      {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const AdminDashboardScreen()),
+        );
+        print("Admin login successful: ${userCredential.user!.email}");
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+        print("Login successful: ${userCredential.user!.email}");
+      }
     } catch (e) {
       // If there is an error, display a message to the user.
       print("Login failed: $e");

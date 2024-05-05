@@ -3,6 +3,7 @@ import 'package:project_v/screens/admin/products/addproduct.dart';
 import 'package:project_v/screens/admin/products/editproduct.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminHeader.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminfooter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductsScreen extends StatefulWidget {
   const ProductsScreen(
@@ -23,6 +24,7 @@ class ProductsScreen extends StatefulWidget {
 
 class _ProductsScreenState extends State<ProductsScreen> {
   bool isEdit = false;
+  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Widget createSwitchButton() {
     return Switch(
@@ -199,224 +201,209 @@ class _ProductsScreenState extends State<ProductsScreen> {
         children: [
           AdminHeader(context: context),
           Expanded(
-              child: SingleChildScrollView(
-            child: Container(
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            createButton(
-                                "Add Product", context, Icons.add_circle, () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AddProduct()));
-                            }),
-                            Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15),
-                              width: MediaQuery.of(context).size.width * 0.45,
-                              height: MediaQuery.of(context).size.width * 0.1,
-                              decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.2),
-                                      spreadRadius: 1,
-                                      blurRadius: 4,
-                                      offset: const Offset(0, 3),
-                                    )
+            child: SingleChildScrollView(
+              child: Container(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 15),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              createButton(
+                                  "Add Product", context, Icons.add_circle, () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const AddProduct()));
+                              }),
+                              Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
+                                width: MediaQuery.of(context).size.width * 0.45,
+                                height: MediaQuery.of(context).size.width * 0.1,
+                                decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        spreadRadius: 1,
+                                        blurRadius: 4,
+                                        offset: const Offset(0, 3),
+                                      )
+                                    ],
+                                    color: Colors.black.withOpacity(0.8),
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(isEdit ? "Edit Mode" : "View Mode",
+                                        style: const TextStyle(
+                                            color: Colors.white)),
+                                    createSwitchButton()
                                   ],
-                                  color: Colors.black.withOpacity(0.8),
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                ),
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          createSearchCategory(
+                              context), // This is where your search widget will go
+                          const SizedBox(height: 10),
+                          StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection('products')
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const CircularProgressIndicator();
+                              }
+
+                              if (!snapshot.hasData) {
+                                return const Text("No data available");
+                              }
+                              return Table(
+                                columnWidths: const {
+                                  0: FlexColumnWidth(1),
+                                  1: FlexColumnWidth(2),
+                                  2: FlexColumnWidth(1),
+                                  3: FlexColumnWidth(1),
+                                },
+                                defaultVerticalAlignment:
+                                    TableCellVerticalAlignment.middle,
                                 children: [
-                                  isEdit
-                                      ? const Text(
-                                          "Edit Mode",
-                                          style: TextStyle(color: Colors.white),
-                                        )
-                                      : const Text(
-                                          "View Mode",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                  const SizedBox(
-                                    width: 10,
+                                  TableRow(
+                                    children: const [
+                                      TableCell(
+                                          child: Padding(
+                                        padding: EdgeInsets.all(18),
+                                        child: Text("Image",
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                      )),
+                                      TableCell(
+                                          child: Padding(
+                                        padding: EdgeInsets.all(54),
+                                        child: Text("Name",
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                      )),
+                                      TableCell(
+                                          child: Padding(
+                                        padding: EdgeInsets.all(18),
+                                        child: Text("Stock",
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                      )),
+                                      TableCell(
+                                          child: Padding(
+                                        padding: EdgeInsets.all(20),
+                                        child: Text("Sold",
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                      )),
+                                    ],
+                                    decoration: BoxDecoration(
+                                      color: Colors.black.withOpacity(0.9),
+                                    ),
                                   ),
-                                  createSwitchButton()
+                                  ...snapshot.data!.docs.map((doc) {
+                                    Map<String, dynamic> data =
+                                        doc.data() as Map<String, dynamic>;
+                                    int sold = data.containsKey('sold')
+                                        ? int.tryParse(
+                                                data['sold'].toString()) ??
+                                            0
+                                        : 0;
+                                    print(
+                                        "Product Name: ${data['name']}, Sold: $sold");
+
+                                    return TableRow(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color:
+                                                Colors.grey.withOpacity(0.2)),
+                                      ),
+                                      children: [
+                                        TableCell(
+                                            child: Padding(
+                                          padding: const EdgeInsets.all(1.0),
+                                          child: Image.network(
+                                              doc['imageUrls'][0],
+                                              fit: BoxFit.fitHeight),
+                                        )),
+                                        TableCell(
+                                            child: Padding(
+                                          padding: const EdgeInsets.all(8),
+                                          child: Text(doc['name'],
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.w600)),
+                                        )),
+                                        TableCell(
+                                            child: Padding(
+                                          padding: const EdgeInsets.all(28),
+                                          child: Text(
+                                              doc['productQuantity'].toString(),
+                                              textAlign: TextAlign.left,
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.w600)),
+                                        )),
+                                        TableCell(
+                                            child: Padding(
+                                          padding: const EdgeInsets.all(4),
+                                          child: isEdit
+                                              ? ElevatedButton(
+                                                  onPressed: () {
+                                                    print(
+                                                        "Editing mode, navigating to EditProduct for ${doc.id}");
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                EditProduct(
+                                                                    productId:
+                                                                        doc.id)));
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                          backgroundColor:
+                                                              Colors.black),
+                                                  child: const Icon(Icons.edit,
+                                                      color: Colors.white),
+                                                )
+                                              : Builder(builder: (context) {
+                                                  print(
+                                                      "View mode, displaying sold: $sold"); // Debug statement to check value
+                                                  return Text(sold.toString(),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: const TextStyle(
+                                                        fontWeight: FontWeight.w600,
+                                                          color: Colors.black));
+                                                }),
+                                        )),
+                                      ],
+                                    );
+                                  }).toList(),
                                 ],
-                              ),
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        createSearchCategory(context),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Table(
-                          columnWidths: const {
-                            0: FlexColumnWidth(1),
-                            1: FlexColumnWidth(2),
-                            2: FlexColumnWidth(1),
-                            3: FlexColumnWidth(1),
-                          },
-                          defaultVerticalAlignment:
-                              TableCellVerticalAlignment.middle,
-                          children: [
-                            TableRow(
-                              children: [
-                                const Align(
-                                  alignment: Alignment.center,
-                                  child: TableCell(
-                                      child: Padding(
-                                    padding: EdgeInsets.all(8),
-                                    child: Text("Image",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        )),
-                                  )),
-                                ),
-                                const Align(
-                                  alignment: Alignment.center,
-                                  child: TableCell(
-                                      child: Padding(
-                                    padding: EdgeInsets.all(8),
-                                    child: Text("Name",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        )),
-                                  )),
-                                ),
-                                const Align(
-                                  alignment: Alignment.center,
-                                  child: TableCell(
-                                      child: Padding(
-                                    padding: EdgeInsets.all(8),
-                                    child: Text("Stock",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        )),
-                                  )),
-                                ),
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: TableCell(
-                                      child: Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: isEdit
-                                        ? const Text("Edit",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ))
-                                        : const Text("Sold",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            )),
-                                  )),
-                                )
-                              ],
-                              decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.vertical(
-                                      top: Radius.circular(5)),
-                                  color: Colors.black.withOpacity(0.9)),
-                            ),
-                            ...List.generate(
-                                15,
-                                (index) => TableRow(
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.grey
-                                                    .withOpacity(0.2))),
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(1.0),
-                                            child: TableCell(
-                                                child: Image.asset(
-                                              "assets/images/product_1.jpg",
-                                              fit: BoxFit.fitHeight,
-                                            )),
-                                          ),
-                                          const TableCell(
-                                              child: Padding(
-                                            padding: EdgeInsets.all(8),
-                                            child: Text(
-                                              textAlign: TextAlign.center,
-                                              "Grandeur De Chalamaetere",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                          )),
-                                          const TableCell(
-                                              child: Padding(
-                                            padding: EdgeInsets.all(8),
-                                            child: Text(
-                                              textAlign: TextAlign.center,
-                                              "10",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                          )),
-                                          isEdit
-                                              ? TableCell(
-                                                  verticalAlignment:
-                                                      TableCellVerticalAlignment
-                                                          .fill,
-                                                  child: InkWell(
-                                                    child: Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Colors.black
-                                                              .withOpacity(0.9),
-                                                        ),
-                                                        child: const Icon(
-                                                          Icons.edit,
-                                                          color: Colors.white,
-                                                        )),
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  const EditProduct()));
-                                                    },
-                                                  ))
-                                              : const TableCell(
-                                                  child: Padding(
-                                                  padding: EdgeInsets.all(8),
-                                                  child: Text(
-                                                    textAlign: TextAlign.center,
-                                                    "150",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w600),
-                                                  ),
-                                                ))
-                                        ]))
-                          ],
-                        )
-                      ],
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  )
-                ],
+                    const SizedBox(height: 20),
+                  ],
+                ),
               ),
             ),
-          )),
+          ),
           AdminFooter(
             buttonStatus: const [false, true, false, false, false],
             context: context,
