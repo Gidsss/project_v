@@ -8,12 +8,10 @@ class SquareTile extends StatelessWidget {
     super.key,
     required this.imagePath,
     this.onTap, // Accept onTap as a parameter, making it nullable to allow for tiles without interaction
-
   });
 
   @override
   Widget build(BuildContext context) {
-
     return InkWell(
       // Use InkWell to provide visual feedback on tap
       onTap: onTap, // Pass the onTap callback
