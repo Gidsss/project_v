@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:project_v/widgets/CustomWidgets/adminfeatureHeader.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminHeader.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminfooter.dart';
@@ -149,7 +150,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  const AdminFeatureHeader(text:"Admin Dashboard"),
+                  AdminFeatureHeader(text:"Admin Dashboard"),
                   Wrap(
                     spacing: crossAxisSpacing, // horizontal space between cards
                     runSpacing: mainAxisSpacing, // vertical space between cards
@@ -201,7 +202,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             ),
           ),
           AdminFooter(
-              buttonStatus: const [true, false, false, false, false],
+              buttonStatus: [true, false, false, false, false],
               context: context)
         ],
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 
 import 'checkoutscreen.dart';
@@ -97,7 +98,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Header2(text: "My Cart"),
+      appBar: Header2(text: "My Cart"),
       body: ListView.separated(
         itemCount: _cartItems.length,
         separatorBuilder: (context, index) => const Divider(),

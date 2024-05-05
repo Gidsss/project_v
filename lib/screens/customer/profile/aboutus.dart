@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerfooter.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 
@@ -13,7 +14,7 @@ class _AboutUsState extends State<AboutUs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Header2(text: "About us"),
+      appBar: Header2(text: "About us"),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

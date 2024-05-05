@@ -44,12 +44,12 @@ class _SecuritySettingsState extends State<SecuritySettings> {
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                padding: EdgeInsets.symmetric(horizontal: 15.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 30,),
-                    const Text(
+                    SizedBox(height: 30,),
+                    Text(
                       "Manage Security",
                       style: TextStyle(
                         fontSize: 18,
@@ -58,7 +58,7 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 5),
+                    SizedBox(height: 5),
 
                     Container(
                       width: double.infinity,
@@ -97,8 +97,8 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                                         height: 30,
                                       ),
                                     ),
-                                    const SizedBox(width: 10),
-                                    const Column(
+                                    SizedBox(width: 10),
+                                    Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
@@ -139,7 +139,7 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 10,),
+                          SizedBox(height: 10,),
                           //Enable 2FA
                           Container(
                             width: double.infinity,
@@ -164,8 +164,8 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                                         height: 30,
                                       ),
                                     ),
-                                    const SizedBox(width: 10),
-                                    const Column(
+                                    SizedBox(width: 10),
+                                    Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
@@ -207,7 +207,7 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                             ),
                           ),
 
-                          const SizedBox(height: 20,),
+                          SizedBox(height: 20,),
 
                           //Change Password
                           Container(
@@ -233,8 +233,8 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                                         height: 30,
                                       ),
                                     ),
-                                    const SizedBox(width: 10),
-                                    const Column(
+                                    SizedBox(width: 10),
+                                    Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         SizedBox(height: 7,),
@@ -254,8 +254,8 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                                 ),
 
                                 //Current Password
-                                const SizedBox(height: 25),
-                                const Text(
+                                SizedBox(height: 25),
+                                Text(
                                   "Current Password",
                                   style: TextStyle(
                                     fontSize: 14,
@@ -268,7 +268,7 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                                   obscureText: cpasswordVisible,
                                   decoration: InputDecoration(
                                     hintText: "Current Password",
-                                    helperStyle:const TextStyle(color:Colors.green),
+                                    helperStyle:TextStyle(color:Colors.green),
                                     suffixIcon: IconButton(
                                       icon: Icon(cpasswordVisible
                                           ? Icons.visibility_off
@@ -289,8 +289,8 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                                 ),
 
                                 //New Password
-                                const SizedBox(height: 25),
-                                const Text(
+                                SizedBox(height: 25),
+                                Text(
                                   "New Password",
                                   style: TextStyle(
                                     fontSize: 14,
@@ -303,7 +303,7 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                                   obscureText: npasswordVisible,
                                   decoration: InputDecoration(
                                     hintText: "New Password",
-                                    helperStyle:const TextStyle(color:Colors.green),
+                                    helperStyle:TextStyle(color:Colors.green),
                                     suffixIcon: IconButton(
                                       icon: Icon(npasswordVisible
                                           ? Icons.visibility_off
@@ -325,8 +325,8 @@ class _SecuritySettingsState extends State<SecuritySettings> {
 
                                 //Confirm Password
                                 //New Password
-                                const SizedBox(height: 25),
-                                const Text(
+                                SizedBox(height: 25),
+                                Text(
                                   "Confirm Password",
                                   style: TextStyle(
                                     fontSize: 14,
@@ -339,7 +339,7 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                                   obscureText: confpasswordVisible,
                                   decoration: InputDecoration(
                                     hintText: "Confirm Password",
-                                    helperStyle:const TextStyle(color:Colors.green),
+                                    helperStyle:TextStyle(color:Colors.green),
                                     suffixIcon: IconButton(
                                       icon: Icon(confpasswordVisible
                                           ? Icons.visibility_off
@@ -358,7 +358,7 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                                   keyboardType: TextInputType.visiblePassword,
                                   textInputAction: TextInputAction.done,
                                 ),
-                                const SizedBox(height: 25,),
+                                SizedBox(height: 25,),
 
                                 //Save Button
                                 Center(
@@ -384,10 +384,10 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                                       ),
                                       minimumSize: MaterialStateProperty.all(const Size(190, 40)), // Adjust the width and height
                                     ),
-                                    child: const Row(
+                                    child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Text(
+                                        const Text(
                                           'Save',
                                           style: TextStyle(
                                             color: Colors.white,
@@ -406,7 +406,7 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 75,),
+                    SizedBox(height: 75,),
                   ],
                 ),
               ),

@@ -1,12 +1,10 @@
-
 import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/screens/admin/products/productmanagement.dart';
 import 'package:project_v/screens/customer/appointment/schedulescreen.dart';
-import 'package:flutter/material.dart';
-import 'package:project_v/screens/admin/products/productmanagement.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminfooter.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -252,14 +250,11 @@ class EditProductState extends State<EditProduct> {
                       height: 10,
                     ),
                     Divider(),
-
                     const SizedBox(
                       height: 10,
                     ),
                     createDeleteButton(context),
-
-                    const SizedBox(height: 30,),
-
+                    SizedBox(height: 30,),
                   ],
                 ),
               )
@@ -299,7 +294,6 @@ Widget createSliderItem(BuildContext context) {
           width: 24,
           height: 24,
           decoration: BoxDecoration(
-
             shape: BoxShape.circle,
             color: Colors.black,
           ),
@@ -556,7 +550,6 @@ Widget createDeleteButton(BuildContext context){
                           style: const ButtonStyle(
                             elevation: MaterialStatePropertyAll(4),
                             backgroundColor: MaterialStatePropertyAll(const Color.fromARGB(255, 192, 40, 29),),
-
                           ),
                           onPressed: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) => const ProductsScreen(isNavigatedfromDelProd: true,)));
@@ -586,7 +579,7 @@ Widget createDeleteButton(BuildContext context){
           color: const Color.fromARGB(255, 192, 40, 29),
           borderRadius: BorderRadius.circular(30),
         ),
-        child: const Center(
+        child: Center(
           child: Text(
             "Delete Product",
             style: TextStyle(

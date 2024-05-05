@@ -9,7 +9,7 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Header2(text: "Messages"),
+      appBar: Header2(text: "Messages"),
       body: ListView.builder(
         itemCount: 10,
         itemBuilder: (context, index) {

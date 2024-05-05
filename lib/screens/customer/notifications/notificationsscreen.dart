@@ -8,7 +8,7 @@ class NotificationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Header2(text: "Notifications"),
+      appBar: Header2(text: "Notifications"),
       body: ListView.builder(
         itemCount: 10,
         itemBuilder: (context, index) {

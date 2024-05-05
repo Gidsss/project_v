@@ -27,7 +27,7 @@ class CreateButtonState extends State<CreateButton> {
         child: Center(
           child: Text(
             widget.buttontext,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w300,
               fontFamily: 'Inter',

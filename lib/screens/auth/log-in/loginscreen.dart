@@ -1,5 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:project_v/widgets/img/square_tile.dart';
 import 'package:project_v/widgets/textfields/textfield.dart';
@@ -10,38 +8,6 @@ import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/screens/customer/homescreen.dart';
 import 'package:project_v/screens/admin/admindashboard.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-// import 'package:project_v/screens/admin/admindashboard.dart';
-
-Future<void> signInWithGoogle(BuildContext context) async {
-  try {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn(
-      scopes: [
-        'email',
-        'https://www.googleapis.com/auth/userinfo.email',
-        'https://www.googleapis.com/auth/userinfo.profile',
-      ],
-    ).signIn();
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
-
-    final OAuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-
-    await FirebaseAuth.instance.signInWithCredential(credential);
-
-    // Optionally push to the HomeScreen or handle the authenticated user.
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (_) => const HomeScreen()));
-  } catch (error) {
-    print('Google sign-in error: $error');
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Google sign-in failed: $error')),
-    );
-  }
-}
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({super.key, required String title});
@@ -151,29 +117,6 @@ class LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void login(BuildContext context) async {
-    try {
-      // Attempt to sign in the user.
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-              email: emailController.text.trim(),
-              password: passwordController.text.trim());
-
-      // If successful, navigate to the HomeScreen.
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-      );
-      print("Login successful: ${userCredential.user!.email}");
-    } catch (e) {
-      // If there is an error, display a message to the user.
-      print("Login failed: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Login failed: $e")),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -192,7 +135,6 @@ class LoginScreenState extends State<LoginScreen> {
                   padding: EdgeInsets.only(
                       left: 20.0), // Adjust the padding as needed
                   child: Text(
-
                     'Login',
                     style: TextStyle(
                       color: Color(0xFF222222),
@@ -222,7 +164,6 @@ class LoginScreenState extends State<LoginScreen> {
                 ),
 
                 const SizedBox(height: 25),
-
 
                 // email textfield
                 MyTextField(
@@ -290,9 +231,14 @@ class LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 25),
 
                 // sign in button
-                LoginButton(
-                  onTap: () => login(context),
-                ),
+                LoginButton(onTap: () {
+                  // Sign-in, go to Home Screen of Customer or Admin, will add a check for the user type later
+                  //Navigator.push(context, MaterialPageRoute(builder: (context)=> const HomeScreen()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AdminDashboardScreen()));
+                }),
 
                 const SizedBox(height: 50),
                 // or login using
@@ -339,10 +285,7 @@ class LoginScreenState extends State<LoginScreen> {
                     // google button
                     SquareTile(
                       imagePath: AppConstants.googleIconPath,
-
-                      onTap: () async {
-                        await signInWithGoogle(context);
-                      },
+                      onTap: () {},
                     ),
                     const SizedBox(width: 25),
                     // facebook button
@@ -351,7 +294,6 @@ class LoginScreenState extends State<LoginScreen> {
                         onTap: () {
                           _userData == null ? _login(context) : _logOut();
                         }),
-
                   ],
                 ),
                 const SizedBox(height: 50),

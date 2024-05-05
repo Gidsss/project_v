@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 import 'package:project_v/widgets/textfields/textfield.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerfooter.dart';
@@ -17,7 +18,7 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Header2(text: "Edit Profile"),
+      appBar: Header2(text: "Edit Profile"),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerfooter.dart';
 import 'package:project_v/screens/customer/chat/chatscreen.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
@@ -14,19 +15,19 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Header2(text: "Contact Us"),
+      appBar: Header2(text: "Contact Us"),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                padding: EdgeInsets.symmetric(horizontal: 15.0),
                 child: Column(
                   children: [
                     //Facebook Page
-                    const SizedBox(height: 20,),
-                    const Row(
+                    SizedBox(height: 20,),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
@@ -41,7 +42,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                       ],
                     ),
 
-                    const SizedBox(height: 5,),
+                    SizedBox(height: 5,),
 
                     //Facebook Page Button
                     Center(
@@ -52,7 +53,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                               color: Colors.grey.withOpacity(0.3), // Adjusted shadow color and opacity
                               spreadRadius: 1, // Reduced spread radius
                               blurRadius: 10, // Reduced blur radius
-                              offset: const Offset(0, 2), // Offset in the x and y direction
+                              offset: Offset(0, 2), // Offset in the x and y direction
                             ),
                           ],
                         ),
@@ -88,7 +89,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                   height: 26,
                                 ),
                               ),
-                              const SizedBox(width: 10,),
+                              SizedBox(width: 10,),
                               const Text(
                                 'valdopenaopticalshop',
                                 style: TextStyle(
@@ -104,8 +105,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     ),
 
                     //Gmail
-                    const SizedBox(height: 15,),
-                    const Row(
+                    SizedBox(height: 15,),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
@@ -120,7 +121,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                       ],
                     ),
 
-                    const SizedBox(height: 5,),
+                    SizedBox(height: 5,),
 
                     //Gmail Button
                     Center(
@@ -131,7 +132,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                               color: Colors.grey.withOpacity(0.3), // Adjusted shadow color and opacity
                               spreadRadius: 1, // Reduced spread radius
                               blurRadius: 10, // Reduced blur radius
-                              offset: const Offset(0, 2), // Offset in the x and y direction
+                              offset: Offset(0, 2), // Offset in the x and y direction
                             ),
                           ],
                         ),
@@ -167,7 +168,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                   height: 26,
                                 ),
                               ),
-                              const SizedBox(width: 10,),
+                              SizedBox(width: 10,),
                               const Text(
                                 'valdopenaopticalshop@gmail.com',
                                 style: TextStyle(
@@ -183,8 +184,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     ),
 
                     //Phone/Telephone
-                    const SizedBox(height: 15,),
-                    const Row(
+                    SizedBox(height: 15,),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
@@ -199,7 +200,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                       ],
                     ),
 
-                    const SizedBox(height: 5,),
+                    SizedBox(height: 5,),
 
                     //Phone/Telephone Button
                     Center(
@@ -210,7 +211,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                               color: Colors.grey.withOpacity(0.3), // Adjusted shadow color and opacity
                               spreadRadius: 1, // Reduced spread radius
                               blurRadius: 10, // Reduced blur radius
-                              offset: const Offset(0, 2), // Offset in the x and y direction
+                              offset: Offset(0, 2), // Offset in the x and y direction
                             ),
                           ],
                         ),
@@ -246,7 +247,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                   height: 26,
                                 ),
                               ),
-                              const SizedBox(width: 10,),
+                              SizedBox(width: 10,),
                               const Text(
                                 '+63-950 441 0844',
                                 style: TextStyle(
@@ -262,8 +263,8 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                     ),
 
                     //Chat Now
-                    const SizedBox(height: 15,),
-                    const Row(
+                    SizedBox(height: 15,),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Text(
@@ -278,7 +279,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                       ],
                     ),
 
-                    const SizedBox(height: 5,),
+                    SizedBox(height: 5,),
 
                     //Chat Now Button
                     Center(
@@ -289,7 +290,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                               color: Colors.grey.withOpacity(0.3), // Adjusted shadow color and opacity
                               spreadRadius: 1, // Reduced spread radius
                               blurRadius: 10, // Reduced blur radius
-                              offset: const Offset(0, 2), // Offset in the x and y direction
+                              offset: Offset(0, 2), // Offset in the x and y direction
                             ),
                           ],
                         ),
@@ -328,7 +329,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                   height: 26,
                                 ),
                               ),
-                              const SizedBox(width: 10,),
+                              SizedBox(width: 10,),
                               const Text(
                                 'Chat us now',
                                 style: TextStyle(
@@ -338,7 +339,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              const SizedBox(width: 166,),
+                              SizedBox(width: 166,),
                               SizedBox(
                                 child: Image.asset(
                                   'assets/images/RightArrow.png', // asset icon

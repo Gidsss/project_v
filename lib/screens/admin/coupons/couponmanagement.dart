@@ -18,11 +18,11 @@ class _CouponsScreenState extends State<CouponsScreen>{
         body: Column(
       children: [
         AdminHeader(context: context),
-        const Expanded(
+        Expanded(
           child: Text("Coupons"),
         ),
         AdminFooter(
-            buttonStatus: const [false, false, true, false, false], context: context)
+            buttonStatus: [false, false, true, false, false], context: context)
       ],
     ));
   }}

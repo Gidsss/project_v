@@ -390,9 +390,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                                           context,
                                                           MaterialPageRoute(
                                                               builder: (context) =>
-
-                                                                  const EditProduct()));
-
+                                                                  EditProduct()));
                                                     },
                                                   ))
                                               : const TableCell(
@@ -484,7 +482,7 @@ Widget createSearchCategory(BuildContext context) {
         visualDensity: VisualDensity.compact,
         minVerticalPadding: 0,
         dense: true,
-        leading: SizedBox(
+        leading: Container(
           width: MediaQuery.of(context).size.width * 0.45,
           height: MediaQuery.of(context).size.height * 0.25,
           child: TextFormField(

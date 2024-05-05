@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerfooter.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -11,7 +12,7 @@ class BookingScreenStepThree extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Header2(text: "Set an Appointment"),
+      appBar: Header2(text: "Set an Appointment"),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
