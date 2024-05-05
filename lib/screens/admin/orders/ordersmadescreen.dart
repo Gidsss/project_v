@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminHeader.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminfooter.dart';
 
-class CouponsScreen extends StatefulWidget{
-  const CouponsScreen({super.key});
+class OrdersMadeScreen extends StatefulWidget {
+  const OrdersMadeScreen({super.key});
 
   @override
-  State<CouponsScreen> createState() => _CouponsScreenState();
-  }
+  State<OrdersMadeScreen> createState() => _OrdersMadeScreenState();
+}
 
-class _CouponsScreenState extends State<CouponsScreen>{
-
-  @override
+class _OrdersMadeScreenState extends State<OrdersMadeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,11 +17,11 @@ class _CouponsScreenState extends State<CouponsScreen>{
       children: [
         AdminHeader(context: context),
         const Expanded(
-          child: Text("Coupons"),
+          child: Text("Orders Made"),
         ),
         AdminFooter(
-            buttonStatus: const [false, false, true, false, false], context: context)
+            buttonStatus: const [false, false, false, true, false], context: context)
       ],
     ));
-  }}
-
+  }
+}
