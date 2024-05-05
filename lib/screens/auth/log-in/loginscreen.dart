@@ -9,6 +9,7 @@ import 'package:project_v/screens/auth/signup/signupscreen.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/screens/customer/homescreen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 // import 'package:project_v/screens/admin/admindashboard.dart';
 
 Future<void> signInWithGoogle(BuildContext context) async {
@@ -38,6 +39,44 @@ Future<void> signInWithGoogle(BuildContext context) async {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Google sign-in failed: $error')),
     );
+  }
+}
+
+// FB LOGIN
+Future<void> signInWithFacebook(BuildContext context) async {
+  Map<String, dynamic>? _userData; // used to store user data.
+  AccessToken? _fbaccessToken;
+  try {
+    final LoginResult fbLoginResult = await FacebookAuth.instance.login();
+
+    if (fbLoginResult.status == LoginStatus.success) {
+      _fbaccessToken = fbLoginResult.accessToken;
+
+      final userData = await FacebookAuth.instance.getUserData();
+      _userData = userData;
+
+      // Create a credential from the access token
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(fbLoginResult.accessToken!.token);
+
+      // Once signed in, return the UserCredential
+      await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+
+      if (context.mounted) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: ((context) => const HomeScreen())));
+      }
+    } else {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content:
+                Text('Facebook sign-in failed: ${fbLoginResult.message}')));
+      }
+      print("Fail FB Login Status: ${fbLoginResult.status}");
+      print("Fail FB Login Message: ${fbLoginResult.message}");
+    }
+  } catch (e) {
+    print("FB Login Error: $e");
   }
 }
 
@@ -250,7 +289,7 @@ class LoginScreen extends StatelessWidget {
                     SquareTile(
                       imagePath: AppConstants.facebookIconPath,
                       onTap: () async {
-                        // await loginWithFacebook(context);
+                        await signInWithFacebook(context);
                       },
                     ),
                   ],

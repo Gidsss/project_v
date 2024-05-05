@@ -50,6 +50,7 @@ dependencies:
   firebase_auth: ^4.2.2   # Add Firebase authentication package
   cloud_firestore: ^4.17.2  # Add Cloud Firestore, a noSQL database package
   firebase_storage: ^11.7.4 # Add Firebase storage package
+  flutter_facebook_auth: ^6.2.0
   
 
   
