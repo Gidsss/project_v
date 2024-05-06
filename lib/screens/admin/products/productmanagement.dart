@@ -280,33 +280,70 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                   TableRow(
                                     children: const [
                                       TableCell(
-                                          child: Padding(
-                                        padding: EdgeInsets.all(18),
-                                        child: Text("Image",
-                                            style:
-                                                TextStyle(color: Colors.white)),
-                                      )),
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              left:
+                                                  20), // Adjust top and left padding to change the position
+                                          child: Align(
+                                            alignment: Alignment
+                                                .topLeft, // Adjust alignment as needed
+                                            child: Text(
+                                              "Image",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                       TableCell(
-                                          child: Padding(
-                                        padding: EdgeInsets.all(54),
-                                        child: Text("Name",
-                                            style:
-                                                TextStyle(color: Colors.white)),
-                                      )),
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              left:
+                                                  55), // Adjust top and left padding to change the position
+                                          child: Align(
+                                            alignment: Alignment
+                                                .topLeft, // Adjust alignment as needed
+                                            child: Text(
+                                              "Name",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                       TableCell(
-                                          child: Padding(
-                                        padding: EdgeInsets.all(18),
-                                        child: Text("Stock",
-                                            style:
-                                                TextStyle(color: Colors.white)),
-                                      )),
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              left:
+                                                  20), // Adjust top and left padding to change the position
+                                          child: Align(
+                                            alignment: Alignment
+                                                .topLeft, // Adjust alignment as needed
+                                            child: Text(
+                                              "Stock",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                       TableCell(
-                                          child: Padding(
-                                        padding: EdgeInsets.all(20),
-                                        child: Text("Sold",
-                                            style:
-                                                TextStyle(color: Colors.white)),
-                                      )),
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 10,
+                                              left:
+                                                  25, bottom: 10,), // Adjust top and left padding to change the position
+                                          child: Align(
+                                            alignment: Alignment
+                                                .topLeft, // Adjust alignment as needed
+                                            child: Text(
+                                              "Sold",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                     decoration: BoxDecoration(
                                       color: Colors.black.withOpacity(0.9),
@@ -384,7 +421,8 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: const TextStyle(
-                                                        fontWeight: FontWeight.w600,
+                                                          fontWeight:
+                                                              FontWeight.w600,
                                                           color: Colors.black));
                                                 }),
                                         )),
