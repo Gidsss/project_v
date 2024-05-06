@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:project_v/widgets/CustomWidgets/UniversalButton.dart';
+// import 'package:project_v/widgets/CustomWidgets/UniversalButton.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import '../../../widgets/CustomFooterHeaderWidgets/adminfooter.dart';
 import '../../../widgets/CustomFooterHeaderWidgets/header2.dart';
@@ -325,20 +325,56 @@ class _EditProductState extends State<EditProduct> {
           },
         );
       },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 192, 40, 29),
-          borderRadius: BorderRadius.circular(30),
+      child: SizedBox(
+        width: 380, // Adjust width to fit better
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 192, 40, 29),
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: const Center(
+            child: Text(
+              "Delete Product",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w300,
+                fontFamily: 'Inter',
+                fontSize: 16,
+              ),
+            ),
+          ),
         ),
-        child: const Center(
-          child: Text(
-            "Delete Product",
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w300,
-              fontFamily: 'Inter',
-              fontSize: 16,
+      ),
+    );
+  }
+
+  Widget createSaveChangesButton(BuildContext context) {
+    return SizedBox(
+      width: 380, // Adjust width as needed
+      child: InkWell(
+        onTap: () {
+          showEditProductDialog(
+              context); // Make sure this function is defined to handle the save operation
+        },
+        child: SizedBox(
+          width: 380, // Adjust width to fit better
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+            decoration: BoxDecoration(
+              color: Colors.black,
+              borderRadius: BorderRadius.circular(30),
+            ),
+            child: const Center(
+              child: Text(
+                "Save Changes",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w300,
+                  fontFamily: 'Inter',
+                  fontSize: 16,
+                ),
+              ),
             ),
           ),
         ),
@@ -356,6 +392,7 @@ class _EditProductState extends State<EditProduct> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  const SizedBox(height: 15),
                   CarouselSlider(
                     options: CarouselOptions(
                         initialPage: 0,
@@ -369,29 +406,118 @@ class _EditProductState extends State<EditProduct> {
                       createSliderItem(context, 2, () => pickImage(2))
                     ],
                   ),
-                  TextField(
-                    controller: nameController,
-                    decoration: const InputDecoration(labelText: 'Name'),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment
+                        .start, // Aligns children to the start of the column (left side)
+                    children: [
+                      const Text(
+                        "Product Name",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 5),
+                      SizedBox(
+                        width: 380, // Set a fixed width for the TextField
+                        child: TextField(
+                          controller: nameController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 8),
+                          ),
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ),
+                    ],
                   ),
-                  TextField(
-                    controller: priceController,
-                    decoration: const InputDecoration(labelText: 'Price'),
+                  const SizedBox(height: 15),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment
+                        .start, // Aligns children to the start of the column (left side)
+                    children: [
+                      const Text(
+                        "Price",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 5),
+                      SizedBox(
+                        width: 380, // Set a fixed width for the TextField
+                        child: TextField(
+                          controller: priceController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            prefixText: "₱ ",
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 8),
+                          ),
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ),
+                    ],
                   ),
-                  TextField(
-                    controller: descriptionController,
-                    decoration: const InputDecoration(labelText: 'Description'),
+                  const SizedBox(height: 15),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment
+                        .start, // Aligns children to the start of the column (left side)
+                    children: [
+                      const Text(
+                        "Product Description",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 5),
+                      SizedBox(
+                        width: 380, // Set a fixed width for the TextField
+                        child: TextField(
+                          controller: descriptionController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 8),
+                          ),
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ),
+                    ],
                   ),
-                  TextField(
-                    controller: soldController,
-                    decoration: const InputDecoration(labelText: 'Sold'),
+                  const SizedBox(height: 15),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment
+                        .start, // Aligns children to the start of the column (left side)
+                    children: [
+                      const Text(
+                        "Number of Items Sold",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 5),
+                      SizedBox(
+                        width: 380, // Set a fixed width for the TextField
+                        child: TextField(
+                          controller: soldController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 8),
+                          ),
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ),
+                    ],
                   ),
-                  CreateButton(
-                      buttontext: "Save Changes",
-                      navigator: () {
-                        showEditProductDialog(context);
-                      },
-                      context: context),
-                  createDeleteButton(context),
+                  const SizedBox(height: 15),
+                  Column(
+                    children: [
+                      createSaveChangesButton(context),
+                      const SizedBox(
+                        width: 380, // Specify the exact width of the divider
+                        child: Divider(
+                          color: Colors.grey,
+                          height: 20,
+                          thickness: 1,
+                        ),
+                      ),
+                      createDeleteButton(context),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
                 ],
               ),
             ),

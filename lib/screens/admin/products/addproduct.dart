@@ -316,9 +316,17 @@ class AddProductState extends State<AddProduct> {
                     const SizedBox(
                       height: 5,
                     ),
-                    TextField(
-                      controller: nameController,
-                      decoration: const InputDecoration(labelText: 'Name'),
+                    SizedBox(
+                      width: 380, // Set a fixed width for the TextField
+                      child: TextField(
+                        controller: nameController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        ),
+                        style: const TextStyle(fontSize: 14),
+                      ),
                     ),
                     const SizedBox(
                       height: 15,
@@ -330,10 +338,17 @@ class AddProductState extends State<AddProduct> {
                     const SizedBox(
                       height: 5,
                     ),
-                    TextField(
-                      controller: productModelNumberController,
-                      decoration:
-                          const InputDecoration(labelText: 'Product Number'),
+                    SizedBox(
+                      width: 380, // Set a fixed width for the TextField
+                      child: TextField(
+                        controller: productModelNumberController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        ),
+                        style: const TextStyle(fontSize: 14),
+                      ),
                     ),
                     const SizedBox(
                       height: 15,
@@ -345,10 +360,17 @@ class AddProductState extends State<AddProduct> {
                     const SizedBox(
                       height: 5,
                     ),
-                    TextField(
-                      controller: descriptionController,
-                      decoration:
-                          const InputDecoration(labelText: 'Description'),
+                    SizedBox(
+                      width: 380, // Set a fixed width for the TextField
+                      child: TextField(
+                        controller: descriptionController,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        ),
+                        style: const TextStyle(fontSize: 14),
+                      ),
                     ),
                     const SizedBox(
                       height: 15,
@@ -360,9 +382,18 @@ class AddProductState extends State<AddProduct> {
                     const SizedBox(
                       height: 5,
                     ),
-                    TextField(
-                      controller: priceController,
-                      decoration: const InputDecoration(labelText: 'Price'),
+                    SizedBox(
+                      width: 380, // Set a fixed width for the TextField
+                      child: TextField(
+                        controller: priceController,
+                        decoration: const InputDecoration(
+                          prefixText: '₱ ',
+                          border: OutlineInputBorder(),
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        ),
+                        style: const TextStyle(fontSize: 14),
+                      ),
                     ),
                     const SizedBox(
                       height: 15,
@@ -375,17 +406,25 @@ class AddProductState extends State<AddProduct> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                "Product Color",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              TextField(
-                                controller: productColorController,
-                                decoration:
-                                    const InputDecoration(labelText: 'Color'),
+                              const Text("Product Color",
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                              DropdownButton<ColorLabel>(
+                                value: selectedColor,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    selectedColor = newValue;
+                                    productColorController.text =
+                                        newValue.toString().split('.').last;
+                                  });
+                                },
+                                items: ColorLabel.values.map((color) {
+                                  return DropdownMenuItem(
+                                    value: color,
+                                    child:
+                                        Text(color.toString().split('.').last),
+                                  );
+                                }).toList(),
                               ),
                             ],
                           ),
@@ -406,10 +445,18 @@ class AddProductState extends State<AddProduct> {
                               const SizedBox(
                                 height: 5,
                               ),
-                              TextField(
-                                controller: productQuantityController,
-                                decoration: const InputDecoration(
-                                    labelText: 'Quantity'),
+                              SizedBox(
+                                width:
+                                    200, // Set a fixed width for the TextField
+                                child: TextField(
+                                  controller: productQuantityController,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 8),
+                                  ),
+                                  style: const TextStyle(fontSize: 14),
+                                ),
                               ),
                             ],
                           ),
@@ -424,11 +471,20 @@ class AddProductState extends State<AddProduct> {
                     const SizedBox(
                       height: 20,
                     ),
-                    TextField(
-                      controller: productGradeController,
-                      decoration:
-                          const InputDecoration(labelText: 'Yes or No?'),
+                    SizedBox(
+                      width: 380, // Set a fixed width for the TextField
+                      child: TextField(
+                        controller: productGradeController,
+                        decoration: const InputDecoration(
+                          
+                          border: OutlineInputBorder(),
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        ),
+                        style: const TextStyle(fontSize: 14),
+                      ),
                     ),
+                    const SizedBox(height: 10),
                     // Should probably validate the inputs, before allowing a navpush
                     CreateButton(
                         buttontext: "Add Product",
