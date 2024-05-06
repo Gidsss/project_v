@@ -112,10 +112,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     radius: 50,
                     backgroundImage: _imageFile != null
                         ? FileImage(_imageFile!) as ImageProvider
-                        : user?.photoURL != null
-                            ? NetworkImage(user!.photoURL!)
-                            : userProfilePic != null
-                                ? NetworkImage(userProfilePic!)
+                        : userProfilePic != null
+                            ? NetworkImage(userProfilePic!)
+                            : user?.photoURL != null
+                                ? NetworkImage(user!.photoURL!)
                                 : const AssetImage('assets/images/user.png')
                                     as ImageProvider,
                   ),
