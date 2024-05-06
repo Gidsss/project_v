@@ -293,9 +293,9 @@ class AddProductState extends State<AddProduct> {
               ),
               CarouselSlider(
                 options: CarouselOptions(
-                    initialPage: 0,
+                    initialPage: 1,
                     enableInfiniteScroll: false,
-                    viewportFraction: 0.8,
+                    viewportFraction: 0.5,
                     height: MediaQuery.of(context).size.height * 0.30,
                     enlargeCenterPage: true),
                 items: [
