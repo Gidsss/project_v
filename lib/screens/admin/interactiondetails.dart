@@ -1,44 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 
-class ChatDetailScreen extends StatelessWidget {
-  const ChatDetailScreen({super.key});
+class InteractionDetailsScreen extends StatelessWidget {
+  const InteractionDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const Header2(text: "Black Luminaire"),
+      appBar: const Header2(text: "Customer Support"),
       body: ListView(
         children: const <Widget>[
           MessageBubble(
             sender: 'Customer',
             text: 'Hi! Is this Available?',
             time: 'SAT AT 9:01 PM',
-            isMe: true,
-          ),
-          MessageBubble(
-            sender: 'Customer',
-            text: 'Plastic Round Glasses\n₱2,999.00',
-            time: 'SAT AT 9:01 PM',
-            isMe: true,
+            isMe: false,
           ),
           MessageBubble(
             sender: 'Merchant',
-            text: 'Yes, Plastic Round Glasses is still Available.',
+            text: 'Yes, the item still Available.',
             time: 'SAT AT 9:01 PM',
-            isMe: false,
+            isMe: true,
           ),
           MessageBubble(
             sender: 'Customer',
             text: 'Can I make an Offer?',
-            time: 'SAT AT 9:01 PM',
-            isMe: true,
+            time: 'SAT AT 9:03 PM',
+            isMe: false,
           ),
           MessageBubble(
-            sender: 'Merchant',
-            text: 'Yes, you can make offer',
-            time: 'SAT AT 9:01 PM',
-            isMe: false,
+            sender: 'You',
+            text: 'Yes',
+            time: 'SAT AT 9:03 PM',
+            isMe: true,
           ),
         ],
       ),
@@ -109,6 +103,7 @@ class MessageBubble extends StatelessWidget {
             style: const TextStyle(
               fontSize: 12.0,
               color: Colors.black54,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ],
