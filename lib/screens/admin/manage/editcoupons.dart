@@ -179,6 +179,13 @@ class _EditCouponScreenState extends State<EditCouponScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Center(
+                      child: Image.asset(
+                        'assets/images/AllCouponsIcon.png', // Asset icon
+                        width: 88,
+                        height: 88,
+                      ),
+                    ),
                     const Text("Coupon Code Name",
                         style: TextStyle(fontWeight: FontWeight.bold)),
                     createField(couponCodeController),

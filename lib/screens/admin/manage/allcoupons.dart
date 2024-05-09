@@ -78,6 +78,8 @@ class _AllCouponsScreenState extends State<AllCouponsScreen>
         }
 
         return ListView(
+          padding:
+              const EdgeInsets.all(4.0), // Optional padding for the whole list
           children: snapshot.data!.docs.map((doc) {
             Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
             String couponCode = data['couponCode'] ?? 'No Code';
@@ -88,61 +90,71 @@ class _AllCouponsScreenState extends State<AllCouponsScreen>
             String status = data['status'] ?? 'Unknown';
             String documentId = doc.id;
 
-            return Card(
-              child: ListTile(
-                leading: const Padding(
-                  padding: EdgeInsets.only(
-                      right: 24.0, top: 24.0), // Adjust the padding as needed
-                  child: SizedBox(
-                    width: 10, // Adjust the width as needed
-                    height: 75, // Adjust the height as needed
-                    child: Icon(Icons.local_offer,
+            return Padding(
+              padding: const EdgeInsets.symmetric(
+                  vertical: 4.0), // Adds spacing between each card
+              child: Card(
+                child: ListTile(
+                  leading: const Padding(
+                    padding: EdgeInsets.only(
+                        right: 24.0, top: 24.0), // Adjust as needed
+                    child: SizedBox(
+                      width: 10, // Adjust the width as needed
+                      height: 75, // Adjust the height as needed
+                      child: Icon(
+                        Icons.local_offer,
                         color: Colors.black,
-                        size: 35), // Adjust the size as needed
-                  ),
-                ),
-                title: Text(
-                  "$couponCode | $benefits",
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 14),
-                ),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Usage Limit: $usageLimit           Status: $status",
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w500, fontSize: 13),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4.0),
-                      child: Text("Start Date: ${data['startDate'] ?? '---'}",
-                          style: const TextStyle(fontSize: 12)),
-                    ),
-                    Text("End Date: ${data['endDate'] ?? '---'}",
-                        style: const TextStyle(fontSize: 12)),
-                  ],
-                ),
-                trailing: const Icon(Icons.arrow_forward_ios),
-                isThreeLine: true,
-                onTap: () {
-                  // Navigate to the edit screen
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EditCouponScreen(
-                        couponCode: couponCode,
-                        description: data['description'] ?? '',
-                        benefits: benefits,
-                        usageLimit: usageLimit,
-                        status: status,
-                        startDate: data['startDate'] ?? '',
-                        endDate: data['endDate'] ?? '',
-                        documentId: documentId,
+                        size: 35, // Adjust the size as needed
                       ),
                     ),
-                  );
-                },
+                  ),
+                  title: Text(
+                    "$couponCode | $benefits",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 14),
+                  ),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Usage Limit: $usageLimit           Status: $status",
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 13),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4.0),
+                        child: Text(
+                          "Start Date: ${data['startDate'] ?? '---'}",
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                      ),
+                      Text(
+                        "End Date: ${data['endDate'] ?? '---'}",
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                    ],
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios),
+                  isThreeLine: true,
+                  onTap: () {
+                    // Navigate to the edit screen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditCouponScreen(
+                          couponCode: couponCode,
+                          description: data['description'] ?? '',
+                          benefits: benefits,
+                          usageLimit: usageLimit,
+                          status: status,
+                          startDate: data['startDate'] ?? '',
+                          endDate: data['endDate'] ?? '',
+                          documentId: documentId,
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             );
           }).toList(),
@@ -152,7 +164,6 @@ class _AllCouponsScreenState extends State<AllCouponsScreen>
   }
 
   Widget buildRedeemsList() {
-    
     return ListView(
       children: const [
         ListTile(
@@ -166,7 +177,6 @@ class _AllCouponsScreenState extends State<AllCouponsScreen>
   }
 
   Widget buildStatusList() {
-
     return ListView(
       children: const [
         ListTile(
