@@ -315,7 +315,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                         child: Padding(
                                           padding: EdgeInsets.only(
                                               left:
-                                                  20), // Adjust top and left padding to change the position
+                                                  16), // Adjust top and left padding to change the position
                                           child: Align(
                                             alignment: Alignment
                                                 .topLeft, // Adjust alignment as needed
@@ -384,7 +384,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                         )),
                                         TableCell(
                                             child: Padding(
-                                          padding: const EdgeInsets.all(28),
+                                          padding: const EdgeInsets.all(24),
                                           child: Text(
                                               doc['productQuantity'].toString(),
                                               textAlign: TextAlign.left,
