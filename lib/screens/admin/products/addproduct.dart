@@ -21,6 +21,17 @@ enum ColorLabel {
   final Color color;
 } // Should match the colors in categories.
 
+enum CategoryLabel {
+  men('Men'),
+  women('Women'),
+  reading('Reading'),
+  accessories('Accessories'),
+  kids('Kids');
+
+  const CategoryLabel(this.label);
+  final String label;
+}
+
 class AddProduct extends StatefulWidget {
   const AddProduct({super.key});
 
@@ -34,6 +45,8 @@ class AddProductState extends State<AddProduct> {
   bool? isChecked;
   final TextEditingController colorController = TextEditingController();
   ColorLabel? selectedColor;
+  CategoryLabel? selectedCategory;
+  final TextEditingController categoryController = TextEditingController();
   final ImagePicker picker = ImagePicker();
   List<File?> imageFiles = List.filled(3, null);
   List<String> imageUrls = [];
@@ -45,7 +58,6 @@ class AddProductState extends State<AddProduct> {
   final productQuantityController = TextEditingController();
   final descriptionController = TextEditingController();
   final productGradeController = TextEditingController();
-
   // Function to handle image selection
   Future<void> pickImage(int index) async {
     try {
@@ -77,6 +89,7 @@ class AddProductState extends State<AddProduct> {
           'productQuantity': productQuantityController.text,
           'productGrade': productGradeController.text,
           'imageUrls': imageUrls,
+          'category': categoryController.text
         });
       } catch (e) {
         ScaffoldMessenger.of(context)
@@ -120,7 +133,6 @@ class AddProductState extends State<AddProduct> {
       await addProduct(); // Add the product after successful uploads
       if (mounted) {
         Navigator.pop(context); // Navigate back after adding the product
-        
       }
     } else {
       print("Not all images were uploaded. Please check.");
@@ -258,6 +270,31 @@ class AddProductState extends State<AddProduct> {
     );
   }
 
+  Widget createCategoryDropdown() {
+    return SizedBox(
+      width: 380,
+      child: DropdownButtonFormField<CategoryLabel>(
+        value: selectedCategory, // Variable to store selected category
+        onChanged: (newValue) {
+          setState(() {
+            selectedCategory = newValue;
+            categoryController.text = newValue?.label ?? '';
+          });
+        },
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        ),
+        items: CategoryLabel.values.map((category) {
+          return DropdownMenuItem<CategoryLabel>(
+            value: category,
+            child: Text(category.label),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
   Widget createSliderItem(
       BuildContext context, int index, VoidCallback pickImage) {
     return Stack(children: [
@@ -358,6 +395,7 @@ class AddProductState extends State<AddProduct> {
                         controller: productModelNumberController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
+                          prefixText: '#',
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                         ),
@@ -409,6 +447,17 @@ class AddProductState extends State<AddProduct> {
                         style: const TextStyle(fontSize: 14),
                       ),
                     ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    const Text(
+                      "Product Category",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    createCategoryDropdown(),
                     const SizedBox(
                       height: 15,
                     ),
