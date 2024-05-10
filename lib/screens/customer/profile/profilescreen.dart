@@ -502,10 +502,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                     const SizedBox(
                         height:
-                            10.0), // Add some space between order button and view appointment button
+                            10.0) // Add some space between order button and view appointment button
 
                     // View Appointment Button
-                    ElevatedButton(
+                    /*ElevatedButton(
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -575,7 +575,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ],
                       ),
-                    ),
+                    ),*/
                   ],
                 )),
 

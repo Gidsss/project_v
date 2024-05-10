@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerheaderfooter.dart';
 import 'package:project_v/screens/customer/explore/productdetails.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
@@ -41,7 +42,7 @@ class ProductItem extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               image: DecorationImage(
-                image: AssetImage(imageURL),
+                image: NetworkImage(imageURL),
                 fit: BoxFit.cover,
               ),
               border: Border.all(
@@ -58,15 +59,19 @@ class ProductItem extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    name,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                  SizedBox(
+                    width: 100,
+                    child: Text(
+                      name,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                   Text(
-                    price,
+                    '₱$price',
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.normal,
@@ -108,6 +113,49 @@ class ProductItem extends StatelessWidget {
 }
 
 class _ExploreScreenState extends State<ExploreScreen> {
+  final db = FirebaseFirestore.instance;
+  List<String> prodName = [];
+  List<String> prodQuantity = [];
+  List<String> prodPrice = [];
+  List<String> prodDescription = [];
+  List<String> prodSold= [];
+  // List<String> prodCategory = [];
+  List<String> tempImageUrls = [];
+  List<String> imageUrls = [];
+
+ Future<void> getProducts() async {
+  try {
+    QuerySnapshot querySnapshot = await db.collection("products").get();
+
+    for (var docsSnapshot in querySnapshot.docs) {
+      Map<String, dynamic> prodData = docsSnapshot.data() as Map<String, dynamic>;
+      prodName.add(prodData['name']);
+      prodQuantity.add(prodData['productQuantity']);
+      prodPrice.add(prodData['price']);
+      prodDescription.add(prodData['description']);
+      prodSold.add(prodData['sold']);
+      tempImageUrls.addAll(List.from(prodData['imageUrls']));
+      // Assuming there's at least one image URL
+      imageUrls.add(tempImageUrls[0]);
+      tempImageUrls = [];
+      
+    }
+
+    // Update the state after fetching all data
+    setState(() {});
+  } catch (e) {
+    // Handle errors gracefully
+    print("Error getting product details: $e");
+    // Consider displaying a user-friendly message
+  }
+}
+
+  @override
+  void initState(){
+    super.initState();
+    getProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     return HeaderFooter(
@@ -239,24 +287,25 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   crossAxisSpacing: 20,
                   childAspectRatio: 0.75,
                 ),
-                itemCount: 6, // Adjust the number of products
+                itemCount: prodName.length, // Get the number of products from the number of product names in list.
                 itemBuilder: (context, index) {
                   return Center(
                     // Center the ProductItem widget
                     child: ProductItem(
                       imageURL:
-                          'assets/images/product_${index + 1}.jpg', // Replace with actual image URL
-                      name: 'Product ${index + 1}',
-                      price: '₱${(index + 1) * 100}', // Adjust the price
+                          imageUrls[index],
+                      name: prodName[index],
+                      price: prodPrice[index], // Adjust the price
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => ProductDetailScreen(
                               imageURL:
-                                  'assets/images/product_${index + 1}.jpg',
-                              name: 'Product ${index + 1}',
-                              price: '₱${(index + 1) * 100}',
+                                  imageUrls[index],
+                              name: prodName[index],
+                              price: '₱${prodPrice[index]}',
+                              description: prodDescription[index]
                             ),
                           ),
                         );

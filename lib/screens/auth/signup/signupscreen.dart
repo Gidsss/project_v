@@ -69,7 +69,7 @@ class SignUpScreen extends StatelessWidget {
       context,
       MaterialPageRoute(
           builder: (context) =>
-              const HomeScreen()), // Replace NextScreen with the screen you want to navigate to
+              HomeScreen()), // Replace NextScreen with the screen you want to navigate to
     );
   }
 

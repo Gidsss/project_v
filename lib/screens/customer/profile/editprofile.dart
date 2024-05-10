@@ -3,6 +3,7 @@ import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 import 'package:project_v/widgets/textfields/textfield.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerfooter.dart';
 
+// Will connect to the customers collection in the database
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
 
