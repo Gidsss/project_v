@@ -222,11 +222,8 @@ class _HeaderFooterState extends State<HeaderFooter>
                 Row(
                   children: [
                     headerIconButton(context, Icons.mark_unread_chat_alt_outlined, const ChatScreen()),
-                    const SizedBox(width: 6),
                     headerIconButton(context, Icons.notifications_outlined, const NotificationsScreen()),
-                    const SizedBox(width: 6),
                     headerIconButton(context, Icons.favorite_border, const WishlistScreen()),
-                    const SizedBox(width: 6),
                     headerIconButton(context, Icons.shopping_bag_outlined, const CartScreen()),
                   ],
                 ),
@@ -259,7 +256,7 @@ class _HeaderFooterState extends State<HeaderFooter>
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const HomeScreen()));
+                      builder: (context) => HomeScreen()));
             }),
             buttonStatus[1]
                 ? buildButton("Explore", Icons.explore, buttonStatus[1], () {})
@@ -270,7 +267,7 @@ class _HeaderFooterState extends State<HeaderFooter>
                   MaterialPageRoute(
                       builder: (context) => const ExploreScreen()));
             }),
-            buttonStatus[2]
+           /* buttonStatus[2]
                 ? buildButton(
                 "Schedule", Icons.calendar_month, buttonStatus[2], () {})
                 : buildButton(
@@ -280,7 +277,7 @@ class _HeaderFooterState extends State<HeaderFooter>
                       context,
                       MaterialPageRoute(
                           builder: (context) => const ScheduleScreen()));
-                }),
+                }),*/
             buttonStatus[3]
                 ? buildButton(
                 "Orders", Icons.local_shipping, buttonStatus[3], () {})
@@ -382,6 +379,8 @@ class _HeaderFooterState extends State<HeaderFooter>
 
 Widget headerIconButton( BuildContext context, IconData icon, Widget page) {
   return IconButton(
+    padding: EdgeInsets.zero,
+    visualDensity: VisualDensity.compact,
     onPressed: () {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => page));
     },
@@ -390,7 +389,6 @@ Widget headerIconButton( BuildContext context, IconData icon, Widget page) {
       size: 30,
       color: Colors.black,
     ),
-    padding: const EdgeInsets.all(0),
     constraints: const BoxConstraints(),
   );
 }

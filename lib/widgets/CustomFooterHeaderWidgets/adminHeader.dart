@@ -85,6 +85,7 @@ Widget buildmainHeader(BuildContext context) {
 
 Widget headerIconButton(BuildContext context, IconData icon, Widget page) {
   return IconButton(
+    visualDensity: VisualDensity.compact,
     onPressed: () {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => page));
     },
