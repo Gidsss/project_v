@@ -4,6 +4,7 @@ import 'package:project_v/screens/customer/orders/orderdetails.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerheaderfooter.dart';
 // import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 // import 'package:project_v/screens/main/bookingscreenStepOne.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class OrdersScreen extends StatefulWidget {
@@ -16,6 +17,7 @@ class OrdersScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrdersScreen>
     with TickerProviderStateMixin {
   late TabController _ordersTabController;
+  final db = FirebaseFirestore.instance;
 
   @override
   void initState() {
@@ -140,7 +142,7 @@ class _OrderScreenState extends State<OrdersScreen>
               ],
             ),
           ),
-          const SizedBox(width: 70),
+          const SizedBox(width: 55),
           IconButton(
             onPressed: () {
               Navigator.push(

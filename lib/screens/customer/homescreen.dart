@@ -1,10 +1,136 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerheaderfooter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:project_v/screens/customer/explore/productdetails.dart';
 
-
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => HomeScreenState();
+}
+
+class HomeScreenState extends State<HomeScreen> {
+  late DateTime _targetDateTime = DateTime(2025, 12, 31, 23, 59, 59);
+  Duration _remainingTime = const Duration();
+  late Timer _timer;
+
+  // Initialize lists
+  final db = FirebaseFirestore.instance;
+  List<String> prodDesc = [];
+  List<String> prodName = [];
+  List<String> prodPrice = [];
+  List<String> prodSold = [];
+  List<String> imageUrls = [];
+  List<String> imageUrlsTemp = [];
+  List<String> topProductIds = [];
+  var time;
+
+  // Retrieve the top selling products
+  Future<List<String>> getTopProducts() async {
+    try {
+      QuerySnapshot querySnapshot = await db
+          .collection('products')
+          .orderBy('sold', descending: true)
+          .limit(5)
+          .get();
+
+      querySnapshot.docs.forEach((doc) {
+        topProductIds.add(doc.id);
+      });
+
+      return topProductIds;
+    } catch (error) {
+      throw Exception('Failed to get top selling products: $error');
+    }
+  }
+
+  // add the data of each top selling product to the list
+  Future<void> initializeProducts() async {
+    try {
+      List<String> productIds = await getTopProducts();
+      if (productIds.isNotEmpty) {
+        for (String prodId in productIds) {
+          await loadProductDetails(prodId);
+        }
+      }
+    } catch (error) {
+      print('Error initializing products: $error');
+    }
+  }
+
+  Future<void> loadProductDetails(String productId) async {
+    DocumentSnapshot productData =
+        await db.collection('products').doc(productId).get();
+    if (productData.exists) {
+      Map<String, dynamic> data = productData.data() as Map<String, dynamic>;
+      prodDesc.add(data['description']);
+      prodName.add(data['name']);
+      prodPrice.add(data['price']);
+      prodSold.add(data['sold']);
+      imageUrlsTemp.addAll(List.from(data['imageUrls']));
+      imageUrls.add(imageUrlsTemp[0]);
+      imageUrlsTemp = [];
+      setState(() {});
+    }
+  }
+
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "${duration.inHours}  :  $twoDigitMinutes  :  $twoDigitSeconds";
+  }
+
+  Future<void> _loadTargetDateTime() async {
+    final prefs = await SharedPreferences.getInstance();
+    final targetTimeString = prefs.getString('targetDateTime');
+    if (targetTimeString != null) {
+      _targetDateTime = DateTime.parse(targetTimeString);
+      _updateRemainingTime();
+    }
+  }
+
+  // Save target date/time to shared preferences
+  Future<void> _saveTargetDateTime(DateTime dateTime) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('targetDateTime', dateTime.toIso8601String());
+  }
+
+  // Calculate remaining time based on the target date/time and current date/time
+  void _updateRemainingTime() {
+    final now = DateTime.now();
+    _remainingTime = _targetDateTime.difference(now);
+    if (_remainingTime.isNegative) {
+      _remainingTime = const Duration();
+    }
+    setState(() {});
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _updateRemainingTime();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initializeProducts();
+    _loadTargetDateTime().then((_) {
+      _startTimer();
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +138,6 @@ class HomeScreen extends StatelessWidget {
         context: context,
         title: "HeaderFooter",
         buttonStatus: const [true, false, false, false, false],
-
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -22,11 +147,11 @@ class HomeScreen extends StatelessWidget {
               Container(
                   width: double.infinity,
                   color: Colors.black,
-                  child: const Padding(
-                    padding: EdgeInsets.fromLTRB(8, 15, 8, 15),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 15, 8, 15),
                     child: Column(
                       children: [
-                        Text(
+                        const Text(
                           "MARCH SALE MADNESS",
                           style: TextStyle(
                               fontSize: 18,
@@ -35,14 +160,14 @@ class HomeScreen extends StatelessWidget {
                               fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "12  :  14  :  23", // Temporary text solution, will be changed to dynamic once backend real-time countdown is implemented.
-                          style: TextStyle(
+                          _formatDuration(_remainingTime),
+                          style: const TextStyle(
                               fontSize: 18,
                               color: Colors.white,
                               fontFamily: "Lato",
                               fontWeight: FontWeight.bold),
                         ),
-                        Text("hour     min     sec",
+                        const Text("hour     min     sec",
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.white,
@@ -156,29 +281,26 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 10),
               SizedBox(
                 height: 225,
-                child: ListView(
+                child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          createBestSellerItem('Aviatorae', '2,999', '124',
-                              AppConstants.aviatorBestSellerIconPath),
-                          createBestSellerItem('Reumanim', '10,999', '55',
-                              AppConstants.koreanBestSellerIconPath),
-                          createBestSellerItem('Wayfarer Galore', '6,000', '99',
-                              AppConstants.wayfarerBestSellerIconPath),
-                          createBestSellerItem('Chameleon', '4,500', '532',
-                              AppConstants.readingBestSellerIconPath),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                        ],
-                      )
-                    ]),
+                    itemCount: topProductIds.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            createBestSellerItem(
+                                prodName[index],
+                                prodPrice[index],
+                                prodSold[index],
+                                imageUrls[index],
+                                context,
+                                prodDesc[index]),
+                          ],
+                        ),
+                      );
+                    }),
               ),
               const SizedBox(
                 height: 20,
@@ -246,11 +368,18 @@ Widget itemCreate(String image, String label) {
   );
 }
 
-Widget createBestSellerItem(String productName, String productPrice,
-    String productSold, String productImage) {
+Widget createBestSellerItem(
+    String productName,
+    String productPrice,
+    String productSold,
+    String productImage,
+    BuildContext context,
+    String prodDescription) {
   return SizedBox(
     width: 170,
     child: Card(
+      shadowColor: Colors.grey.withOpacity(0.5),
+      elevation: 5,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -258,9 +387,8 @@ Widget createBestSellerItem(String productName, String productPrice,
           children: [
             Expanded(
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(productImage),
-              ),
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image(image: NetworkImage(productImage))),
             ),
             const SizedBox(
               height: 7,
@@ -277,9 +405,16 @@ Widget createBestSellerItem(String productName, String productPrice,
                           fontSize: 16),
                       overflow: TextOverflow.ellipsis),
                 ),
-                InkWell(
+                InkWell( 
                     onTap: () {
-                      // Logic to Follow
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProductDetailScreen(
+                                  imageURL: productImage,
+                                  name: productName,
+                                  price: productPrice,
+                                  description: prodDescription)));
                     },
                     child: const Icon(Icons.chevron_right))
               ],
