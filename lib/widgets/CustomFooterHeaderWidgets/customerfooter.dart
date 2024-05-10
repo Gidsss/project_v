@@ -29,7 +29,7 @@ Widget buildFooter(List<bool> buttonStatus, BuildContext context) {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const HomeScreen()));
+                            builder: (context) => HomeScreen()));
                   }),
             buttonStatus[1]
                 ? buildButton("Explore", Icons.explore, buttonStatus[1], () {})
@@ -40,7 +40,7 @@ Widget buildFooter(List<bool> buttonStatus, BuildContext context) {
                         MaterialPageRoute(
                             builder: (context) => const ExploreScreen()));
                   }),
-            buttonStatus[2]
+            /*buttonStatus[2]
                 ? buildButton(
                     "Schedule", Icons.calendar_month, buttonStatus[2], () {})
                 : buildButton(
@@ -50,7 +50,7 @@ Widget buildFooter(List<bool> buttonStatus, BuildContext context) {
                         context,
                         MaterialPageRoute(
                             builder: (context) => const ScheduleScreen()));
-                  }),
+                  }),*/
             buttonStatus[3]
                 ? buildButton(
                     "Orders", Icons.local_shipping, buttonStatus[3], () {})
