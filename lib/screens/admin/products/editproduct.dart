@@ -44,7 +44,7 @@ class _EditProductState extends State<EditProduct> {
       nameController.text = data['name'];
       priceController.text = data['price'];
       descriptionController.text = data['description'];
-      productQuantityController.text = data['productQuantity'];
+      productQuantityController.text = data['productQuantity']; // Load quantity
       imageUrls = List.from(data['imageUrls']);
       setState(() {});
     }
@@ -83,10 +83,8 @@ class _EditProductState extends State<EditProduct> {
     }
 
     Map<String, dynamic> data = productData.data() as Map<String, dynamic>;
-
-    int currentQuantity = int.tryParse(data['productQuantity'].toString()) ?? 0;
+    int currentQuantity = int.tryParse(productQuantityController.text) ?? 0;
     int currentSold = int.tryParse(data['sold']?.toString() ?? '0') ?? 0;
-
     int newlySold = int.tryParse(soldController.text) ?? 0;
     int updatedSold = currentSold + newlySold;
     int updatedQuantity = currentQuantity - newlySold;
@@ -103,8 +101,8 @@ class _EditProductState extends State<EditProduct> {
       'name': nameController.text,
       'price': priceController.text,
       'description': descriptionController.text,
-      'productQuantity': updatedQuantity.toString(), // Update the quantity
-      'sold': updatedSold.toString(), // Save the sold quantity
+      'productQuantity': updatedQuantity.toString(),
+      'sold': updatedSold.toString(),
       'imageUrls': imageUrls,
     });
     Navigator.pop(context);
@@ -474,6 +472,29 @@ class _EditProductState extends State<EditProduct> {
                                 horizontal: 10, vertical: 8),
                           ),
                           style: const TextStyle(fontSize: 14),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15), // Add some space between the fields
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text("Product Quantity",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 5),
+                      SizedBox(
+                        width: 380,
+                        child: TextField(
+                          controller: productQuantityController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 8),
+                          ),
+                          style: const TextStyle(fontSize: 14),
+                          keyboardType:
+                              TextInputType.number, // Ensure numeric input only
                         ),
                       ),
                     ],

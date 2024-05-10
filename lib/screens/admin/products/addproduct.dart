@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-//import 'package:project_v/screens/admin/products/productmanagement.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminfooter.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -22,6 +21,17 @@ enum ColorLabel {
   final Color color;
 } // Should match the colors in categories.
 
+enum CategoryLabel {
+  men('Men'),
+  women('Women'),
+  reading('Reading'),
+  accessories('Accessories'),
+  kids('Kids');
+
+  const CategoryLabel(this.label);
+  final String label;
+}
+
 class AddProduct extends StatefulWidget {
   const AddProduct({super.key});
 
@@ -31,9 +41,12 @@ class AddProduct extends StatefulWidget {
 
 class AddProductState extends State<AddProduct> {
   bool exists = false;
+  bool _isUploading = false;
   bool? isChecked;
   final TextEditingController colorController = TextEditingController();
   ColorLabel? selectedColor;
+  CategoryLabel? selectedCategory;
+  final TextEditingController categoryController = TextEditingController();
   final ImagePicker picker = ImagePicker();
   List<File?> imageFiles = List.filled(3, null);
   List<String> imageUrls = [];
@@ -45,7 +58,6 @@ class AddProductState extends State<AddProduct> {
   final productQuantityController = TextEditingController();
   final descriptionController = TextEditingController();
   final productGradeController = TextEditingController();
-
   // Function to handle image selection
   Future<void> pickImage(int index) async {
     try {
@@ -68,7 +80,6 @@ class AddProductState extends State<AddProduct> {
         nameController.text.isNotEmpty &&
         priceController.text.isNotEmpty) {
       try {
-        // Add product details to Firestore with image URLs
         await FirebaseFirestore.instance.collection('products').add({
           'name': nameController.text,
           'price': priceController.text,
@@ -78,9 +89,8 @@ class AddProductState extends State<AddProduct> {
           'productQuantity': productQuantityController.text,
           'productGrade': productGradeController.text,
           'imageUrls': imageUrls,
+          'category': categoryController.text
         });
-
-        Navigator.pop(context);
       } catch (e) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Error adding product: $e')));
@@ -91,10 +101,13 @@ class AddProductState extends State<AddProduct> {
     }
   }
 
-  // Function to upload images and get their URLs
+  // Function to upload images and add the product
   Future<void> uploadImagesAndGetUrls() async {
-    imageUrls.clear(); // Clear existing URLs to handle re-uploads
-    print("Starting image upload for ${imageFiles.length} files.");
+    setState(() {
+      _isUploading = true; // Start showing the progress indicator
+    });
+
+    imageUrls.clear();
 
     for (var imageFile in imageFiles) {
       if (imageFile != null) {
@@ -104,18 +117,23 @@ class AddProductState extends State<AddProduct> {
           TaskSnapshot snapshot =
               await FirebaseStorage.instance.ref(fileName).putFile(imageFile);
           String imageUrl = await snapshot.ref.getDownloadURL();
-          imageUrls.add(imageUrl); // Storing URLs in the list
-          print("Uploaded image URL: $imageUrl");
+          imageUrls.add(imageUrl);
         } catch (e) {
           print("Failed to upload image: $e");
         }
       }
     }
 
+    setState(() {
+      _isUploading = false; // Stop showing the progress indicator
+    });
+
     if (imageUrls.length == imageFiles.where((file) => file != null).length) {
-      // All images are uploaded and URLs retrieved
       print("All images uploaded successfully. URLs: $imageUrls");
-      addProduct(); // Call your function to add product details to Firestore here
+      await addProduct(); // Add the product after successful uploads
+      if (mounted) {
+        Navigator.pop(context); // Navigate back after adding the product
+      }
     } else {
       print("Not all images were uploaded. Please check.");
     }
@@ -125,81 +143,89 @@ class AddProductState extends State<AddProduct> {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return Dialog(
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
-            ),
-            height: 185, // Set the desired height
-            width: MediaQuery.of(context).size.width *
-                0.67, // Set the desired width
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Add Product?",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Text(
-                    "Are you sure you want to add ${nameController.text}?",
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.28,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                              elevation: MaterialStateProperty.all(4),
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.white),
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Dialog(
+              child: Container(
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(100)),
+                height: 185,
+                width: MediaQuery.of(context).size.width * 0.67,
+                child: Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Text("Add Product?",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
+                      const SizedBox(height: 15),
+                      Text(
+                          "Are you sure you want to add ${nameController.text}?",
+                          textAlign: TextAlign.center),
+                      const SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.28,
+                              child: ElevatedButton(
+                                style: const ButtonStyle(
+                                  elevation: MaterialStatePropertyAll(4),
+                                  backgroundColor:
+                                      MaterialStatePropertyAll(Colors.white),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(
+                                      context); // Close the dialog on 'No'
+                                },
+                                child: const Text("No",
+                                    style: TextStyle(color: Colors.black)),
+                              ),
                             ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text(
-                              "No",
-                              style: TextStyle(color: Colors.black),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.25,
+                              child: _isUploading
+                                  ? const Center(
+                                      child: CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation(
+                                            Colors.black),
+                                      ),
+                                    )
+                                  : ElevatedButton(
+                                      style: const ButtonStyle(
+                                        elevation: MaterialStatePropertyAll(4),
+                                        backgroundColor:
+                                            MaterialStatePropertyAll(
+                                                Colors.black),
+                                      ),
+                                      onPressed: () async {
+                                        setState(() => _isUploading =
+                                            true); // Update local state
+                                        await uploadImagesAndGetUrls(); // Ensure asynchronous work finishes first
+                                        setState(() => _isUploading =
+                                            false); // Update local state
+                                        if (mounted) {
+                                          Navigator.pop(
+                                              context); // Close the dialog only if still mounted
+                                        }
+                                      },
+                                      child: const Text("Yes",
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                    ),
                             ),
-                          ),
+                          ],
                         ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.25,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                              elevation: MaterialStateProperty.all(4),
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.black),
-                            ),
-                            onPressed: () async {
-                              await uploadImagesAndGetUrls(); // Inside of the function is the call addProduct() if images are uploaded successfully
-                              Navigator.pop(
-                                  context); // Optionally close the dialog after adding
-                            },
-                            child: const Text(
-                              "Yes",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );
@@ -241,6 +267,31 @@ class AddProductState extends State<AddProduct> {
               );
             }).toList())
       ],
+    );
+  }
+
+  Widget createCategoryDropdown() {
+    return SizedBox(
+      width: 380,
+      child: DropdownButtonFormField<CategoryLabel>(
+        value: selectedCategory, // Variable to store selected category
+        onChanged: (newValue) {
+          setState(() {
+            selectedCategory = newValue;
+            categoryController.text = newValue?.label ?? '';
+          });
+        },
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        ),
+        items: CategoryLabel.values.map((category) {
+          return DropdownMenuItem<CategoryLabel>(
+            value: category,
+            child: Text(category.label),
+          );
+        }).toList(),
+      ),
     );
   }
 
@@ -344,6 +395,7 @@ class AddProductState extends State<AddProduct> {
                         controller: productModelNumberController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
+                          prefixText: '#',
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                         ),
@@ -395,6 +447,17 @@ class AddProductState extends State<AddProduct> {
                         style: const TextStyle(fontSize: 14),
                       ),
                     ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    const Text(
+                      "Product Category",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    createCategoryDropdown(),
                     const SizedBox(
                       height: 15,
                     ),
@@ -476,7 +539,6 @@ class AddProductState extends State<AddProduct> {
                       child: TextField(
                         controller: productGradeController,
                         decoration: const InputDecoration(
-                          
                           border: OutlineInputBorder(),
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 10, vertical: 8),

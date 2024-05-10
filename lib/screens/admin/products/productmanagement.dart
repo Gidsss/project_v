@@ -259,14 +259,22 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                 .collection('products')
                                 .snapshots(),
                             builder: (context, snapshot) {
+                              // Show a progress indicator if data is still loading
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return const CircularProgressIndicator();
+                                return const Center(
+                                    child: CircularProgressIndicator( valueColor: AlwaysStoppedAnimation(
+                                            Colors.black),));
                               }
 
-                              if (!snapshot.hasData) {
-                                return const Text("No data available");
+                              // Show a message if no data is available
+                              if (!snapshot.hasData ||
+                                  snapshot.data!.docs.isEmpty) {
+                                return const Center(
+                                    child: Text("No products available."));
                               }
+
+                              // Data is available, so we show the table
                               return Table(
                                 columnWidths: const {
                                   0: FlexColumnWidth(1),
@@ -281,73 +289,51 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                     children: const [
                                       TableCell(
                                         child: Padding(
-                                          padding: EdgeInsets.only(
-                                              left:
-                                                  20), // Adjust top and left padding to change the position
+                                          padding: EdgeInsets.only(left: 20),
                                           child: Align(
-                                            alignment: Alignment
-                                                .topLeft, // Adjust alignment as needed
-                                            child: Text(
-                                              "Image",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
+                                            alignment: Alignment.topLeft,
+                                            child: Text("Image",
+                                                style: TextStyle(
+                                                    color: Colors.white)),
                                           ),
                                         ),
                                       ),
                                       TableCell(
                                         child: Padding(
-                                          padding: EdgeInsets.only(
-                                              left:
-                                                  55), // Adjust top and left padding to change the position
+                                          padding: EdgeInsets.only(left: 55),
                                           child: Align(
-                                            alignment: Alignment
-                                                .topLeft, // Adjust alignment as needed
-                                            child: Text(
-                                              "Name",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
+                                            alignment: Alignment.topLeft,
+                                            child: Text("Name",
+                                                style: TextStyle(
+                                                    color: Colors.white)),
                                           ),
                                         ),
                                       ),
                                       TableCell(
                                         child: Padding(
-                                          padding: EdgeInsets.only(
-                                              left:
-                                                  20), // Adjust top and left padding to change the position
+                                          padding: EdgeInsets.only(left: 16),
                                           child: Align(
-                                            alignment: Alignment
-                                                .topLeft, // Adjust alignment as needed
-                                            child: Text(
-                                              "Stock",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
+                                            alignment: Alignment.topLeft,
+                                            child: Text("Stock",
+                                                style: TextStyle(
+                                                    color: Colors.white)),
                                           ),
                                         ),
                                       ),
                                       TableCell(
                                         child: Padding(
-                                          padding: EdgeInsets.only(
-                                              top: 10,
-                                              left:
-                                                  25, bottom: 10,), // Adjust top and left padding to change the position
+                                          padding: EdgeInsets.only(left: 25),
                                           child: Align(
-                                            alignment: Alignment
-                                                .topLeft, // Adjust alignment as needed
-                                            child: Text(
-                                              "Sold",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
+                                            alignment: Alignment.topLeft,
+                                            child: Text("Sold",
+                                                style: TextStyle(
+                                                    color: Colors.white)),
                                           ),
                                         ),
                                       ),
                                     ],
                                     decoration: BoxDecoration(
-                                      color: Colors.black.withOpacity(0.9),
-                                    ),
+                                        color: Colors.black.withOpacity(0.9)),
                                   ),
                                   ...snapshot.data!.docs.map((doc) {
                                     Map<String, dynamic> data =
@@ -357,75 +343,82 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                                 data['sold'].toString()) ??
                                             0
                                         : 0;
-                                    print(
-                                        "Product Name: ${data['name']}, Sold: $sold");
 
                                     return TableRow(
                                       decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color:
-                                                Colors.grey.withOpacity(0.2)),
-                                      ),
+                                          border: Border.all(
+                                              color: Colors.grey
+                                                  .withOpacity(0.2))),
                                       children: [
                                         TableCell(
-                                            child: Padding(
-                                          padding: const EdgeInsets.all(1.0),
-                                          child: Image.network(
-                                              doc['imageUrls'][0],
-                                              fit: BoxFit.fitHeight),
-                                        )),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(1.0),
+                                            child: Image.network(
+                                                doc['imageUrls'][0],
+                                                fit: BoxFit.fitHeight),
+                                          ),
+                                        ),
                                         TableCell(
-                                            child: Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Text(doc['name'],
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.w600)),
-                                        )),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8),
+                                            child: Text(doc['name'],
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w600)),
+                                          ),
+                                        ),
                                         TableCell(
-                                            child: Padding(
-                                          padding: const EdgeInsets.all(28),
-                                          child: Text(
-                                              doc['productQuantity'].toString(),
-                                              textAlign: TextAlign.left,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.w600)),
-                                        )),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(24),
+                                            child: Text(
+                                                doc['productQuantity']
+                                                    .toString(),
+                                                textAlign: TextAlign.left,
+                                                style: const TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.w600)),
+                                          ),
+                                        ),
                                         TableCell(
-                                            child: Padding(
-                                          padding: const EdgeInsets.all(4),
-                                          child: isEdit
-                                              ? ElevatedButton(
-                                                  onPressed: () {
-                                                    print(
-                                                        "Editing mode, navigating to EditProduct for ${doc.id}");
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                EditProduct(
-                                                                    productId:
-                                                                        doc.id)));
-                                                  },
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                          backgroundColor:
-                                                              Colors.black),
-                                                  child: const Icon(Icons.edit,
-                                                      color: Colors.white),
-                                                )
-                                              : Builder(builder: (context) {
-                                                  print(
-                                                      "View mode, displaying sold: $sold"); // Debug statement to check value
-                                                  return Text(sold.toString(),
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color: Colors.black));
-                                                }),
-                                        )),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(4),
+                                            child: isEdit
+                                                ? ElevatedButton(
+                                                    onPressed: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  EditProduct(
+                                                                      productId:
+                                                                          doc.id)));
+                                                    },
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            backgroundColor:
+                                                                Colors.black),
+                                                    child: const Icon(
+                                                        Icons.edit,
+                                                        color: Colors.white),
+                                                  )
+                                                : Builder(
+                                                    builder: (context) {
+                                                      return Text(
+                                                          sold.toString(),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: Colors
+                                                                      .black));
+                                                    },
+                                                  ),
+                                          ),
+                                        ),
                                       ],
                                     );
                                   }).toList(),

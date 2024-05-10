@@ -1,0 +1,404 @@
+import 'package:flutter/material.dart';
+import '../../../widgets/CustomFooterHeaderWidgets/adminfooter.dart';
+import '../../../widgets/CustomFooterHeaderWidgets/header2.dart';
+
+class EditCategoryScreen extends StatefulWidget {
+  final String initialCategoryName;
+  final String initialCategoryType;
+
+  const EditCategoryScreen({
+    Key? key,
+    required this.initialCategoryName,
+    required this.initialCategoryType,
+  }) : super(key: key);
+
+  @override
+  State<EditCategoryScreen> createState() => _EditCategoryScreenState();
+}
+
+class _EditCategoryScreenState extends State<EditCategoryScreen> {
+  String _selectedCategoryType = 'Brand'; // Default selected category type
+  late TextEditingController _categoryNameController;
+
+  Future<void> _showSaveChangesDialog() async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            height: 185,
+            width: MediaQuery.of(context).size.width * 0.67,
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Confirm Changes",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    "Are you sure you want to save the changes?",
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.28,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text("No", style: TextStyle(color: Colors.black)),
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            elevation: MaterialStateProperty.all(4),
+                            backgroundColor:
+                            MaterialStateProperty.all(Colors.black),
+                          ),
+                          onPressed: () {
+                            // Call a function to save the changes
+                            _saveChanges();
+                            Navigator.pop(context);
+                          },
+                          child: const Text("Yes", style: TextStyle(color: Colors.white)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _showDeleteDialog() async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            height: 185,
+            width: MediaQuery.of(context).size.width * 0.67,
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Delete Category?",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 15),
+                  const Text(
+                    "Are you sure you want to delete?",
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.28,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text("No", style: TextStyle(color: Colors.black)),
+                        ),
+                      ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        child: ElevatedButton(
+                          style: const ButtonStyle(
+                            elevation: MaterialStatePropertyAll(4),
+                            backgroundColor: MaterialStatePropertyAll(
+                              Color.fromARGB(255, 192, 40, 29),
+                            ),
+                          ),
+                          onPressed: () {
+                            // Call a function to delete the category
+                            _deleteCategory();
+                            Navigator.pop(context);
+                          },
+                          child: const Text("Yes", style: TextStyle(color: Colors.white)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _saveChanges() {
+    // Implement the logic to save the changes here
+    // You can use _selectedCategoryType and _categoryNameController.text to access the edited values
+  }
+
+  void _deleteCategory() {
+    // Implement the logic to delete the category here
+    // You can access the initial values from widget.initialCategoryName and widget.initialCategoryType
+    // For example: call a function to delete the category from your data source
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedCategoryType = widget.initialCategoryType;
+    _categoryNameController = TextEditingController(text: widget.initialCategoryName);
+  }
+
+  @override
+  void dispose() {
+    _categoryNameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: const Header2(text: "Edit Category"),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 25),
+
+                    // Category Type Dropdown
+                    Row(
+                      children: [
+                        const Text(
+                          "Category Type",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontFamily: "Inter",
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(width: 6), // Add some space between the icon and text
+                        SizedBox(
+                          width: 18,
+                          height: 17,
+                          child: Image.asset(
+                            'assets/images/EditIconBlack.png', // asset icon
+                            width: 18,
+                            height: 17,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey[400]!), // Add gray border
+                        borderRadius: BorderRadius.circular(5), // Rounded corners
+                      ),
+                      child: DropdownButton<String>(
+                        value: _selectedCategoryType,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _selectedCategoryType = newValue!;
+                          });
+                        },
+                        style: const TextStyle(
+                          color: Colors.black87,
+                          fontSize: 14,
+                          fontFamily: "Inter",
+                        ), // Customize the dropdown button style
+                        icon: const Icon(Icons.arrow_drop_down, color: Colors.black), // Customize the dropdown icon color
+                        isExpanded: true, // Make the dropdown button expand horizontally
+                        iconSize: 30, // Adjust the size of the dropdown icon
+                        dropdownColor: Colors.white, // Customize the dropdown menu color
+                        underline: Container(), // Remove the underline
+                        items: <String>[
+                          'Brand',
+                          'Color',
+                          'Style',
+                          'Frame',
+                          'Price',
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: SizedBox(
+                              height: 50, // Adjust the height of each dropdown item
+                              child: Align(
+                                alignment: Alignment.center, // Align items to the center
+                                child: Text(value),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+
+                    const SizedBox(height: 25),
+
+                    //Category Name
+                    Row(
+                      children: [
+                        const Text(
+                          "Category Name",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontFamily: "Inter",
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(width: 6), // Add some space between the icon and text
+                        SizedBox(
+                          width: 18,
+                          height: 17,
+                          child: Image.asset(
+                            'assets/images/EditIconBlack.png', // asset icon
+                            width: 18,
+                            height: 17,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    TextField(
+                      controller: _categoryNameController,
+                      decoration: InputDecoration(
+                        hintText: "Name Here",
+                        contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 12), // Adjust the padding
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey[400]!), // Adjust the border color
+                          borderRadius: BorderRadius.circular(5), // Rounded corners
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey[400]!), // Adjust the border color when focused
+                          borderRadius: BorderRadius.circular(5), // Rounded corners
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey[400]!), // Adjust the border color when enabled
+                          borderRadius: BorderRadius.circular(5), // Rounded corners
+                        ),
+                        // Remove the underline
+                        enabled: true,
+                        focusedErrorBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                        errorStyle: TextStyle(height: 0),
+                        // Add any other TextField customization here
+                      ),
+                    ),
+                    SizedBox(height: 300,),
+
+                    Row(
+                      children: [
+                        //Save Button
+                        ElevatedButton(
+                          onPressed: _showSaveChangesDialog,
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.black), // Button background color
+                            shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(40.0), // Button border radius
+                              ),
+                            ),
+                            elevation: MaterialStateProperty.all(0), // Set button elevation to 0
+                            overlayColor: MaterialStateProperty.resolveWith<Color>(
+                                  (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.pressed)) {
+                                  return Colors.grey; // Change color on pressed
+                                }
+                                return Colors.black; // Set default overlay color
+                              },
+                            ),
+                            minimumSize: MaterialStateProperty.all(const Size(160, 40)), // Adjust the width and height
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Save Edit',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontFamily: "Inter",
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        SizedBox(width: 42,),
+                        //Delete Button
+                        ElevatedButton(
+                          onPressed: _showDeleteDialog,
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.black), // Button background color
+                            shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(40.0), // Button border radius
+                              ),
+                            ),
+                            elevation: MaterialStateProperty.all(0), // Set button elevation to 0
+                            overlayColor: MaterialStateProperty.resolveWith<Color>(
+                                  (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.pressed)) {
+                                  return Colors.grey; // Change color on pressed
+                                }
+                                return Colors.black; // Set default overlay color
+                              },
+                            ),
+                            minimumSize: MaterialStateProperty.all(const Size(160, 40)), // Adjust the width and height
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Delete',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontFamily: "Inter",
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+
+                  ],
+                ),
+              ),
+            ),
+          ),
+          AdminFooter(
+            buttonStatus: const [false, false, true, false, false],
+            context: context,
+          )
+        ],
+      ),
+    );
+  }
+}
+
