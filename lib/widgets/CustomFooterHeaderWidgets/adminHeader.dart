@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
-import 'package:project_v/screens/customer/chat/chatscreen.dart';
+
+import '../../screens/admin/customersupport.dart';
 
 
 class AdminHeader extends StatefulWidget{
@@ -73,7 +74,7 @@ Widget buildmainHeader(BuildContext context) {
                       headerIconButton(
                           context,
                           Icons.mark_unread_chat_alt_outlined,
-                          const ChatScreen()),
+                          const CustomerSupportScreen()),
                       const SizedBox(width: 6),
                     ],
                   ),

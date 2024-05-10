@@ -9,7 +9,6 @@ import 'package:project_v/screens/customer/chat/chatscreen.dart';
 import 'package:project_v/screens/customer/wishlistscreen.dart';
 
 import '../../screens/customer/cart/cartscreen.dart';
-import '../../screens/customer/notifications/notificationsscreen.dart';
 
 class HeaderFooter extends StatefulWidget {
   final Widget? body;
@@ -393,4 +392,23 @@ Widget headerIconButton( BuildContext context, IconData icon, Widget page) {
   );
 }
 
+Widget headerIconButton2(BuildContext context, IconData icon, String tabName) {
+  return IconButton(
+    onPressed: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChatScreen(tabName: tabName),
+        ),
+      );
+    },
+    icon: Icon(
+      icon,
+      size: 30,
+      color: Colors.black,
+    ),
+    padding: const EdgeInsets.all(0),
+    constraints: const BoxConstraints(),
+  );
+}
 

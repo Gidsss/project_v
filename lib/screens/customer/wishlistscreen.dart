@@ -201,7 +201,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                   ),
                 ),
                 child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     Icon(Icons.add, color: Colors.white),  // Plus icon
                     SizedBox(width: 10),  // Space between icon and text
