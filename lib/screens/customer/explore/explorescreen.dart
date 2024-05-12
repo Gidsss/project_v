@@ -5,12 +5,13 @@ import 'package:project_v/screens/customer/explore/productdetails.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ExploreScreen extends StatefulWidget {
-  const ExploreScreen({super.key});
+  const ExploreScreen({super.key, this.navdcategory});
+
+  final String? navdcategory;
 
   @override
   State<ExploreScreen> createState() => _ExploreScreenState();
 }
-
 
 class ProductItem extends StatelessWidget {
   final String imageURL;
@@ -27,7 +28,6 @@ class ProductItem extends StatelessWidget {
     this.onTap,
     this.onAddtoCart,
   });
-
 
   @override
   Widget build(BuildContext context) {
@@ -118,40 +118,92 @@ class _ExploreScreenState extends State<ExploreScreen> {
   List<String> prodQuantity = [];
   List<String> prodPrice = [];
   List<String> prodDescription = [];
-  List<String> prodSold= [];
-  // List<String> prodCategory = [];
+  List<String> prodSold = [];
   List<String> tempImageUrls = [];
   List<String> imageUrls = [];
 
- Future<void> getProducts() async {
-  try {
-    QuerySnapshot querySnapshot = await db.collection("products").get();
+  Future<void> getProducts() async {
+    try {
+      QuerySnapshot querySnapshot;
 
-    for (var docsSnapshot in querySnapshot.docs) {
-      Map<String, dynamic> prodData = docsSnapshot.data() as Map<String, dynamic>;
-      prodName.add(prodData['name']);
-      prodQuantity.add(prodData['productQuantity']);
-      prodPrice.add(prodData['price']);
-      prodDescription.add(prodData['description']);
-      prodSold.add(prodData['sold']);
-      tempImageUrls.addAll(List.from(prodData['imageUrls']));
-      // Assuming there's at least one image URL
-      imageUrls.add(tempImageUrls[0]);
-      tempImageUrls = [];
-      
+      if (widget.navdcategory != null) {
+        querySnapshot = await db
+            .collection("products")
+            .where("category", arrayContains: widget.navdcategory)
+            .get();
+
+      } else {
+        querySnapshot = await db.collection("products").get();
+      }
+
+
+      for (var docsSnapshot in querySnapshot.docs) {
+        Map<String, dynamic> prodData =
+            docsSnapshot.data() as Map<String, dynamic>;
+        prodName.add(prodData['name']);
+        prodQuantity.add(prodData['productQuantity']);
+        prodPrice.add(prodData['price']);
+        prodDescription.add(prodData['description']);
+        prodSold.add(prodData['sold']);
+        tempImageUrls.addAll(List.from(prodData['imageUrls']));
+        // Assuming there's at least one image URL
+        imageUrls.add(tempImageUrls[0]);
+        tempImageUrls = [];
+      }
+
+      // Update the state after fetching all data
+      setState(() {});
+    } catch (e) {
+      // Handle errors gracefully
+      print("Error getting product details: $e");
+      print("Possible that there is no existing product with this category.");
+      // Consider displaying a user-friendly message
     }
-
-    // Update the state after fetching all data
-    setState(() {});
-  } catch (e) {
-    // Handle errors gracefully
-    print("Error getting product details: $e");
-    // Consider displaying a user-friendly message
   }
-}
+   
+  // Get products based on selected categories
+  Future<void> searchProducts() async {
+    try {
+      QuerySnapshot querySnapshot;
+
+      if (widget.navdcategory != null && widget.navdcategory!.isNotEmpty) {
+        querySnapshot = await db
+            .collection("products")
+            .where("category", arrayContains: widget.navdcategory)
+            .get();
+      } else {
+        querySnapshot = await db.collection("products").get();
+      }
+
+      for (var docsSnapshot in querySnapshot.docs) {
+        Map<String, dynamic> prodData =
+            docsSnapshot.data() as Map<String, dynamic>;
+        prodName.add(prodData['name']);
+        prodQuantity.add(prodData['productQuantity']);
+        prodPrice.add(prodData['price']);
+        prodDescription.add(prodData['description']);
+        prodSold.add(prodData['sold']);
+        tempImageUrls.addAll(List.from(prodData['imageUrls']));
+        // Assuming there's at least one image URL
+        imageUrls.add(tempImageUrls[0]);
+        tempImageUrls = [];
+      }
+
+      // Update the state after fetching all data
+      setState(() {});
+    } catch (e) {
+      // Handle errors gracefully
+      print("Error getting product details: $e");
+      print("Possible that there is no existing product with this category.");
+      // Consider displaying a user-friendly message
+    }
+  }
+
+
+
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     getProducts();
   }
@@ -287,13 +339,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   crossAxisSpacing: 20,
                   childAspectRatio: 0.75,
                 ),
-                itemCount: prodName.length, // Get the number of products from the number of product names in list.
+                itemCount: prodName
+                    .length, // Get the number of products from the number of product names in list.
                 itemBuilder: (context, index) {
                   return Center(
                     // Center the ProductItem widget
                     child: ProductItem(
-                      imageURL:
-                          imageUrls[index],
+                      imageURL: imageUrls[index],
                       name: prodName[index],
                       price: prodPrice[index], // Adjust the price
                       onTap: () {
@@ -301,12 +353,10 @@ class _ExploreScreenState extends State<ExploreScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => ProductDetailScreen(
-                              imageURL:
-                                  imageUrls[index],
-                              name: prodName[index],
-                              price: '₱${prodPrice[index]}',
-                              description: prodDescription[index]
-                            ),
+                                imageURL: imageUrls[index],
+                                name: prodName[index],
+                                price: prodPrice[index],
+                                description: prodDescription[index]),
                           ),
                         );
                       },

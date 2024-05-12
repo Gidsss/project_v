@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
+import 'package:project_v/screens/customer/explore/explorescreen.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerheaderfooter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:project_v/screens/customer/explore/productdetails.dart';
 
@@ -15,7 +15,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  late DateTime _targetDateTime = DateTime(2025, 12, 31, 23, 59, 59);
+  late DateTime _targetDateTime =
+      DateTime(2024, 12, 31, 23, 59, 59); // Set a date for countdown
   Duration _remainingTime = const Duration();
   late Timer _timer;
 
@@ -28,7 +29,6 @@ class HomeScreenState extends State<HomeScreen> {
   List<String> imageUrls = [];
   List<String> imageUrlsTemp = [];
   List<String> topProductIds = [];
-  var time;
 
   // Retrieve the top selling products
   Future<List<String>> getTopProducts() async {
@@ -93,12 +93,6 @@ class HomeScreenState extends State<HomeScreen> {
       _targetDateTime = DateTime.parse(targetTimeString);
       _updateRemainingTime();
     }
-  }
-
-  // Save target date/time to shared preferences
-  Future<void> _saveTargetDateTime(DateTime dateTime) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('targetDateTime', dateTime.toIso8601String());
   }
 
   // Calculate remaining time based on the target date/time and current date/time
@@ -182,7 +176,7 @@ class HomeScreenState extends State<HomeScreen> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
                 child: itemHeader(
-                  "Eyeglasses",
+                  "Eyeglasses", context, "eyeglass"
                 ),
               ),
               const SizedBox(
@@ -199,20 +193,20 @@ class HomeScreenState extends State<HomeScreen> {
                         const SizedBox(
                           width: 10,
                         ),
-                        itemCreate(
-                            AppConstants.menEyeglassCategoryIconPath, "Men"),
+                        itemCreate(AppConstants.menEyeglassCategoryIconPath,
+                            "Men", context, "men"),
                         itemCreate(AppConstants.womenEyeglassCategoryIconPath,
-                            "Women"),
-                        itemCreate(
-                            AppConstants.kidEyeglassCategoryIconPath, "Kids"),
+                            "Women", context, "women"),
+                        itemCreate(AppConstants.kidEyeglassCategoryIconPath,
+                            "Kids", context, "kids"),
                         itemCreate(AppConstants.readingEyeglassCategoryIconPath,
-                            "Reading"),
+                            "Reading", context, "reading"),
                         itemCreate(AppConstants.trendyEyeglassCategoryIconPath,
-                            "Trendy"),
+                            "Trendy", context, "trendy"),
                         itemCreate(AppConstants.roundEyeglassCategoryIconPath,
-                            "Round"),
+                            "Round", context, "round"),
                         itemCreate(AppConstants.nerdyEyeglassCategoryIconPath,
-                            "Nerdy"),
+                            "Nerdy", context, "nerdy"),
                         const SizedBox(
                           width: 10,
                         ),
@@ -226,7 +220,7 @@ class HomeScreenState extends State<HomeScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
-                child: itemHeader("Contact Lenses"),
+                child: itemHeader("Contact Lenses", context, "contacts"),
               ),
               const SizedBox(
                 height: 20,
@@ -243,19 +237,19 @@ class HomeScreenState extends State<HomeScreen> {
                           width: 10,
                         ),
                         itemCreate(AppConstants.dailyContactsCategoryIconPath,
-                            "Daily"),
+                            "Daily", context, "daily"),
                         itemCreate(AppConstants.weeklyContactsCategoryIconPath,
-                            "Weekly"),
+                            "Weekly", context, "weekly"),
                         itemCreate(AppConstants.monthlyContactsCategoryIconPath,
-                            "Monthly"),
+                            "Monthly", context, "monthly"),
                         itemCreate(AppConstants.yearlyContactsCategoryIconPath,
-                            "Yearly"),
+                            "Yearly", context, "yearly"),
                         itemCreate(AppConstants.coloredContactsCategoryIconPath,
-                            "Colored"),
-                        itemCreate(
-                            AppConstants.softContactsCategoryIconPath, "Soft"),
+                            "Colored", context, "colored"),
+                        itemCreate(AppConstants.softContactsCategoryIconPath,
+                            "Soft", context, "soft"),
                         itemCreate(AppConstants.rigidContactsCategoryIconPath,
-                            "Rigid"),
+                            "Rigid", context, "rigid"),
                         const SizedBox(
                           width: 10,
                         ),
@@ -311,7 +305,7 @@ class HomeScreenState extends State<HomeScreen> {
   }
 }
 
-Widget itemHeader(String title) {
+Widget itemHeader(String title, BuildContext context, String navcategory) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
@@ -322,6 +316,10 @@ Widget itemHeader(String title) {
       ),
       InkWell(
         onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ExploreScreen(navdcategory: navcategory)));
           // Argument goes here. Navigate to Product Listings Page with Eyeglasses, or contact lenses category selected. (May need a new page that lists all subcategories of eyeglass, contact lenses?)
         },
         child: const Row(
@@ -340,11 +338,16 @@ Widget itemHeader(String title) {
   );
 }
 
-Widget itemCreate(String image, String label) {
+Widget itemCreate(
+    String image, String label, BuildContext context, String navcategory) {
   return SizedBox(
     width: 70,
     child: InkWell(
       onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ExploreScreen(navdcategory: navcategory)));
         // Argument goes here. Navigate to Product Listings Page with the relevant category selected.
       },
       child: Column(
@@ -380,20 +383,26 @@ Widget createBestSellerItem(
     child: Card(
       shadowColor: Colors.grey.withOpacity(0.5),
       elevation: 5,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image(image: NetworkImage(productImage))),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+          width: double.infinity,
+          height: 135, // Adjust the height as needed
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            image: DecorationImage(
+              image: NetworkImage(productImage),
+              fit: BoxFit.cover,
             ),
-            const SizedBox(
-              height: 7,
-            ),
-            Row(
+          ),
+        ),
+          const SizedBox(
+            height: 7,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
@@ -405,7 +414,7 @@ Widget createBestSellerItem(
                           fontSize: 16),
                       overflow: TextOverflow.ellipsis),
                 ),
-                InkWell( 
+                InkWell(
                     onTap: () {
                       Navigator.push(
                           context,
@@ -419,10 +428,13 @@ Widget createBestSellerItem(
                     child: const Icon(Icons.chevron_right))
               ],
             ),
-            const SizedBox(
-              height: 7,
-            ),
-            Row(
+          ),
+          const SizedBox(
+            height: 7,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
@@ -444,8 +456,8 @@ Widget createBestSellerItem(
                     overflow: TextOverflow.ellipsis)
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     ),
   );
