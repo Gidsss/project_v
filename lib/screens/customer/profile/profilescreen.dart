@@ -246,7 +246,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               width:
                                   8), // Add some space between the icon and text
                           const Text(
-                            'Chat & Notification',
+                            'Notifications',
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 18,
@@ -256,7 +256,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           const SizedBox(
                               width:
-                                  35), // Add some space between the icon and text
+                                  90), // Add some space between the icon and text
                           SizedBox(
                             width: 26,
                             height: 26,

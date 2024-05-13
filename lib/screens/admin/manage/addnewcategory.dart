@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../widgets/CustomFooterHeaderWidgets/adminfooter.dart';
 import '../../../widgets/CustomFooterHeaderWidgets/header2.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AddNewCategoryScreen extends StatefulWidget {
   const AddNewCategoryScreen({super.key});
@@ -10,6 +11,8 @@ class AddNewCategoryScreen extends StatefulWidget {
 }
 
 class _AddNewCategoryScreenState extends State<AddNewCategoryScreen > {
+  final db = FirebaseFirestore.instance;
+
   String _selectedCategoryType = 'Brand'; // Default selected category type
 
   Future<void> _showAddCategoryDialog() async {

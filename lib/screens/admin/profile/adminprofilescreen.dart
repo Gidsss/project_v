@@ -276,7 +276,7 @@ class _AdminProfileScreenState extends State<AdminProfileScreen>{
                             ),
                             const SizedBox(
                                 height: 10.0
-                            ),
+                            ),/*
                             ElevatedButton(
                               onPressed: () {
                                 Navigator.push(
@@ -347,7 +347,7 @@ class _AdminProfileScreenState extends State<AdminProfileScreen>{
                                   ),
                                 ],
                               ),
-                            ),
+                            ),*/
                             const SizedBox(
                                 height: 10.0
                             ),

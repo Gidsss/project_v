@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../../../widgets/CustomFooterHeaderWidgets/adminfooter.dart';
 import '../../../widgets/CustomFooterHeaderWidgets/header2.dart';
 import 'package:project_v/screens/admin/manage/editcategory.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class AllCategoryScreen extends StatefulWidget {
   const AllCategoryScreen({super.key});
 
@@ -10,6 +12,7 @@ class AllCategoryScreen extends StatefulWidget {
 }
 
 class _AllCategoryScreenState extends State<AllCategoryScreen> {
+
   // Define a method to create the table widget
   Widget buildDataTable(List<Map<String, dynamic>> data) {
     return Container(
@@ -24,9 +27,9 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
           DataColumn(
             label: Container(
               color: Colors.black,
-              padding: EdgeInsets.only(left: 0), // Remove horizontal padding
+              padding: const EdgeInsets.only(left: 0), // Remove horizontal padding
               alignment: Alignment.centerLeft, // Align text to the left
-              child: Text(
+              child: const Text(
                 'Category Name',
                 style: TextStyle(color: Colors.white),
                 overflow: TextOverflow.ellipsis, // Handle overflow
@@ -36,10 +39,10 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
           DataColumn(
             label: Container(
               color: Colors.black,
-              padding: EdgeInsets.only(left: 0), // Remove horizontal padding
+              padding: const EdgeInsets.only(left: 0), // Remove horizontal padding
               alignment: Alignment.centerLeft, // Align text to the left
-              child: Text(
-                'Category Type',
+              child: const Text(
+                'Category Type', // Is parentcategory in firebase
                 style: TextStyle(color: Colors.white),
                 overflow: TextOverflow.ellipsis, // Handle overflow
               ),
@@ -48,9 +51,9 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
           DataColumn(
             label: Container(
               color: Colors.black,
-              padding: EdgeInsets.only(left: 0), // Remove horizontal padding
+              padding: const EdgeInsets.only(left: 0), // Remove horizontal padding
               alignment: Alignment.centerLeft, // Align text to the left
-              child: Text(
+              child: const Text(
                 '   Edit',
                 style: TextStyle(color: Colors.white),
                 overflow: TextOverflow.ellipsis, // Handle overflow
@@ -69,9 +72,9 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(20), // Adjust the radius for rounded corners
                 ),
-                padding: EdgeInsets.symmetric(vertical: 1, horizontal: 1), // Adjust the padding values
+                padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 1), // Adjust the padding values
                 child: IconButton(
-                  icon: Icon(Icons.edit, color: Colors.white), // Set icon color to white
+                  icon: const Icon(Icons.edit, color: Colors.white), // Set icon color to white
                   onPressed: () {
                     // Pass data to the EditCategoryScreen when edit button is clicked
                     Navigator.push(
@@ -96,15 +99,20 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
 
   // Method to fetch data from Firestore or any other data source
   Future<List<Map<String, dynamic>>> fetchData() async {
+    List<Map<String, dynamic>> categoriesDict = [];
+    final db = FirebaseFirestore.instance;
+    final QuerySnapshot snapShot = await db.collection('categories').get();
+
+    for (DocumentSnapshot document in snapShot.docs){
+        categoriesDict.add(document.data() as Map<String, dynamic>);
+    }
+
+    return categoriesDict;
+
     // Fetch your data here and return it as a list of maps
     // For example:
     // final snapshot = await FirebaseFirestore.instance.collection('categories').get();
     // return snapshot.docs.map((doc) => doc.data()).toList();
-    return [
-      {'category_name': 'Gucci', 'category_type': 'Brand'},
-      {'category_name': 'Rayban', 'category_type': 'Brand'},
-      {'category_name': 'Red', 'category_type': 'Color'},
-    ];
   }
 
   @override
@@ -129,7 +137,7 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
                         future: fetchData(),
                         builder: (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
                           if (snapshot.connectionState == ConnectionState.waiting) {
-                            return CircularProgressIndicator();
+                            return const CircularProgressIndicator();
                           } else if (snapshot.hasError) {
                             return Text('Error: ${snapshot.error}');
                           } else {

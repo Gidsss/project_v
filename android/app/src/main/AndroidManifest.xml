@@ -4,7 +4,9 @@
         android:label="Valdopeña Opticals"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
+        android:enableOnBackInvokedCallback="true"
         android:requestLegacyExternalStorage="true">
+        
 
         <meta-data android:name="com.facebook.sdk.ApplicationId" 
         android:value="@string/facebook_app_id"/> <!-- Facebook-->
