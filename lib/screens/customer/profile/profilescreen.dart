@@ -119,20 +119,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               : const AssetImage('assets/images/user.png')
                           as ImageProvider,
                         ),
-                        const SizedBox(
-                            width: 15), // Add some space between the image and text
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            const SizedBox(
-                                height: 5), // Adjust the vertical spacing if needed
-                            Text(
-                              user?.displayName ?? userName ?? "Your Name",
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Inter",
-                              ),
                             ),
                             const SizedBox(
                                 height: 5), // Adjust the vertical spacing if needed
