@@ -164,28 +164,254 @@ class _AllCouponsScreenState extends State<AllCouponsScreen>
   }
 
   Widget buildRedeemsList() {
-    return ListView(
-      children: const [
-        ListTile(
-          title: Text("SUMMER GLASS"),
-          subtitle: Text("SUMMER Discount\nUsage Limit: 100"),
-          trailing: Icon(Icons.arrow_forward_ios),
+  return StreamBuilder<QuerySnapshot>(
+    stream: FirebaseFirestore.instance.collection('coupons').snapshots(),
+    builder: (context, snapshot) {
+      // Show a progress indicator if data is still loading
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(
+            child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(Colors.black)));
+      }
+
+      // Show a message if no data is available
+      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+        return const Center(child: Text("No coupons available."));
+      }
+
+      // Data is available, so we show the table
+      return Padding(
+        padding: const EdgeInsets.only(top: 16, left: 16, right: 16), // Adjust padding as needed
+        child: Table(
+          columnWidths: const {
+            0: FlexColumnWidth(1),
+            1: FlexColumnWidth(2),
+            2: FlexColumnWidth(1),
+            3: FlexColumnWidth(1),
+          },
+          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+          border: TableBorder.all(color: Colors.grey.withOpacity(0.2)), // Optional: add border for better definition
+          children: [
+            TableRow(
+              decoration: BoxDecoration(color: Colors.black.withOpacity(0.9)),
+              children: const [
+                TableCell(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 20),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text("Code", style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                ),
+                TableCell(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 48),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text("Benefits", style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                ),
+                TableCell(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 22),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text("Limit", style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                ),
+                TableCell(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text("Redeems", style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            ...snapshot.data!.docs.map((doc) {
+              Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+              String couponCode = data['couponCode'] ?? 'No Code';
+              String benefits = data['benefits'] ?? '';
+              String usageLimit = data['usageLimit'] != null ? data['usageLimit'].toString() : '---';
+              String redeems = data['redeems'] != null ? data['redeems'].toString() : '0'; // Default to '0' if not available
+
+              return TableRow(
+                decoration: BoxDecoration(border: Border.all(color: Colors.grey.withOpacity(0.2))),
+                children: [
+                  TableCell(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Text(couponCode, textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w600)),
+                    ),
+                  ),
+                  TableCell(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Text(benefits, textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w600)),
+                    ),
+                  ),
+                  TableCell(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Text(usageLimit, textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w600)),
+                    ),
+                  ),
+                  TableCell(
+                    child: Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: Text(redeems, textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w600)),
+                    ),
+                  ),
+                ],
+              );
+            }).toList(),
+          ],
         ),
-        // Add more ListTiles or custom widgets as needed
-      ],
-    );
-  }
+      );
+    },
+  );
+}
+
 
   Widget buildStatusList() {
-    return ListView(
-      children: const [
-        ListTile(
-          title: Text("20240130YTK2"),
-          subtitle: Text("10% Discount\nStatus: Available"),
-          trailing: Icon(Icons.arrow_forward_ios),
-        ),
-        // Add more ListTiles or custom widgets as needed
-      ],
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('coupons').snapshots(),
+      builder: (context, snapshot) {
+        // Show a progress indicator if data is still loading
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+              child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(Colors.black)));
+        }
+
+        // Show a message if no data is available
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return const Center(child: Text("No coupons available."));
+        }
+        return Padding(
+            padding: const EdgeInsets.only(
+                top: 16, left: 16, right: 16), // Adjust padding as needed
+            // Data is available, so we show the table
+            child: Table(
+              columnWidths: const {
+                0: FlexColumnWidth(1),
+                1: FlexColumnWidth(2),
+                2: FlexColumnWidth(1),
+                3: FlexColumnWidth(1),
+              },
+              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+              border: TableBorder.all(
+                  color: Colors.grey.withOpacity(
+                      0.2)), // Optional: add border for better definition
+              children: [
+                TableRow(
+                  children: const [
+                    TableCell(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 20),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text("Code",
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                      ),
+                    ),
+                    TableCell(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 48),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text("Benefits",
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                      ),
+                    ),
+                    TableCell(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 22),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text("Limit",
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                      ),
+                    ),
+                    TableCell(
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 16),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text("Status",
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                      ),
+                    ),
+                  ],
+                  decoration:
+                      BoxDecoration(color: Colors.black.withOpacity(0.9)),
+                ),
+                ...snapshot.data!.docs.map((doc) {
+                  Map<String, dynamic> data =
+                      doc.data() as Map<String, dynamic>;
+                  String couponCode = data['couponCode'] ?? 'No Code';
+                  String benefits = data['benefits'] ?? '';
+                  String usageLimit = data['usageLimit'] != null
+                      ? data['usageLimit'].toString()
+                      : '---';
+                  String status = data['status'] ?? 'Unknown';
+
+                  return TableRow(
+                    decoration: BoxDecoration(
+                        border:
+                            Border.all(color: Colors.grey.withOpacity(0.2))),
+                    children: [
+                      TableCell(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Text(couponCode,
+                              textAlign: TextAlign.center,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w600)),
+                        ),
+                      ),
+                      TableCell(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Text(benefits,
+                              textAlign: TextAlign.center,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w600)),
+                        ),
+                      ),
+                      TableCell(
+                        child: Padding(
+                          padding: const EdgeInsets.all(24),
+                          child: Text(usageLimit,
+                              textAlign: TextAlign.center,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w600)),
+                        ),
+                      ),
+                      TableCell(
+                        child: Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: Text(status,
+                              textAlign: TextAlign.center,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w600)),
+                        ),
+                      ),
+                    ],
+                  );
+                }).toList(),
+              ],
+            ));
+      },
     );
   }
 }
