@@ -7,6 +7,7 @@ import 'package:project_v/widgets/textfields/textfield.dart';
 import 'package:project_v/screens/auth/log-in/loginscreen.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
@@ -25,6 +26,15 @@ class SignUpScreen extends StatelessWidget {
           password: passwordController.text,
         );
         if (userCredential.user != null) {
+          // Save email and password to Firestore
+          await FirebaseFirestore.instance
+              .collection('customers')
+              .doc(userCredential.user!.uid)
+              .set({
+            'email': emailController.text,
+            'password': passwordController.text,
+          });
+
           // Navigate to complete profile screen after successful sign up
           Navigator.pushReplacement(
             context,
@@ -62,7 +72,6 @@ class SignUpScreen extends StatelessWidget {
       );
     }
   }
-
   void continueasGuest(BuildContext context) {
     // Navigate to the next screen
     Navigator.push(
