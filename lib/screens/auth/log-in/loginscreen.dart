@@ -104,7 +104,7 @@ class LoginScreen extends StatelessWidget {
               password: passwordController.text.trim());
 
       // Check if the email is that of the admin and redirect accordingly.
-      if (userCredential.user!.email == "gideonsalangsang0428@gmail.com" || (userCredential.user!.email == "j.d.mingming13@gmail.com" || userCredential.user!.email == "testjhack@gmail.com")) // supposedly valdopeñamerchant
+      if (userCredential.user!.email == "valdopenacse@gmail.com") 
       {
         Navigator.pushReplacement(
           context,
