@@ -31,6 +31,7 @@ class SignUpScreen extends StatelessWidget {
               .collection('customers')
               .doc(userCredential.user!.uid)
               .set({
+            'UID': userCredential.user!.uid,
             'email': emailController.text,
             'password': passwordController.text,
           });
@@ -72,6 +73,7 @@ class SignUpScreen extends StatelessWidget {
       );
     }
   }
+
   void continueasGuest(BuildContext context) {
     // Navigate to the next screen
     Navigator.push(
