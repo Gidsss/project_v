@@ -27,7 +27,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
       var catData = docs.data() as Map<String, dynamic>;
       categorytypeList.add(catData["categorytypename"]);
     }
-
+    setState(() {});
   }
 
   Widget createHeader(String text) {
@@ -58,7 +58,6 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
 
   Widget createTextField(String text, TextEditingController controller) {
     return TextField(
-      
       controller: controller,
       decoration: InputDecoration(
         hintText: text,
@@ -309,13 +308,13 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
   }
 
   Future<void> _addCategory() async {
-    if (catName.text.isNotEmpty && selectedCategoryType!.isNotEmpty) {
+    if (catName.text.isNotEmpty && selectedCategoryType != null) {
       try {
         await db.collection('categories').add(
             {'category': catName.text, 'category_type': selectedCategoryType});
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
-                'Added Category ${catName.text} of $selectedCategoryType.')));
+                'Added Category ${catName.text} of type $selectedCategoryType.')));
       } catch (e) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Error adding category: $e')));
@@ -330,14 +329,13 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
   }
 
   Future<void> _addCategoryType() async {
-    if (catTypeName.text.isNotEmpty) {
+    if (catTypeName.text.isNotEmpty && selectedCategoryType != null) {
       try {
         await db.collection('categorytypes').add({
           'categorytypename': catTypeName.text,
         });
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text(
-                                    'Added Category Type ${catTypeName.text}.')));
+            content: Text('Added Category Type ${catTypeName.text}.')));
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Error adding category type: $e')));
