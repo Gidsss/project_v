@@ -220,8 +220,8 @@ class _HeaderFooterState extends State<HeaderFooter>
                 const SizedBox(width: 20),
                 Row(
                   children: [
-                    headerIconButton(context, Icons.mark_unread_chat_alt_outlined, const ChatScreen()),
-                    headerIconButton(context, Icons.notifications_outlined, const NotificationsScreen()),
+                    headerIconButton2(context, Icons.mark_unread_chat_alt_outlined, "Messeges"),
+                    headerIconButton2(context, Icons.notifications_outlined, "Notifications"),
                     headerIconButton(context, Icons.favorite_border, const WishlistScreen()),
                     headerIconButton(context, Icons.shopping_bag_outlined, const CartScreen()),
                   ],

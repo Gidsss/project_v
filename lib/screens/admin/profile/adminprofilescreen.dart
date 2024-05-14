@@ -7,8 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-
-import '../../customer/chat/chatscreen.dart';
+import '../customersupport.dart';
 
 class AdminProfileScreen extends StatefulWidget{
   const AdminProfileScreen({super.key});
@@ -282,7 +281,7 @@ class _AdminProfileScreenState extends State<AdminProfileScreen>{
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const ChatScreen()),
+                                      builder: (context) => const CustomerSupportScreen()),
                                 );
                               },
                               style: ButtonStyle(
@@ -325,7 +324,7 @@ class _AdminProfileScreenState extends State<AdminProfileScreen>{
                                       width:
                                       8), // Add some space between the icon and text
                                   const Text(
-                                    'Chat & Notification',
+                                    'Customer Support',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: 18,
