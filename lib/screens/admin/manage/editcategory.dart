@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import '../../../widgets/CustomFooterHeaderWidgets/adminfooter.dart';
 import '../../../widgets/CustomFooterHeaderWidgets/header2.dart';
@@ -258,174 +256,6 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
     );
   }
 
-  Future<void> showEditCategoryDialog(BuildContext context) async {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
-            ),
-            height: 185, // Set the desired height
-            width: MediaQuery.of(context).size.width *
-                0.67, // Set the desired width
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Confirm Changes",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                    "Are you sure you want to save the changes to category ${widget.initialCategoryName}, type: ${widget.initialCategoryType} ?",
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.28,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                              elevation: MaterialStateProperty.all(4),
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.white),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text(
-                              "No",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.25,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                              elevation: MaterialStateProperty.all(4),
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.black),
-                            ),
-                            onPressed: () async {
-                              _saveChanges(); // This should handle the actual update logic
-                              Navigator.pop(
-                                  context); // Close the dialog after updating
-                            },
-                            child: const Text(
-                              "Yes",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Future<void> showDeleteCategoryDialog(BuildContext context) async {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
-            ),
-            height: 185, // Set the desired height
-            width: MediaQuery.of(context).size.width *
-                0.67, // Set the desired width
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Confirm Changes",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                    "Are you sure you want to save the changes to category ${widget.initialCategoryName}, type: ${widget.initialCategoryType} ?",
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.28,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                              elevation: MaterialStateProperty.all(4),
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.white),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text(
-                              "No",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.25,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                              elevation: MaterialStateProperty.all(4),
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.red),
-                            ),
-                            onPressed: () async {
-                              _deleteCategory(); // This should handle the actual update logic
-                              Navigator.pop(
-                                  context); // Close the dialog after updating
-                            },
-                            child: const Text(
-                              "Yes",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   Future<void> fetchCategory() async {
     try {
       QuerySnapshot snapShot = await db.collection("categorytypes").get();
@@ -452,17 +282,18 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
             .where("category", isEqualTo: widget.initialCategoryName)
             .get();
         String documentID = "";
-        print(documentID);
 
         for (DocumentSnapshot doc in snapshot.docs) {
           documentID = doc.id;
         }
 
-        await db.collection("categorytypes").doc(documentID).update({
+        await db.collection("categories").doc(documentID).update({
           "category": _categoryNameController.text,
           "category_type": _selectedCategoryType
         });
-        Navigator.pop(context);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Category Update Successful.')));
       } catch (error) {
         throw Exception("Error saving changes: $error");
       }
@@ -490,7 +321,10 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
           .collection('categories')
           .doc(documentID)
           .delete();
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Category Deleted Successfully.')));
       Navigator.pop(context);
+      setState(() {});
     } catch (error) {
       throw Exception("Error deleting Category: $error");
     }

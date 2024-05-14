@@ -314,7 +314,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
             {'category': catName.text, 'category_type': selectedCategoryType});
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text(
-                'Added Category ${catName.text} of $selectedCategoryType.')));
+                'Added Category ${catName.text} of type $selectedCategoryType.')));
       } catch (e) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Error adding category: $e')));
