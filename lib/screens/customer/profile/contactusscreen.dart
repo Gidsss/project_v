@@ -338,7 +338,7 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              const SizedBox(width: 166,),
+                              const SizedBox(width: 157,),
                               SizedBox(
                                 child: Image.asset(
                                   'assets/images/RightArrow.png', // asset icon

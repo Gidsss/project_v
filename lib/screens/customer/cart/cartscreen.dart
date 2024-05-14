@@ -229,11 +229,11 @@ class _CartScreenState extends State<CartScreen> {
                   Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('Sub-Total:                                                          ₱1600.00'),
-                        Text('Handling Fee:                                                        ₱35.00'),
-                        Text('Discount:                                                             - ₱80.00'),
-                        Text('........................................................................................'),
-                        Text('Total:                                                                  ₱1555.00'),
+                      Text('Sub-Total:                                                    ₱1600.00'),
+                      Text('Handling Fee:                                                  ₱35.00'),
+                      Text('Discount:                                                       - ₱80.00'),
+                      Text('......................................................................................'),
+                      Text('Total:                                                           ₱1555.00'),
                         Text(''),
                       ]
                   ),

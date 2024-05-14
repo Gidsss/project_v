@@ -7,7 +7,7 @@ import 'package:project_v/screens/customer/homescreen.dart';
 import 'package:project_v/screens/customer/appointment/schedulescreen.dart';
 import 'package:project_v/screens/customer/chat/chatscreen.dart';
 import 'package:project_v/screens/customer/wishlistscreen.dart';
-
+import 'package:project_v/screens/customer/notifications/notificationsscreen.dart';
 import '../../screens/customer/cart/cartscreen.dart';
 
 class HeaderFooter extends StatefulWidget {

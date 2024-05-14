@@ -4,6 +4,8 @@ import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/buttons/auth/resetpassbutton.dart';
 import 'package:project_v/screens/auth/password/passwordreset2.dart';
 import 'package:project_v/widgets/textfields/otptextfield.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 
 class PasswordReset extends StatefulWidget {
@@ -13,6 +15,16 @@ class PasswordReset extends StatefulWidget {
   _PasswordResetState createState() => _PasswordResetState();
 // ignore_for_file: library_private_types_in_public_api
    
+}
+
+Future<void> sendPasswordResetEmail(String email) async {
+  try {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    print('Password reset email sent successfully');
+  } catch (e) {
+    print('Error sending password reset email: $e');
+    // Handle the error appropriately, such as displaying a snackbar or an error message to the user
+  }
 }
 
 

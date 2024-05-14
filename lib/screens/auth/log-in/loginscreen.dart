@@ -104,7 +104,7 @@ class LoginScreen extends StatelessWidget {
               password: passwordController.text.trim());
 
       // Check if the email is that of the admin and redirect accordingly.
-      if (userCredential.user!.email == "gideonsalangsang0428@gmail.com" || userCredential.user!.email == "j.d.mingming13@gmail.com") // supposedly valdopeñamerchant
+      if (userCredential.user!.email == "gideonsalangsang0428@gmail.com" || (userCredential.user!.email == "j.d.mingming13@gmail.com" || userCredential.user!.email == "testjhack@gmail.com")) // supposedly valdopeñamerchant
       {
         Navigator.pushReplacement(
           context,
@@ -247,38 +247,35 @@ class LoginScreen extends StatelessWidget {
 
                 const SizedBox(height: 50),
                 // or login using
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 100.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 20, // Adjust width as needed
-                        child: Divider(
-                          thickness: 0.5,
-                          color: Colors.grey[400],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 20, // Adjust width as needed
+                      child: Divider(
+                        thickness: 0.5,
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Text(
+                        'Or Login Using',
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'Inter',
+                          fontSize: 14,
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Text(
-                          'Or Login Using',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontFamily: 'Inter',
-                            fontSize: 14,
-                          ),
-                        ),
+                    ),
+                    SizedBox(
+                      width: 20, // Adjust width as needed
+                      child: Divider(
+                        thickness: 0.5,
+                        color: Colors.grey[400],
                       ),
-                      SizedBox(
-                        width: 20, // Adjust width as needed
-                        child: Divider(
-                          thickness: 0.5,
-                          color: Colors.grey[400],
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
 
                 const SizedBox(height: 20),

@@ -58,8 +58,9 @@ class HomeScreenState extends State<HomeScreen> {
           await loadProductDetails(prodId);
         }
       }
+      setState(() {});
     } catch (error) {
-      print('Error initializing products: $error');
+      throw Exception('Error initializing products: $error');
     }
   }
 
@@ -75,7 +76,9 @@ class HomeScreenState extends State<HomeScreen> {
       imageUrlsTemp.addAll(List.from(data['imageUrls']));
       imageUrls.add(imageUrlsTemp[0]);
       imageUrlsTemp = [];
-      setState(() {});
+      
+      // Debugging
+      print("$prodDesc, $prodName, $prodPrice, $prodSold, $imageUrls");
     }
   }
 
@@ -175,9 +178,7 @@ class HomeScreenState extends State<HomeScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
-                child: itemHeader(
-                  "Eyeglasses", context, "eyeglass"
-                ),
+                child: itemHeader("Eyeglasses", context, "eyeglass"),
               ),
               const SizedBox(
                 height: 20,
@@ -285,12 +286,13 @@ class HomeScreenState extends State<HomeScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             createBestSellerItem(
-                                prodName[index],
-                                prodPrice[index],
-                                prodSold[index],
-                                imageUrls[index],
-                                context,
-                                prodDesc[index]),
+                              prodName[index],
+                              prodPrice[index],
+                              prodSold[index],
+                              imageUrls[index],
+                              context,
+                              prodDesc[index],
+                            ),
                           ],
                         ),
                       );
@@ -317,9 +319,10 @@ Widget itemHeader(String title, BuildContext context, String navcategory) {
       InkWell(
         onTap: () {
           Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ExploreScreen(navdcategory: navcategory)));
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ExploreScreen(navdcategory: navcategory)));
           // Argument goes here. Navigate to Product Listings Page with Eyeglasses, or contact lenses category selected. (May need a new page that lists all subcategories of eyeglass, contact lenses?)
         },
         child: const Row(
@@ -347,7 +350,8 @@ Widget itemCreate(
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ExploreScreen(navdcategory: navcategory)));
+                builder: (context) =>
+                    ExploreScreen(navdcategory: navcategory)));
         // Argument goes here. Navigate to Product Listings Page with the relevant category selected.
       },
       child: Column(
@@ -387,16 +391,16 @@ Widget createBestSellerItem(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-          width: double.infinity,
-          height: 135, // Adjust the height as needed
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            image: DecorationImage(
-              image: NetworkImage(productImage),
-              fit: BoxFit.cover,
+            width: double.infinity,
+            height: 135, // Adjust the height as needed
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              image: DecorationImage(
+                image: NetworkImage(productImage),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-        ),
           const SizedBox(
             height: 7,
           ),

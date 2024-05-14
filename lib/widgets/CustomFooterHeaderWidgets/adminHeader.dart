@@ -34,9 +34,9 @@ Widget buildmainHeader(BuildContext context) {
           child: Expanded(
               child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
+              padding: const EdgeInsets.fromLTRB(10, 5, 0, 10),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -68,8 +68,8 @@ Widget buildmainHeader(BuildContext context) {
                       ),
                     ],
                   ),
-                  const SizedBox(width: 100),
-                  Row(
+                  //const SizedBox(width: 100),
+                  /*Row(
                     children: [
                       headerIconButton(
                           context,
@@ -77,7 +77,7 @@ Widget buildmainHeader(BuildContext context) {
                           const CustomerSupportScreen()),
                       const SizedBox(width: 6),
                     ],
-                  ),
+                  ),*/
                 ],
               ),
             ),

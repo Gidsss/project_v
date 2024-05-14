@@ -155,8 +155,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
       setState(() {});
     } catch (e) {
       // Handle errors gracefully
-      print("Error getting product details: $e");
-      print("Possible that there is no existing product with this category.");
+      throw Exception("Error getting product details: $e");
       // Consider displaying a user-friendly message
     }
   }
@@ -193,8 +192,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
       setState(() {});
     } catch (e) {
       // Handle errors gracefully
-      print("Error getting product details: $e");
-      print("Possible that there is no existing product with this category.");
+      throw Exception("Error getting product details: $e \n");
       // Consider displaying a user-friendly message
     }
   }

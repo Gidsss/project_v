@@ -121,7 +121,7 @@ Widget buildButton(
                     ),
                     Text(
                       label,
-                      style: const TextStyle(fontSize: 13, color: Colors.black),
+                      style: const TextStyle(fontSize: 11, color: Colors.black),
                     ),
                   ],
                 )),
@@ -151,7 +151,7 @@ Widget buildButton(
                 ),
                 Text(
                   label,
-                  style: const TextStyle(fontSize: 13, color: Colors.black),
+                  style: const TextStyle(fontSize: 11, color: Colors.black),
                 ),
               ],
             )),

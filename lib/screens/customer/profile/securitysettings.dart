@@ -10,8 +10,8 @@ class SecuritySettings extends StatefulWidget {
 }
 
 class _SecuritySettingsState extends State<SecuritySettings> {
-  bool isSwitchedSA = false;
-  bool isSwitchedE2FA = false;
+  //bool isSwitchedSA = false;
+  //bool isSwitchedE2FA = false;
   bool cpasswordVisible=false;
   bool npasswordVisible=false;
   bool confpasswordVisible=false;
@@ -73,6 +73,8 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                       ),
                       child: Column(
                         children: [
+                          //2FA, and Security Alert are removed
+                          /*
                           //Security Alert
                           Container(
                             width: double.infinity,
@@ -208,6 +210,7 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                           ),
 
                           const SizedBox(height: 20,),
+                          */
 
                           //Change Password
                           Container(
