@@ -27,7 +27,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
       var catData = docs.data() as Map<String, dynamic>;
       categorytypeList.add(catData["categorytypename"]);
     }
-
+    setState(() {});
   }
 
   Widget createHeader(String text) {
@@ -58,7 +58,6 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
 
   Widget createTextField(String text, TextEditingController controller) {
     return TextField(
-      
       controller: controller,
       decoration: InputDecoration(
         hintText: text,
@@ -336,8 +335,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
           'categorytypename': catTypeName.text,
         });
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text(
-                                    'Added Category Type ${catTypeName.text}.')));
+            content: Text('Added Category Type ${catTypeName.text}.')));
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Error adding category type: $e')));

@@ -122,7 +122,6 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
       for (DocumentSnapshot document in snapShot.docs) {
         categoriesDict.add(document.data() as Map<String, dynamic>);
       }
-      print(categoriesDict);
 
       return categoriesDict;
 
