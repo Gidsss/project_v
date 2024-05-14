@@ -1,26 +1,36 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import '../../../widgets/CustomFooterHeaderWidgets/adminfooter.dart';
 import '../../../widgets/CustomFooterHeaderWidgets/header2.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-import 'package:intl/intl.dart'; // For date formatting
+import '../../../widgets/CustomWidgets/UniversalButton.dart';
 
 class AddNewNotificationsTemplateScreen extends StatefulWidget {
   const AddNewNotificationsTemplateScreen({super.key});
 
   @override
-  State<AddNewNotificationsTemplateScreen> createState() => _AddNewNotificationsTemplateScreenState();
+  State<AddNewNotificationsTemplateScreen> createState() =>
+      _AddNewNotificationsTemplateScreenState();
 }
 
-class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsTemplateScreen> {
-  String _selectedCategoryType = 'Feedback and Reviews'; // Default selected category type
-  String _selectedCategoryType2 = 'All Customers'; // Default selected category type
-  String _selectedCategoryType3 = 'Low Priority'; // Default selected category type
+class _AddNewNotificationsTemplateScreenState
+    extends State<AddNewNotificationsTemplateScreen> {
   List<File?> imageFiles = List.filled(1, null);
+  final DateFormat dateFormat = DateFormat('MM/dd/yyyy');
   final ImagePicker picker = ImagePicker();
   bool showSearchBar = false;
+
+  // ignore: non_constant_identifier_names
   final TextEditingController DateController = TextEditingController();
-  final DateFormat dateFormat = DateFormat('MM/dd/yyyy');
+  final TextEditingController titleController = TextEditingController();
+  final TextEditingController messageController = TextEditingController();
+  String? notificationType;
+  String? priorityLevel;
+  String? recipient;
+  File? imageFile;
 
   Future<void> selectDate(
       BuildContext context, TextEditingController controller) async {
@@ -41,16 +51,63 @@ class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsT
   Future<void> pickImage(int index) async {
     try {
       final XFile? pickedFile =
-      await picker.pickImage(source: ImageSource.gallery);
+          await picker.pickImage(source: ImageSource.gallery);
       if (pickedFile != null) {
         setState(() {
-          imageFiles[index] =
-              File(pickedFile.path); // Update specific index in the list
+          imageFile = File(pickedFile.path);
+          imageFiles[index] = imageFile;
           print("Image picked at index $index: ${imageFiles[index]?.path}");
         });
       }
     } catch (e) {
       print('Failed to pick image: $e');
+    }
+  }
+
+  // Function to save the notification with validation
+  Future<void> saveNotification() async {
+    if (notificationType == null ||
+        priorityLevel == null ||
+        recipient == null ||
+        titleController.text.isEmpty ||
+        messageController.text.isEmpty ||
+        DateController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please fill all fields')));
+      return;
+    }
+
+    String imageUrl = '';
+    if (imageFile != null) {
+      try {
+        String fileName =
+            'notifications/${DateTime.now().millisecondsSinceEpoch.toString()}';
+        TaskSnapshot snapshot =
+            await FirebaseStorage.instance.ref(fileName).putFile(imageFile!);
+        imageUrl = await snapshot.ref.getDownloadURL();
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to upload image: $e')));
+        return;
+      }
+    }
+
+    // Save notification to Firestore
+    try {
+      await FirebaseFirestore.instance.collection('notifications').add({
+        'type': notificationType,
+        'title': titleController.text,
+        'message': messageController.text,
+        'priority': priorityLevel,
+        'recipient': recipient,
+        'date': DateController.text,
+        'imageUrl': imageUrl // Only if image was uploaded
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Notification saved successfully!')));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error saving notification: $e')));
     }
   }
 
@@ -78,44 +135,50 @@ class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsT
                             border: Border.all(color: Colors.grey),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: imageFiles[0] != null
-                              ? Image.file(
-                            imageFiles[0]!,
-                            fit: BoxFit.cover,
-                          )
-                              : const Icon(
-                            Icons.add_a_photo,
-                            color: Colors.grey,
-                            size: 50,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                                10), // Same border radius as container
+                            child: imageFiles[0] != null
+                                ? Image.file(
+                                    imageFiles[0]!,
+                                    fit: BoxFit.cover,
+                                  )
+                                : const Icon(
+                                    Icons.add_a_photo,
+                                    color: Colors.grey,
+                                    size: 50,
+                                  ),
                           ),
                         ),
                       ),
                     ),
                     const SizedBox(height: 25),
 
-                        //Notification Type
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Text(
-                              'Notification Type',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 14,
-                                fontFamily: "Inter",
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(width: 5), // Add some space between the icon and text
-                            SizedBox(
-                              width: 18,
-                              height: 17,
-                              child: Image.asset(
-                                'assets/images/EditIconBlack.png', // asset icon
-                                width: 18,
-                                height: 17,
-                              ),
-                            ),
+                    //Notification Type
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                          'Notification Type',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                            fontFamily: "Inter",
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(
+                            width:
+                                5), // Add some space between the icon and text
+                        SizedBox(
+                          width: 18,
+                          height: 17,
+                          child: Image.asset(
+                            'assets/images/EditIconBlack.png', // asset icon
+                            width: 18,
+                            height: 17,
+                          ),
+                        ),
 
                         const SizedBox(height: 25),
                       ],
@@ -124,14 +187,16 @@ class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsT
                     // Notification Type Dropdown
                     Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey[400]!), // Add gray border
-                        borderRadius: BorderRadius.circular(15), // Rounded corners
+                        border: Border.all(
+                            color: Colors.grey[400]!), // Add gray border
+                        borderRadius:
+                            BorderRadius.circular(15), // Rounded corners
                       ),
                       child: DropdownButton<String>(
-                        value: _selectedCategoryType,
+                        value: notificationType,
                         onChanged: (String? newValue) {
                           setState(() {
-                            _selectedCategoryType = newValue!;
+                            notificationType = newValue!;
                           });
                         },
                         style: const TextStyle(
@@ -139,10 +204,14 @@ class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsT
                           fontSize: 14,
                           fontFamily: "Inter",
                         ), // Customize the dropdown button style
-                        icon: const Icon(Icons.arrow_drop_down, color: Colors.black), // Customize the dropdown icon color
-                        isExpanded: true, // Make the dropdown button expand horizontally
+                        icon: const Icon(Icons.arrow_drop_down,
+                            color: Colors
+                                .black), // Customize the dropdown icon color
+                        isExpanded:
+                            true, // Make the dropdown button expand horizontally
                         iconSize: 30, // Adjust the size of the dropdown icon
-                        dropdownColor: Colors.white, // Customize the dropdown menu color
+                        dropdownColor:
+                            Colors.white, // Customize the dropdown menu color
                         underline: Container(), // Remove the underline
                         items: <String>[
                           'Feedback and Reviews',
@@ -153,9 +222,11 @@ class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsT
                           return DropdownMenuItem<String>(
                             value: value,
                             child: SizedBox(
-                              height: 50, // Adjust the height of each dropdown item
+                              height:
+                                  50, // Adjust the height of each dropdown item
                               child: Align(
-                                alignment: Alignment.center, // Align items to the center
+                                alignment: Alignment
+                                    .center, // Align items to the center
                                 child: Text(value),
                               ),
                             ),
@@ -164,14 +235,16 @@ class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsT
                       ),
                     ),
 
-                    SizedBox(height: 15,),
+                    SizedBox(
+                      height: 15,
+                    ),
 
                     //Notification Receipt
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const Text(
-                          'Notification Receipt',
+                          'Notification Recipient',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 14,
@@ -179,7 +252,9 @@ class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsT
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(width: 5), // Add some space between the icon and text
+                        const SizedBox(
+                            width:
+                                5), // Add some space between the icon and text
                         SizedBox(
                           width: 18,
                           height: 17,
@@ -197,14 +272,16 @@ class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsT
                     // Notification Receipt Dropdown
                     Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey[400]!), // Add gray border
-                        borderRadius: BorderRadius.circular(15), // Rounded corners
+                        border: Border.all(
+                            color: Colors.grey[400]!), // Add gray border
+                        borderRadius:
+                            BorderRadius.circular(15), // Rounded corners
                       ),
                       child: DropdownButton<String>(
-                        value: _selectedCategoryType2,
+                        value: recipient,
                         onChanged: (String? newValue) {
                           setState(() {
-                            _selectedCategoryType2 = newValue!;
+                            recipient = newValue!;
                             if (newValue == 'Specific Customers') {
                               showSearchBar = true;
                             } else {
@@ -217,10 +294,14 @@ class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsT
                           fontSize: 14,
                           fontFamily: "Inter",
                         ), // Customize the dropdown button style
-                        icon: const Icon(Icons.arrow_drop_down, color: Colors.black), // Customize the dropdown icon color
-                        isExpanded: true, // Make the dropdown button expand horizontally
+                        icon: const Icon(Icons.arrow_drop_down,
+                            color: Colors
+                                .black), // Customize the dropdown icon color
+                        isExpanded:
+                            true, // Make the dropdown button expand horizontally
                         iconSize: 30, // Adjust the size of the dropdown icon
-                        dropdownColor: Colors.white, // Customize the dropdown menu color
+                        dropdownColor:
+                            Colors.white, // Customize the dropdown menu color
                         underline: Container(), // Remove the underline
                         items: <String>[
                           'All Customers',
@@ -229,9 +310,11 @@ class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsT
                           return DropdownMenuItem<String>(
                             value: value,
                             child: SizedBox(
-                              height: 50, // Adjust the height of each dropdown item
+                              height:
+                                  50, // Adjust the height of each dropdown item
                               child: Align(
-                                alignment: Alignment.center, // Align items to the center
+                                alignment: Alignment
+                                    .center, // Align items to the center
                                 child: Text(value),
                               ),
                             ),
@@ -277,7 +360,9 @@ class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsT
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(width: 5), // Add some space between the icon and text
+                        const SizedBox(
+                            width:
+                                5), // Add some space between the icon and text
                         SizedBox(
                           width: 18,
                           height: 17,
@@ -295,14 +380,16 @@ class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsT
                     // Priority Level Dropdown
                     Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey[400]!), // Add gray border
-                        borderRadius: BorderRadius.circular(15), // Rounded corners
+                        border: Border.all(
+                            color: Colors.grey[400]!), // Add gray border
+                        borderRadius:
+                            BorderRadius.circular(15), // Rounded corners
                       ),
                       child: DropdownButton<String>(
-                        value: _selectedCategoryType3,
+                        value: priorityLevel,
                         onChanged: (String? newValue) {
                           setState(() {
-                            _selectedCategoryType3 = newValue!;
+                            priorityLevel = newValue!;
                           });
                         },
                         style: const TextStyle(
@@ -310,10 +397,14 @@ class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsT
                           fontSize: 14,
                           fontFamily: "Inter",
                         ), // Customize the dropdown button style
-                        icon: const Icon(Icons.arrow_drop_down, color: Colors.black), // Customize the dropdown icon color
-                        isExpanded: true, // Make the dropdown button expand horizontally
+                        icon: const Icon(Icons.arrow_drop_down,
+                            color: Colors
+                                .black), // Customize the dropdown icon color
+                        isExpanded:
+                            true, // Make the dropdown button expand horizontally
                         iconSize: 30, // Adjust the size of the dropdown icon
-                        dropdownColor: Colors.white, // Customize the dropdown menu color
+                        dropdownColor:
+                            Colors.white, // Customize the dropdown menu color
                         underline: Container(), // Remove the underline
                         items: <String>[
                           'Low Priority',
@@ -322,9 +413,11 @@ class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsT
                           return DropdownMenuItem<String>(
                             value: value,
                             child: SizedBox(
-                              height: 50, // Adjust the height of each dropdown item
+                              height:
+                                  50, // Adjust the height of each dropdown item
                               child: Align(
-                                alignment: Alignment.center, // Align items to the center
+                                alignment: Alignment
+                                    .center, // Align items to the center
                                 child: Text(value),
                               ),
                             ),
@@ -333,7 +426,9 @@ class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsT
                       ),
                     ),
 
-                    SizedBox(height: 15,),
+                    SizedBox(
+                      height: 15,
+                    ),
 
                     //Notification Title
                     Row(
@@ -347,7 +442,9 @@ class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsT
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(width: 6), // Add some space between the icon and text
+                        const SizedBox(
+                            width:
+                                6), // Add some space between the icon and text
                         SizedBox(
                           width: 18,
                           height: 17,
@@ -361,20 +458,31 @@ class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsT
                     ),
                     const SizedBox(height: 5),
                     TextField(
+                      controller: titleController,
                       decoration: InputDecoration(
                         hintText: "Notification Title",
-                        contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 12), // Adjust the padding
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 12), // Adjust the padding
                         border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey[400]!), // Adjust the border color
-                          borderRadius: BorderRadius.circular(15), // Rounded corners
+                          borderSide: BorderSide(
+                              color:
+                                  Colors.grey[400]!), // Adjust the border color
+                          borderRadius:
+                              BorderRadius.circular(15), // Rounded corners
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey[400]!), // Adjust the border color when focused
-                          borderRadius: BorderRadius.circular(15), // Rounded corners
+                          borderSide: BorderSide(
+                              color: Colors.grey[
+                                  400]!), // Adjust the border color when focused
+                          borderRadius:
+                              BorderRadius.circular(15), // Rounded corners
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey[400]!), // Adjust the border color when enabled
-                          borderRadius: BorderRadius.circular(15), // Rounded corners
+                          borderSide: BorderSide(
+                              color: Colors.grey[
+                                  400]!), // Adjust the border color when enabled
+                          borderRadius:
+                              BorderRadius.circular(15), // Rounded corners
                         ),
                         // Remove the underline
                         enabled: true,
@@ -386,7 +494,9 @@ class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsT
                       ),
                     ),
 
-                    SizedBox(height: 15,),
+                    SizedBox(
+                      height: 15,
+                    ),
 
                     //Message Content
                     Row(
@@ -400,7 +510,9 @@ class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsT
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(width: 6), // Add some space between the icon and text
+                        const SizedBox(
+                            width:
+                                6), // Add some space between the icon and text
                         SizedBox(
                           width: 18,
                           height: 17,
@@ -414,20 +526,31 @@ class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsT
                     ),
                     const SizedBox(height: 5),
                     TextField(
+                      controller: messageController,
                       decoration: InputDecoration(
                         hintText: "Message Content",
-                        contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 12), // Adjust the padding
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 12), // Adjust the padding
                         border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey[400]!), // Adjust the border color
-                          borderRadius: BorderRadius.circular(15), // Rounded corners
+                          borderSide: BorderSide(
+                              color:
+                                  Colors.grey[400]!), // Adjust the border color
+                          borderRadius:
+                              BorderRadius.circular(15), // Rounded corners
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey[400]!), // Adjust the border color when focused
-                          borderRadius: BorderRadius.circular(15), // Rounded corners
+                          borderSide: BorderSide(
+                              color: Colors.grey[
+                                  400]!), // Adjust the border color when focused
+                          borderRadius:
+                              BorderRadius.circular(15), // Rounded corners
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey[400]!), // Adjust the border color when enabled
-                          borderRadius: BorderRadius.circular(15), // Rounded corners
+                          borderSide: BorderSide(
+                              color: Colors.grey[
+                                  400]!), // Adjust the border color when enabled
+                          borderRadius:
+                              BorderRadius.circular(15), // Rounded corners
                         ),
                         // Remove the underline
                         enabled: true,
@@ -438,24 +561,29 @@ class _AddNewNotificationsTemplateScreenState extends State<AddNewNotificationsT
                         // Add any other TextField customization here
                       ),
                     ),
-                    SizedBox(height: 15,),
+                    SizedBox(
+                      height: 15,
+                    ),
 
                     const Text(
                       "Date",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     buildDatePickerField("", DateController),
-
-               ],
+                    // Save Notification Button
+                    CreateButton(
+                      buttontext: 'Save as Template',
+                      navigator: saveNotification,
+                      context: context,
+                    ),
+                  ],
+                ),
+              ),
             ),
-
           ),
-        ),
-
-      ),
-      AdminFooter(
-          buttonStatus: const [false, false, true, false, false],
-          context: context)
+          AdminFooter(
+              buttonStatus: const [false, false, true, false, false],
+              context: context)
         ],
       ),
     );

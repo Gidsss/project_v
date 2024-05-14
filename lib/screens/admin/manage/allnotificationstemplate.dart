@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../widgets/CustomFooterHeaderWidgets/adminfooter.dart';
 import '../../../widgets/CustomFooterHeaderWidgets/header2.dart';
+import 'editnotificationscreen.dart'; // Import the EditNotificationScreen
 
 class AllNotificationsTemplateScreen extends StatefulWidget {
   const AllNotificationsTemplateScreen({super.key});
@@ -10,6 +12,7 @@ class AllNotificationsTemplateScreen extends StatefulWidget {
 }
 
 class _AllNotificationsTemplateScreenState extends State<AllNotificationsTemplateScreen> {
+  // ignore: unused_field
   final List<int> _notifications = List.generate(30, (index) => index);
 
   Future<bool> _showDeleteNotificationTemplateDialog(int index) async {
@@ -71,7 +74,6 @@ class _AllNotificationsTemplateScreenState extends State<AllNotificationsTemplat
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,21 +82,26 @@ class _AllNotificationsTemplateScreenState extends State<AllNotificationsTemplat
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Column(
-                  children: [
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: _notifications.length,
-                      separatorBuilder: (context, index) => const SizedBox(height: 15),
-                      itemBuilder: (context, index) => Notifications(context, index),
-                    ),
-                  ],
-                ),
-              ),
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection('notifications').snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (snapshot.hasError) {
+                  return const Center(child: Text('Error fetching notifications'));
+                }
+                final notifications = snapshot.data!.docs;
+                return ListView.separated(
+                  padding: const EdgeInsets.all(15.0),
+                  itemCount: notifications.length,
+                  separatorBuilder: (context, index) => const SizedBox(height: 15),
+                  itemBuilder: (context, index) {
+                    final notification = notifications[index];
+                    return notificationsListTile(context, notification);
+                  },
+                );
+              },
             ),
           ),
           AdminFooter(
@@ -106,13 +113,16 @@ class _AllNotificationsTemplateScreenState extends State<AllNotificationsTemplat
     );
   }
 
-  Widget Notifications(BuildContext context, int index) {
+  Widget notificationsListTile(BuildContext context, QueryDocumentSnapshot notification) {
     return Dismissible(
-      key: Key('message$index'),
+      key: Key(notification.id),
       direction: DismissDirection.endToStart,
       confirmDismiss: (direction) async {
-        final result = await _showDeleteNotificationTemplateDialog(index);
-        return result == true;
+        final result = await _showDeleteNotificationTemplateDialog(notification.id as int);
+        if (result) {
+          await FirebaseFirestore.instance.collection('notifications').doc(notification.id).delete();
+        }
+        return result;
       },
       background: Container(
         alignment: Alignment.centerRight,
@@ -124,12 +134,23 @@ class _AllNotificationsTemplateScreenState extends State<AllNotificationsTemplat
         ),
       ),
       child: ListTile(
-        leading: const CircleAvatar(
-          backgroundImage: AssetImage('assets/images/PrescriptionFillingImage.jpg'),
-        ),
-        title: Text('Template ${index + 1}'),
-        subtitle: const Text('Notification details...'),
-        trailing: const Text('12/02/2024 - 11:00 AM'),
+        leading: notification['imageUrl'] != null && notification['imageUrl'].isNotEmpty
+            ? CircleAvatar(backgroundImage: NetworkImage(notification['imageUrl']))
+            : const CircleAvatar(child: Icon(Icons.notifications)),
+        title: Text(notification['title']),
+        subtitle: Text(notification['message']),
+        trailing: Text(notification['date']),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => EditNotificationScreen(
+                notificationId: notification.id,
+                notificationData: notification.data() as Map<String, dynamic>,
+              ),
+            ),
+          );
+        },
       ),
     );
   }
