@@ -323,8 +323,6 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
           .delete();
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Category Deleted Successfully.')));
-      Navigator.pop(context);
-      setState(() {});
     } catch (error) {
       throw Exception("Error deleting Category: $error");
     }
@@ -376,7 +374,7 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
                     createTextField(
                         "New Category Name", _categoryNameController),
                     SizedBox(
-                      height: 300,
+                      height: 30,
                     ),
 
                     Row(

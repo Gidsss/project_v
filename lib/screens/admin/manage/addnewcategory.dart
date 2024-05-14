@@ -308,7 +308,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
   }
 
   Future<void> _addCategory() async {
-    if (catName.text.isNotEmpty && selectedCategoryType!.isNotEmpty) {
+    if (catName.text.isNotEmpty && selectedCategoryType != null) {
       try {
         await db.collection('categories').add(
             {'category': catName.text, 'category_type': selectedCategoryType});
@@ -329,7 +329,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
   }
 
   Future<void> _addCategoryType() async {
-    if (catTypeName.text.isNotEmpty) {
+    if (catTypeName.text.isNotEmpty && selectedCategoryType != null) {
       try {
         await db.collection('categorytypes').add({
           'categorytypename': catTypeName.text,
