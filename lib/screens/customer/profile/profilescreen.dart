@@ -256,7 +256,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 const SizedBox(
                                     width:
-                                    35), // Add some space between the icon and text
+                                    28), // Add some space between the icon and text
                                 SizedBox(
                                   width: 26,
                                   height: 26,
@@ -332,7 +332,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 const SizedBox(
                                     width:
-                                    120), // Add some space between the icon and text
+                                    113), // Add some space between the icon and text
                                 SizedBox(
                                   width: 26,
                                   height: 26,
@@ -409,7 +409,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 const SizedBox(
                                     width:
-                                    65), // Add some space between the icon and text
+                                    56), // Add some space between the icon and text
                                 SizedBox(
                                   width: 26,
                                   height: 26,
@@ -486,7 +486,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 const SizedBox(
                                     width:
-                                    152), // Add some space between the icon and text
+                                    144), // Add some space between the icon and text
                                 SizedBox(
                                   width: 26,
                                   height: 26,
@@ -672,7 +672,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 const SizedBox(
                                     width:
-                                    107), // Add some space between the icon and text
+                                    98), // Add some space between the icon and text
                                 SizedBox(
                                   width: 26,
                                   height: 26,
@@ -749,7 +749,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 const SizedBox(
                                     width:
-                                    50), // Add some space between the icon and text
+                                    41), // Add some space between the icon and text
                                 SizedBox(
                                   width: 26,
                                   height: 26,
@@ -827,7 +827,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 const SizedBox(
                                     width:
-                                    90), // Add some space between the icon and text
+                                    81), // Add some space between the icon and text
                                 SizedBox(
                                   width: 26,
                                   height: 26,
@@ -904,7 +904,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                                 const SizedBox(
                                     width:
-                                    122), // Add some space between the icon and text
+                                    113), // Add some space between the icon and text
                                 SizedBox(
                                   width: 26,
                                   height: 26,
@@ -978,7 +978,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    const SizedBox(width: 132),
+                                    const SizedBox(width: 124),
                                     SizedBox(
                                       width: 26,
                                       height: 26,
@@ -1109,7 +1109,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               const SizedBox(
                                   width:
-                                  104), // Add some space between the icon and text
+                                  96), // Add some space between the icon and text
                               SizedBox(
                                 width: 26,
                                 height: 26,

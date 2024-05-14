@@ -60,7 +60,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                   });
                 },
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 5),
               DropdownButton<String>(
                 value: _status,
                 onChanged: (String? newValue) {
@@ -76,7 +76,6 @@ class _WishlistScreenState extends State<WishlistScreen> {
                   );
                 }).toList(),
               ),
-              const SizedBox(width: 15),
               DropdownButton<String>(
                 value: _category,
                 onChanged: (String? newValue) {

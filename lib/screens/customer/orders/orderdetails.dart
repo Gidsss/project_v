@@ -249,7 +249,7 @@ class OrderDetailsScreen extends StatelessWidget {
               Text(
                 status,
                 style: const TextStyle(
-                  fontSize: 18, // Adjust the font size as needed
+                  fontSize: 16, // Adjust the font size as needed
                   fontWeight:
                       FontWeight.bold, // Optionally, set the font weight
                 ),

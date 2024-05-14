@@ -101,7 +101,7 @@ class _OrderScreenState extends State<OrdersScreen>
           ),
           const SizedBox(width: 20),
           SizedBox(
-            width: 190,
+            width: 185,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
