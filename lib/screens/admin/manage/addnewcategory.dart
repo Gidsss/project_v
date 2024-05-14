@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:project_v/screens/admin/products/addproduct.dart';
 import '../../../widgets/CustomFooterHeaderWidgets/adminfooter.dart';
@@ -17,20 +15,19 @@ class AddNewCategoryScreen extends StatefulWidget {
 
 class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
   final db = FirebaseFirestore.instance;
-  List<String> parentcategoryList = [];
+  List<String> categorytypeList = [];
   TextEditingController catName = TextEditingController();
   TextEditingController catTypeName = TextEditingController();
-  String selectedCategoryType = "";
+  String? selectedCategoryType;
 
   Future<void> fetchCategory() async {
-    List<String> tempList = [];
-    QuerySnapshot snapShot = await db.collection("categories").get();
+    QuerySnapshot snapShot = await db.collection("categorytypes").get();
 
     for (DocumentSnapshot docs in snapShot.docs) {
       var catData = docs.data() as Map<String, dynamic>;
-      tempList.add(catData["parentcategory"]);
+      categorytypeList.add(catData["categorytypename"]);
     }
-    parentcategoryList = tempList.toSet().toList(); // Remove duplicates
+
   }
 
   Widget createHeader(String text) {
@@ -61,6 +58,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
 
   Widget createTextField(String text, TextEditingController controller) {
     return TextField(
+      
       controller: controller,
       decoration: InputDecoration(
         hintText: text,
@@ -138,7 +136,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
     );
   }
 
-  Widget createdropDown() { 
+  Widget createdropDown() {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey[400]!), // Add gray border
@@ -146,7 +144,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
       ),
       child: DropdownButton<String>(
         hint: const Padding(
-          padding: EdgeInsets.symmetric(horizontal:  8.0),
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
           child: Text("Select a Category Type"),
         ),
         value: selectedCategoryType,
@@ -166,7 +164,7 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
         iconSize: 30, // Adjust the size of the dropdown icon
         dropdownColor: Colors.white, // Customize the dropdown menu color
         underline: Container(), // Remove the underline
-        items: parentcategoryList.map<DropdownMenuItem<String>>((String value) {
+        items: categorytypeList.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: SizedBox(
@@ -311,37 +309,42 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
   }
 
   Future<void> _addCategory() async {
-    if (catName.text.isNotEmpty && selectedCategoryType.isNotEmpty) {
+    if (catName.text.isNotEmpty && selectedCategoryType!.isNotEmpty) {
       try {
-        await db.collection('categories').add({
-          'category': catName.text,
-          'parentcategory': selectedCategoryType
-        });
+        await db.collection('categories').add(
+            {'category': catName.text, 'category_type': selectedCategoryType});
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+                'Added Category ${catName.text} of $selectedCategoryType.')));
       } catch (e) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Error adding category: $e')));
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Please fill out Category Name and Select Category Type')));
+          content:
+              Text('Please fill out Category Name and Select Category Type.')));
     }
     // Implement the logic to save the changes here
     // You can use _selectedCategoryType and _categoryNameController.text to access the edited values
   }
 
-    Future<void> _addCategoryType() async {
+  Future<void> _addCategoryType() async {
     if (catTypeName.text.isNotEmpty) {
       try {
         await db.collection('categorytypes').add({
           'categorytypename': catTypeName.text,
         });
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                    'Added Category Type ${catTypeName.text}.')));
       } catch (e) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Error adding category type: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error adding category type: $e')));
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Please fill out Category Type Name')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please fill out Category Type Name')));
     }
     // Implement the logic to save the changes here
     // You can use _selectedCategoryType and _categoryNameController.text to access the edited values
@@ -407,9 +410,10 @@ class _AddNewCategoryScreenState extends State<AddNewCategoryScreen> {
                       height: 30,
                     ),
 
-                    createButton("Add Category Type", _showAddCategoryTypeDialog),
+                    createButton(
+                        "Add Category Type", _showAddCategoryTypeDialog),
                     const SizedBox(
-                      height: 30,
+                      height: 200,
                     ),
                   ],
                 ),

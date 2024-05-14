@@ -46,7 +46,7 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
                   const EdgeInsets.only(left: 0), // Remove horizontal padding
               alignment: Alignment.centerLeft, // Align text to the left
               child: const Text(
-                'Category Type', // Is parentcategory in firebase
+                'Category Type', // Is category type in firebase
                 style: TextStyle(color: Colors.white),
                 overflow: TextOverflow.ellipsis, // Handle overflow
               ),
@@ -59,7 +59,7 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
                   const EdgeInsets.only(left: 0), // Remove horizontal padding
               alignment: Alignment.centerLeft, // Align text to the left
               child: const Text(
-                '   Edit',
+                'Edit',
                 style: TextStyle(color: Colors.white),
                 overflow: TextOverflow.ellipsis, // Handle overflow
               ),
@@ -70,7 +70,7 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
             .map(
               (item) => DataRow(cells: [
                 DataCell(Text(item['category'].toString())),
-                DataCell(Text(item['parentcategory'].toString())),
+                DataCell(Text(item['category_type'].toString())),
                 DataCell(
                   Align(
                     alignment: Alignment.center,
@@ -95,7 +95,7 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
                                   initialCategoryName:
                                       item['category'].toString(),
                                   initialCategoryType:
-                                      item['parentcategory'].toString(),
+                                      item['category_type'].toString(),
                                 ),
                               ),
                             );
@@ -122,6 +122,7 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
       for (DocumentSnapshot document in snapShot.docs) {
         categoriesDict.add(document.data() as Map<String, dynamic>);
       }
+      print(categoriesDict);
 
       return categoriesDict;
 
