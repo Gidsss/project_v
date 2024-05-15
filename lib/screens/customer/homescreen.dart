@@ -76,7 +76,7 @@ class HomeScreenState extends State<HomeScreen> {
       imageUrlsTemp.addAll(List.from(data['imageUrls']));
       imageUrls.add(imageUrlsTemp[0]);
       imageUrlsTemp = [];
-      
+
       // Debugging
       print("$prodDesc, $prodName, $prodPrice, $prodSold, $imageUrls");
     }
@@ -292,6 +292,7 @@ class HomeScreenState extends State<HomeScreen> {
                               imageUrls[index],
                               context,
                               prodDesc[index],
+                              topProductIds[index],
                             ),
                           ],
                         ),
@@ -381,87 +382,102 @@ Widget createBestSellerItem(
     String productSold,
     String productImage,
     BuildContext context,
-    String prodDescription) {
-  return SizedBox(
-    width: 170,
-    child: Card(
-      shadowColor: Colors.grey.withOpacity(0.5),
-      elevation: 5,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: double.infinity,
-            height: 135, // Adjust the height as needed
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              image: DecorationImage(
-                image: NetworkImage(productImage),
-                fit: BoxFit.cover,
+    String prodDescription,
+    String productID) {
+  return GestureDetector(
+    onTap: () {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ProductDetailScreen(
+                  imageURL: productImage,
+                  name: productName,
+                  price: productPrice,
+                  description: prodDescription,
+                  id: productID)));
+    },
+    child: SizedBox(
+      width: 170,
+      child: Card(
+        shadowColor: Colors.grey.withOpacity(0.5),
+        elevation: 5,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: double.infinity,
+              height: 135, // Adjust the height as needed
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                image: DecorationImage(
+                  image: NetworkImage(productImage),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          const SizedBox(
-            height: 7,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: 100,
-                  child: Text(productName,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "Inter",
-                          fontSize: 16),
-                      overflow: TextOverflow.ellipsis),
-                ),
-                InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProductDetailScreen(
-                                  imageURL: productImage,
-                                  name: productName,
-                                  price: productPrice,
-                                  description: prodDescription)));
-                    },
-                    child: const Icon(Icons.chevron_right))
-              ],
+            const SizedBox(
+              height: 7,
             ),
-          ),
-          const SizedBox(
-            height: 7,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: 50,
-                  child: Text(
-                    '₱$productPrice',
-                    style: const TextStyle(
-                        fontFamily: "Inter",
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500),
-                    overflow: TextOverflow.ellipsis,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: 100,
+                    child: Text(productName,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "Inter",
+                            fontSize: 16),
+                        overflow: TextOverflow.ellipsis),
                   ),
-                ),
-                Text('$productSold sold',
-                    style: const TextStyle(
-                        fontFamily: "Inter",
-                        fontSize: 9,
-                        fontWeight: FontWeight.w100),
-                    overflow: TextOverflow.ellipsis)
-              ],
+                  InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProductDetailScreen(
+                                    imageURL: productImage,
+                                    name: productName,
+                                    price: productPrice,
+                                    description: prodDescription,
+                                    id: productID)));
+                      },
+                      child: const Icon(Icons.chevron_right))
+                ],
+              ),
             ),
-          ),
-        ],
+            const SizedBox(
+              height: 7,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: 50,
+                    child: Text(
+                      '₱$productPrice',
+                      style: const TextStyle(
+                          fontFamily: "Inter",
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Text('$productSold sold',
+                      style: const TextStyle(
+                          fontFamily: "Inter",
+                          fontSize: 9,
+                          fontWeight: FontWeight.w100),
+                      overflow: TextOverflow.ellipsis)
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     ),
   );

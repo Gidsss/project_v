@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerheaderfooter.dart';
 import 'package:project_v/screens/customer/explore/productdetails.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key, this.navdcategory});
@@ -38,7 +40,7 @@ class ProductItem extends StatelessWidget {
         children: [
           Container(
             width: double.infinity,
-            height: 150, // Adjust the height as needed
+            height: MediaQuery.of(context).size.height * 0.20,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               image: DecorationImage(
@@ -80,26 +82,30 @@ class ProductItem extends StatelessWidget {
                   ),
                 ],
               ),
-              ElevatedButton(
-                onPressed: onAddtoCart,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black87,
-                  padding: EdgeInsets.zero,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: SizedBox(
-                  width: 28,
-                  height: 28,
-                  child: ColorFiltered(
-                    colorFilter: const ColorFilter.mode(
-                      Colors.white,
-                      BlendMode.srcIn,
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.12,
+                height: MediaQuery.of(context).size.height * 0.05,
+                child: ElevatedButton(
+                  onPressed: onAddtoCart,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black87,
+                    padding: EdgeInsets.zero,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Image.asset(
-                      AppConstants.addtoCartIconPath,
-                      fit: BoxFit.cover,
+                  ),
+                  child: SizedBox(
+                    width: 28,
+                    height: 28,
+                    child: ColorFiltered(
+                      colorFilter: const ColorFilter.mode(
+                        Colors.white,
+                        BlendMode.srcIn,
+                      ),
+                      child: Image.asset(
+                        AppConstants.addtoCartIconPath,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
@@ -121,6 +127,55 @@ class _ExploreScreenState extends State<ExploreScreen> {
   List<String> prodSold = [];
   List<String> tempImageUrls = [];
   List<String> imageUrls = [];
+  List<String> productIDs = [];
+
+  Future<void> addCart(BuildContext context, String id, String name) async {
+    try {
+      final db = FirebaseFirestore.instance;
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        String uid = user.uid;
+        String productId = id;
+
+        CollectionReference cartsCollection =
+            db.collection("customers").doc(uid).collection("carts");
+
+        // Check if the product already exists in the cart.
+        DocumentSnapshot cartSnapshot =
+            await cartsCollection.doc("order-$productId").get();
+
+        // If document with id order-productID does not exist, create a cart subcollection (if not exist)
+        // and a document with cartItem value of prodRef and quantity 1
+        if (!cartSnapshot.exists) {
+          // Add cart item to the subcollection with reference and quantity as the name order-productID
+          DocumentReference cartItemRef = db
+              .collection("customers")
+              .doc(uid)
+              .collection("carts")
+              .doc("order-$productId");
+
+          await cartItemRef.set({
+            'cartItemRef': db.collection('products').doc(productId),
+            'Quantity': 1
+          });
+
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Added $name to cart successfully.')));
+        }
+        // document with the id order-productId already exists.
+        else if (cartSnapshot.exists) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Product already exists in the cart.')),
+          );
+        }
+      } else {
+        throw Exception("Failed to get current user");
+      }
+    } catch (error) {
+      throw Exception("Failed to add to cart: $error");
+    }
+  }
 
   Future<void> getProducts() async {
     try {
@@ -131,11 +186,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
             .collection("products")
             .where("category", arrayContains: widget.navdcategory)
             .get();
-
       } else {
         querySnapshot = await db.collection("products").get();
       }
-
 
       for (var docsSnapshot in querySnapshot.docs) {
         Map<String, dynamic> prodData =
@@ -146,6 +199,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
         prodDescription.add(prodData['description']);
         prodSold.add(prodData['sold']);
         tempImageUrls.addAll(List.from(prodData['imageUrls']));
+        productIDs.add(docsSnapshot.id);
         // Assuming there's at least one image URL
         imageUrls.add(tempImageUrls[0]);
         tempImageUrls = [];
@@ -159,7 +213,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
       // Consider displaying a user-friendly message
     }
   }
-   
+
   // Get products based on selected categories
   Future<void> searchProducts() async {
     try {
@@ -174,7 +228,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
         querySnapshot = await db.collection("products").get();
       }
 
-      for (var docsSnapshot in querySnapshot.docs) {
+      for (DocumentSnapshot docsSnapshot in querySnapshot.docs) {
         Map<String, dynamic> prodData =
             docsSnapshot.data() as Map<String, dynamic>;
         prodName.add(prodData['name']);
@@ -196,9 +250,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
       // Consider displaying a user-friendly message
     }
   }
-
-
-
 
   @override
   void initState() {
@@ -354,30 +405,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                 imageURL: imageUrls[index],
                                 name: prodName[index],
                                 price: prodPrice[index],
-                                description: prodDescription[index]),
+                                description: prodDescription[index],
+                                id: productIDs[index]),
                           ),
                         );
                       },
                       onAddtoCart: () {
                         // Show a pop-up message indicating that the item was added to the cart
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Success'),
-                              content: const Text(
-                                  'Product added to cart successfully!'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
+                        addCart(context, productIDs[index], prodName[index]);
                       },
                     ),
                   );
