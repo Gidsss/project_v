@@ -92,6 +92,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Get the size of the screen
+    var screenSize = MediaQuery.of(context).size;
+    var screenWidth = screenSize.width;
+    var screenHeight = screenSize.height;
+
     return Scaffold(
       appBar: Header2(text: 'Profile'), // Using Header2 as the AppBar
       body: Column(
@@ -102,9 +107,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 20),
+                  SizedBox(height: screenHeight * 0.02),
                   Padding(
-                    padding: const EdgeInsets.only(left: 22), // left padding
+                    padding: EdgeInsets.only(left: screenWidth * 0.05), // left padding
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -234,17 +239,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 SizedBox(
-                                  width: 26,
-                                  height: 26,
+                                  width: screenWidth * 0.06,
+                                  height: screenHeight * 0.06,
                                   child: Image.asset(
                                     'assets/images/Chat&NotifIcon.png', // asset icon
-                                    width: 26,
-                                    height: 26,
+                                    width: screenWidth * 0.06,
+                                    height: screenHeight * 0.06,
                                   ),
                                 ),
-                                const SizedBox(
-                                    width:
-                                    8), // Add some space between the icon and text
+                                SizedBox(
+                                    width: screenWidth * 0.02),  // Add some space between the icon and text
                                 const Text(
                                   'Chat & Notification',
                                   style: TextStyle(
@@ -254,9 +258,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                const SizedBox(
-                                    width:
-                                    28), // Add some space between the icon and text
+                                SizedBox(
+                                    width: screenWidth * 0.07),// Add some space between the icon and text
                                 SizedBox(
                                   width: 26,
                                   height: 26,
@@ -387,17 +390,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 SizedBox(
-                                  width: 26,
-                                  height: 26,
+                                  width: screenWidth * 0.06,
+                                  height: screenHeight * 0.06,
                                   child: Image.asset(
                                     'assets/images/ShoppingCartsIcon.png', // asset icon
-                                    width: 26,
-                                    height: 26,
+                                    width: screenWidth * 0.06,
+                                    height: screenHeight * 0.06,
                                   ),
                                 ),
-                                const SizedBox(
-                                    width:
-                                    8), // Add some space between the icon and text
+                                SizedBox(
+                                    width: screenWidth * 0.02),// Add some space between the icon and text
                                 const Text(
                                   'Shopping Carts',
                                   style: TextStyle(
@@ -407,9 +409,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                const SizedBox(
-                                    width:
-                                    56), // Add some space between the icon and text
+                                SizedBox(
+                                    width: screenWidth * 0.14),  // Add some space between the icon and text
                                 SizedBox(
                                   width: 26,
                                   height: 26,
@@ -464,17 +465,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 SizedBox(
-                                  width: 26,
-                                  height: 26,
+                                  width: screenWidth * 0.06,
+                                  height: screenHeight * 0.06,
                                   child: Image.asset(
                                     'assets/images/OrderIcon.png', // asset icon
-                                    width: 26,
-                                    height: 26,
+                                    width: screenWidth * 0.06,
+                                    height: screenHeight * 0.06,
                                   ),
                                 ),
-                                const SizedBox(
-                                    width:
-                                    8), // Add some space between the icon and text
+                                SizedBox(
+                                    width: screenWidth * 0.02), // Add some space between the icon and text
                                 const Text(
                                   'Order',
                                   style: TextStyle(
@@ -484,9 +484,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                const SizedBox(
-                                    width:
-                                    144), // Add some space between the icon and text
+                                SizedBox(
+                                    width: screenWidth * 0.37), // Add some space between the icon and text
                                 SizedBox(
                                   width: 26,
                                   height: 26,
@@ -650,17 +649,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 SizedBox(
-                                  width: 26,
-                                  height: 26,
+                                  width: screenWidth * 0.06,
+                                  height: screenHeight * 0.06,
                                   child: Image.asset(
                                     'assets/images/EditProfileIcon.png', // asset icon
-                                    width: 26,
-                                    height: 26,
+                                    width: screenWidth * 0.06,
+                                    height: screenHeight * 0.06,
                                   ),
                                 ),
-                                const SizedBox(
-                                    width:
-                                    8), // Add some space between the icon and text
+                                SizedBox(
+                                    width: screenWidth * 0.02),// Add some space between the icon and text
                                 const Text(
                                   'Edit Profile',
                                   style: TextStyle(
@@ -670,9 +668,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                const SizedBox(
-                                    width:
-                                    98), // Add some space between the icon and text
+                                SizedBox(
+                                    width: screenWidth * 0.25),// Add some space between the icon and text
                                 SizedBox(
                                   width: 26,
                                   height: 26,
@@ -727,17 +724,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 SizedBox(
-                                  width: 26,
-                                  height: 26,
+                                  width: screenWidth * 0.06,
+                                  height: screenHeight * 0.06,
                                   child: Image.asset(
                                     'assets/images/SecuritySettingsIcon.png', // asset icon
-                                    width: 26,
-                                    height: 26,
+                                    width: screenWidth * 0.06,
+                                    height: screenHeight * 0.06,
                                   ),
                                 ),
-                                const SizedBox(
-                                    width:
-                                    8), // Add some space between the icon and text
+                                SizedBox(
+                                    width: screenWidth * 0.02),// Add some space between the icon and text
                                 const Text(
                                   'Security Settings',
                                   style: TextStyle(
@@ -747,9 +743,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                const SizedBox(
-                                    width:
-                                    41), // Add some space between the icon and text
+                                SizedBox(
+                                    width: screenWidth * 0.1), // Add some space between the icon and text
                                 SizedBox(
                                   width: 26,
                                   height: 26,
@@ -882,17 +877,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 SizedBox(
-                                  width: 26,
-                                  height: 26,
+                                  width: screenWidth * 0.06,
+                                  height: screenHeight * 0.06,
                                   child: Image.asset(
                                     'assets/images/AboutUsIcon.png', // asset icon
-                                    width: 26,
-                                    height: 26,
+                                    width: screenWidth * 0.06,
+                                    height: screenHeight * 0.06,
                                   ),
                                 ),
-                                const SizedBox(
-                                    width:
-                                    8), // Add some space between the icon and text
+                                SizedBox(
+                                    width: screenWidth * 0.02),// Add some space between the icon and text
                                 const Text(
                                   'About Us',
                                   style: TextStyle(
@@ -902,9 +896,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                const SizedBox(
-                                    width:
-                                    113), // Add some space between the icon and text
+                                SizedBox(
+                                    width: screenWidth * 0.3),// Add some space between the icon and text
                                 SizedBox(
                                   width: 26,
                                   height: 26,
@@ -960,15 +953,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 children: [
                                   if (!_isSigningOut) ...[
                                     SizedBox(
-                                      width: 26,
-                                      height: 26,
+                                      width: screenWidth * 0.06,
+                                      height: screenHeight * 0.06,
                                       child: Image.asset(
                                         'assets/images/LogoutIcon.png',
-                                        width: 26,
-                                        height: 26,
+                                        width: screenWidth * 0.06,
+                                        height: screenHeight * 0.06,
                                       ),
                                     ),
-                                    const SizedBox(width: 8),
+                                    SizedBox(
+                                        width: screenWidth * 0.02),
                                     const Text(
                                       'Log-out',
                                       style: TextStyle(
@@ -978,7 +972,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    const SizedBox(width: 124),
+                                    SizedBox(
+                                        width: screenWidth * 0.33),
                                     SizedBox(
                                       width: 26,
                                       height: 26,
@@ -1087,12 +1082,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               SizedBox(
-                                width: 26,
-                                height: 26,
+                                width: screenWidth * 0.06,
+                                height: screenHeight * 0.06,
                                 child: Image.asset(
                                   'assets/images/ContactUsIcon.png', // asset icon
-                                  width: 26,
-                                  height: 26,
+                                  width: screenWidth * 0.06,
+                                  height: screenHeight * 0.06,
                                 ),
                               ),
                               const SizedBox(
@@ -1107,9 +1102,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              const SizedBox(
-                                  width:
-                                  96), // Add some space between the icon and text
+                              SizedBox(
+                                  width: screenWidth * 0.25), // Add some space between the icon and text
                               SizedBox(
                                 width: 26,
                                 height: 26,
