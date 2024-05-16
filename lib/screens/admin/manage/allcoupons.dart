@@ -83,7 +83,7 @@ class _AllCouponsScreenState extends State<AllCouponsScreen>
           children: snapshot.data!.docs.map((doc) {
             Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
             String couponCode = data['couponCode'] ?? 'No Code';
-            String benefits = data['benefits'] ?? '';
+            String benefits = data['benefits'] != null ? '${data['benefits']}%' : '---';
             String usageLimit = data['usageLimit'] != null
                 ? data['usageLimit'].toString()
                 : '---';
@@ -236,7 +236,7 @@ class _AllCouponsScreenState extends State<AllCouponsScreen>
             ...snapshot.data!.docs.map((doc) {
               Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
               String couponCode = data['couponCode'] ?? 'No Code';
-              String benefits = data['benefits'] ?? '';
+              String benefits = data['benefits'] != null ? '${data['benefits']}%' : '---';
               String usageLimit = data['usageLimit'] != null ? data['usageLimit'].toString() : '---';
               String redeems = data['redeems'] != null ? data['redeems'].toString() : '0'; // Default to '0' if not available
 
@@ -359,7 +359,7 @@ class _AllCouponsScreenState extends State<AllCouponsScreen>
                   Map<String, dynamic> data =
                       doc.data() as Map<String, dynamic>;
                   String couponCode = data['couponCode'] ?? 'No Code';
-                  String benefits = data['benefits'] ?? '';
+                   String benefits = data['benefits'] != null ? '${data['benefits']}%' : '---';
                   String usageLimit = data['usageLimit'] != null
                       ? data['usageLimit'].toString()
                       : '---';

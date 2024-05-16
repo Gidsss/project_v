@@ -69,8 +69,24 @@ class _EditCouponScreenState extends State<EditCouponScreen> {
 
   Future<void> updateCoupon() async {
     String couponCode = couponCodeController.text;
+    if (couponCode.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Coupon code cannot be empty.')));
+      return;
+    }
+    final QuerySnapshot result = await FirebaseFirestore.instance
+        .collection('coupons')
+        .where('couponCode', isEqualTo: couponCode)
+        .get();
+    // Check if there's another document with the same coupon code
+    if (result.docs.any((doc) => doc.id != widget.documentId)) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('A coupon with this code already exists.')));
+      return;
+    }
+
     String description = descriptionController.text;
-    String benefits = benefitsController.text;
+    int benefits = int.tryParse(benefitsController.text) ?? 0;
     int usageLimit = int.tryParse(usageLimitController.text) ?? 0;
     String startDate = startDateController.text;
     String endDate =
