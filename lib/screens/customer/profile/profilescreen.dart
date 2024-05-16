@@ -202,6 +202,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       child: Column(
                         children: [
+                          /*
                           //Chat and Notification Button
                           ElevatedButton(
                             onPressed: () {
@@ -272,9 +273,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ],
                             ),
                           ),
+
+
                           const SizedBox(
                               height:
-                              10.0), // Add some space between chat & notif button and wishlists button
+                              10.0),
+                               // Add some space between chat & notif button and wishlists button
+                           */
 /*
                           // Wishlists Button
                           ElevatedButton(
