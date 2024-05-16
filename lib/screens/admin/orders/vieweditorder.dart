@@ -5,7 +5,9 @@ import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/adminfooter.dart';
 
 class ViewEditOrder extends StatefulWidget {
-  const ViewEditOrder({Key? key});
+  final Map<String, dynamic> orderData;
+
+  const ViewEditOrder({Key? key, required this.orderData}) : super(key: key);
 
   @override
   State<ViewEditOrder> createState() => _ViewEditOrderState();
