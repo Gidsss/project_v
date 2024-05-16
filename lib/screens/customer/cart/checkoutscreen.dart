@@ -135,13 +135,18 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
           "OrderPrice": total,
           "PromoCode": promoRef,
           "Discount": discount,
+          "Status": true,
         });
 
         // Transfer all items from cart subcollection into orders, id-customerordernumber, subcollection.
         for (CheckOutItem item in _checkoutItems) {
           ordersdocRef
               .collection("items")
-              .add({"Quantity": item.quantity, "cartItemRef": item.itemID});
+              .doc(item.itemID)
+              .set(({
+                "Quantity": item.quantity,
+                "cartItemRef": db.collection('products').doc(item.itemID.substring(6))
+              }));
         }
 
         // Increment customerordernumber of customer for the next transaction order.
@@ -266,7 +271,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            _checkoutItems[index - 1].category,
+                            "Category: ${_checkoutItems[index - 1].category}",
                             style: const TextStyle(
                               fontWeight: FontWeight.normal,
                               fontSize: 10.0,
@@ -401,7 +406,11 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                   const Size(150, 35))),
                                       onPressed: () {
                                         Navigator.pop(context);
-                                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const HomeScreen()));
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const HomeScreen()));
                                       },
                                       child: const Text(
                                         "Close",
