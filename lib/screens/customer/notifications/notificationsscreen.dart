@@ -16,7 +16,6 @@ class NotificationsScreen extends StatelessWidget {
             key: Key('message$index'),
             direction: DismissDirection.endToStart,
             onDismissed: (direction) {
-              // Handle the action when the message is swiped
             },
             background: Container(
               alignment: Alignment.centerRight,

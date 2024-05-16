@@ -45,7 +45,7 @@ class _EditProfileState extends State<EditProfile> {
             .get();
         setState(() {
           userName = userData.data()?['name'];
-          userEmail = userData.data()?['email'];
+          userEmail = user?.email;
           userAddress = userData.data()?['address'];
           userPhone = userData.data()?['phoneNumber'];
           userProfilePic = userData.data()?['profilePic'];

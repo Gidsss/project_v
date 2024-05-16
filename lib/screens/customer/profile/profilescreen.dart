@@ -272,7 +272,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           const SizedBox(
                               height:
                               10.0), // Add some space between chat & notif button and wishlists button
-
+/*
                           // Wishlists Button
                           ElevatedButton(
                             onPressed: () {
@@ -349,7 +349,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           const SizedBox(
                               height:
                               10.0), // Add some space between wishlists button and shopping carts button
-
+*/
                           // Shopping Carts Button
                           ElevatedButton(
                             onPressed: () {
@@ -766,7 +766,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           const SizedBox(
                               height:
                               10.0), // Add some space between security settings button and notifications carts button
-
+/*
                           // Notifications Button
                           ElevatedButton(
                             onPressed: () {
@@ -844,7 +844,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           const SizedBox(
                               height:
                               10.0), // Add some space between Notifications button and About Us button
-
+*/
                           // About Us
                           ElevatedButton(
                             onPressed: () {
