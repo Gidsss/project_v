@@ -86,6 +86,11 @@ class _AdminProfileScreenState extends State<AdminProfileScreen>{
 
   @override
   Widget build(BuildContext context) {
+    // Get the size of the screen
+    var screenSize = MediaQuery.of(context).size;
+    var screenWidth = screenSize.width;
+    var screenHeight = screenSize.height;
+
     return Scaffold(
         body: Column(
           children: [
@@ -237,18 +242,17 @@ class _AdminProfileScreenState extends State<AdminProfileScreen>{
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   SizedBox(
-                                    width: 30,
-                                    height: 30,
+                                    width: screenWidth * 0.06,
+                                    height: screenHeight * 0.06,
                                     child: Image.asset(
                                       'assets/images/EditProfileIcon.png', // asset icon
-                                      width: 26,
-                                      height: 26,
+                                      width: screenWidth * 0.06,
+                                      height: screenHeight * 0.06,
                                       color: Colors.black,
                                     ),
                                   ),
-                                  const SizedBox(
-                                      width: 5
-                                  ),
+                                  SizedBox(
+                                      width: screenWidth * 0.02),
                                   const Text(
                                     'View Profile',
                                     style: TextStyle(
@@ -258,9 +262,8 @@ class _AdminProfileScreenState extends State<AdminProfileScreen>{
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  const SizedBox(
-                                      width: 95
-                                  ),
+                                  SizedBox(
+                                      width: screenWidth * 0.23),
                                   SizedBox(
                                     width: 26,
                                     height: 26,
@@ -387,15 +390,16 @@ class _AdminProfileScreenState extends State<AdminProfileScreen>{
                                   children: [
                                     if (!_isSigningOut) ...[
                                       SizedBox(
-                                        width: 26,
-                                        height: 26,
+                                        width: screenWidth * 0.06,
+                                        height: screenHeight * 0.06,
                                         child: Image.asset(
                                           'assets/images/LogoutIcon.png',
-                                          width: 26,
-                                          height: 26,
+                                          width: screenWidth * 0.06,
+                                          height: screenHeight * 0.06,
                                         ),
                                       ),
-                                      const SizedBox(width: 8),
+                                      SizedBox(
+                                          width: screenWidth * 0.02),
                                       const Text(
                                         'Log-out',
                                         style: TextStyle(
@@ -405,7 +409,8 @@ class _AdminProfileScreenState extends State<AdminProfileScreen>{
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      const SizedBox(width: 132),
+                                      SizedBox(
+                                          width: screenWidth * 0.33),
                                       SizedBox(
                                         width: 26,
                                         height: 26,

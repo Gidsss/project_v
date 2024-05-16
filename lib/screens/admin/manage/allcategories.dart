@@ -217,7 +217,7 @@ Widget createSearchCategory(BuildContext context) {
         title: InkWell(
           splashColor: Colors.black,
           onTap: () {},
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text("All Categories"),
