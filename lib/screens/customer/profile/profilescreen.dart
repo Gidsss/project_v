@@ -261,7 +261,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                                 SizedBox(
-                                    width: screenWidth * 0.07),// Add some space between the icon and text
+                                    width: screenWidth * 0.18),// Add some space between the icon and text
                                 SizedBox(
                                   width: 26,
                                   height: 26,
