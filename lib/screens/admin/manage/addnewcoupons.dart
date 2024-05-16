@@ -83,6 +83,7 @@ class _AddNewCouponsScreenState extends State<AddNewCouponsScreen> {
       'status': selectedStatus,
       'startDate': startDate,
       'endDate': endDate,
+      'redeems': 0, // Initialize the redeems count to 0
     };
 
     try {
@@ -96,6 +97,7 @@ class _AddNewCouponsScreenState extends State<AddNewCouponsScreen> {
           .showSnackBar(SnackBar(content: Text('Error adding coupon: $e')));
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +131,7 @@ class _AddNewCouponsScreenState extends State<AddNewCouponsScreen> {
                     ),
                     createField("", descriptionController, maxLines: 3),
                     const Text(
-                      "Benefits",
+                      "Benefits (in %)",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     createField("", benefitsController,
