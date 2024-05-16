@@ -28,7 +28,7 @@ class _AllCouponsScreenState extends State<AllCouponsScreen>
     super.dispose();
   }
 
-  Future<void> incrementRedeemCount(String documentId) async { // add the logic here for customer redeems
+  Future<void> incrementRedeemCount(String documentId) async { // add the logic here for customer redeems or move it to other file
     DocumentReference couponRef =
         FirebaseFirestore.instance.collection('coupons').doc(documentId);
 
