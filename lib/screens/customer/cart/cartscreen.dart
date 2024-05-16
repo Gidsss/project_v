@@ -173,7 +173,7 @@ class _CartScreenState extends State<CartScreen> {
             if (_cartItems.isNotEmpty) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const CheckOutScreen()),
+                MaterialPageRoute(builder: (context) => CheckOutScreen(promoCode: couponController.text,)),
               );
             } else {
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -452,6 +452,7 @@ class _CartScreenState extends State<CartScreen> {
                               } else if (_cartItems[index].quantity == 1) {
                                 _showDeleteConfirmation(
                                     index, _cartItems[index].cartID);
+                                Navigator.pop(context);
                               }
                             },
                             child: Container(
