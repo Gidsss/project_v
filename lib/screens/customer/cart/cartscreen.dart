@@ -30,15 +30,17 @@ class _CartScreenState extends State<CartScreen> {
   final db = FirebaseFirestore.instance;
   List<CartItem> _cartItems = [];
   double subtotal = 0;
-  double discount = 0; // Input discount here
+  double discount = 0;
+  double discountPercent = 0;
   double total = 0;
+  TextEditingController couponController = TextEditingController();
 
-  Future<void> _showDeleteConfirmation(int index) async {
+  Future<void> _showDeleteConfirmation(int index, String cartid) async {
     return showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
         return SizedBox(
-          height: 300,
+          height: 250,
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -47,13 +49,19 @@ class _CartScreenState extends State<CartScreen> {
                   'Remove from Cart?',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 30.0,
+                    fontSize: 25.0,
                   ),
                 ),
+                const SizedBox(
+                  height: 15,
+                ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Image.asset(_cartItems[index].image,
-                        width: 100, height: 100),
+                    ClipRRect(
+                      child: Image.network(_cartItems[index].image,
+                          width: 100, height: 100),
+                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -62,6 +70,9 @@ class _CartScreenState extends State<CartScreen> {
                       ],
                     ),
                   ],
+                ),
+                const SizedBox(
+                  height: 15,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -72,12 +83,12 @@ class _CartScreenState extends State<CartScreen> {
                               MaterialStateProperty.all<Color>(Colors.black),
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.white),
-                          fixedSize: MaterialStateProperty.all<Size>(
-                              const Size(185, 45))),
+                          fixedSize: MaterialStateProperty.all<Size>(Size(
+                              MediaQuery.sizeOf(context).width * 0.4, 45))),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: const Text('Cancel'),
+                      child: const Text('No'),
                     ),
                     TextButton(
                       style: ButtonStyle(
@@ -85,15 +96,20 @@ class _CartScreenState extends State<CartScreen> {
                               MaterialStateProperty.all<Color>(Colors.white),
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.black),
-                          fixedSize: MaterialStateProperty.all<Size>(
-                              const Size(185, 45))),
-                      onPressed: () {
+                          fixedSize: MaterialStateProperty.all<Size>(Size(
+                              MediaQuery.sizeOf(context).width * 0.4, 45))),
+                      onPressed: () async {
+                        await deleteProduct(cartid);
                         setState(() {
                           _cartItems.removeAt(index);
+                          calculateTotals();
                         });
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(
+                                'Successfully removed ${_cartItems[index].name} from cart.')));
                         Navigator.of(context).pop();
                       },
-                      child: const Text('Yes, Removed'),
+                      child: const Text('Yes'),
                     ),
                   ],
                 ),
@@ -105,20 +121,39 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
+  Future<void> deleteProduct(String cartid) async {
+    try {} catch (error) {
+      throw Exception("Error deleting product: $error");
+    }
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      String id = user.uid;
+
+      // Get cartitem and its quantity
+      await db
+          .collection("customers")
+          .doc(id)
+          .collection("carts")
+          .doc(cartid)
+          .delete();
+    }
+  }
+
   Widget createDetails() {
     return Column(children: <Widget>[
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [Text("Sub-Total:"), Text("₱$subtotal")],
+        children: [const Text("Sub-Total:"), Text("₱$subtotal")],
       ),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [Text("Discount:"), Text("- ₱$discount")],
+        children: [const Text("Discount:"), Text("- ₱$discount")],
       ),
-      Divider(),
+      const Divider(),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [Text("Total:"), Text("₱$total")],
+        children: [const Text("Total:"), Text("₱$total")],
       ),
     ]);
   }
@@ -134,11 +169,16 @@ class _CartScreenState extends State<CartScreen> {
             foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
             backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
           ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const CheckOutScreen()),
-            );
+          onPressed: () async {
+            if (_cartItems.isNotEmpty) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CheckOutScreen()),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("No items in cart. Cannot checkout.")));
+            }
           },
           child: const Text(
             "Proceed to Checkout",
@@ -175,11 +215,13 @@ class _CartScreenState extends State<CartScreen> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             TextField(
+              controller: couponController,
               decoration: InputDecoration(
                 labelText: 'Promo Code',
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.send),
                   onPressed: () {
+                    applyPromoCode(couponController.text);
                     // Handle promo code application
                   },
                 ),
@@ -199,14 +241,14 @@ class _CartScreenState extends State<CartScreen> {
 
   void calculateTotals() {
     try {
-      double discountPercent =
-          0; // Calculate percentage discount based on current price.
-      double discountNumber = 0;
+      subtotal = 0;
+      total = 0;
+
       for (CartItem item in _cartItems) {
         subtotal += item.price * item.quantity;
       }
-      discountNumber = subtotal * discountPercent;
-      total = subtotal - discountNumber;
+      discount = subtotal * discountPercent;
+      total = subtotal - discount;
     } catch (error) {
       throw Exception("Error calculating totals:$error");
     }
@@ -288,10 +330,50 @@ class _CartScreenState extends State<CartScreen> {
 
         setState(() {
           _cartItems[index].quantity = productQuantity;
+          calculateTotals();
         });
       }
     } catch (error) {
       throw Exception("Error modifying quantity: $error");
+    }
+  }
+
+  Future<void> applyPromoCode(String text) async {
+    try {
+      QuerySnapshot couponQuery = await db
+          .collection("coupons")
+          .where("couponCode", isEqualTo: couponController.text)
+          .get();
+
+      if (couponQuery.docs.isNotEmpty) {
+
+        if(_cartItems.isEmpty){
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Cart is empty. Can't apply promo code.")));
+        }
+        else{
+          // Assuming only one document is returned
+        DocumentSnapshot coupon = couponQuery.docs.first;
+
+        // Now you can access the data of the coupon
+        Map<String, dynamic> couponData = coupon.data() as Map<String, dynamic>;
+
+        // Example of accessing a specific field, like 'discount'
+        int discountofCoupon = couponData['benefits'];
+
+        discountPercent = discountofCoupon / 100;
+
+        calculateTotals();
+        setState(() {
+        });
+
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Promo code does not exist.")));
+      }
+    } catch (error) {
+      throw Exception("Error applying promocode: $error");
     }
   }
 
@@ -326,7 +408,8 @@ class _CartScreenState extends State<CartScreen> {
                       child: IconButton(
                         icon: const Icon(Icons.delete, color: Colors.white),
                         onPressed: () {
-                          _showDeleteConfirmation(index);
+                          _showDeleteConfirmation(
+                              index, _cartItems[index].cartID);
                         },
                       ),
                     ),
@@ -363,9 +446,12 @@ class _CartScreenState extends State<CartScreen> {
                         children: <Widget>[
                           InkWell(
                             onTap: () {
-                              if (_cartItems[index].quantity >= 1) {
+                              if (_cartItems[index].quantity > 1) {
                                 adjustQuantity(
                                     "-", _cartItems[index].cartID, index);
+                              } else if (_cartItems[index].quantity == 1) {
+                                _showDeleteConfirmation(
+                                    index, _cartItems[index].cartID);
                               }
                             },
                             child: Container(
