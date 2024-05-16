@@ -194,7 +194,6 @@ class _HeaderFooterState extends State<HeaderFooter>
                           width: 60,
                           height: 60,
                         ),
-                        const SizedBox(width: 8),
                         const Padding(
                           padding: EdgeInsets.only(top: 8),
                           child: Column(
@@ -217,12 +216,10 @@ class _HeaderFooterState extends State<HeaderFooter>
                         ),
                       ],
                     ),
-                const SizedBox(width: 20),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    /*headerIconButton2(context, Icons.mark_unread_chat_alt_outlined, "Messeges"),*/
-                    headerIconButton(context, Icons.notifications_outlined, const NotificationsScreen()),
-                    /*headerIconButton(context, Icons.favorite_border, const WishlistScreen()),*/
+                    headerIconButton2(context, Icons.notifications_outlined, "Notifications"),
                     headerIconButton(context, Icons.shopping_bag_outlined, const CartScreen()),
                   ],
                 ),
@@ -394,6 +391,7 @@ Widget headerIconButton( BuildContext context, IconData icon, Widget page) {
 
 Widget headerIconButton2(BuildContext context, IconData icon, String tabName) {
   return IconButton(
+    visualDensity: VisualDensity.compact,
     onPressed: () {
       Navigator.push(
         context,
