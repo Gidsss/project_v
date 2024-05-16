@@ -16,6 +16,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
+import 'package:project_v/screens/customer/notifications/notificationsscreen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -202,14 +203,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       child: Column(
                         children: [
-                          /*
+                          
                           //Chat and Notification Button
                           ElevatedButton(
                             onPressed: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const ChatScreen()),
+                                    builder: (context) => const NotificationsScreen()),
                               );
                             },
                             style: ButtonStyle(
@@ -251,7 +252,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 SizedBox(
                                     width: screenWidth * 0.02),  // Add some space between the icon and text
                                 const Text(
-                                  'Chat & Notification',
+                                  'Notifications',
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 18,
@@ -279,7 +280,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               height:
                               10.0),
                                // Add some space between chat & notif button and wishlists button
-                           */
+                           
 /*
                           // Wishlists Button
                           ElevatedButton(
