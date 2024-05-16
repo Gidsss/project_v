@@ -8,14 +8,16 @@ class AllNotificationsTemplateScreen extends StatefulWidget {
   const AllNotificationsTemplateScreen({super.key});
 
   @override
-  State<AllNotificationsTemplateScreen> createState() => _AllNotificationsTemplateScreenState();
+  State<AllNotificationsTemplateScreen> createState() =>
+      _AllNotificationsTemplateScreenState();
 }
 
-class _AllNotificationsTemplateScreenState extends State<AllNotificationsTemplateScreen> {
+class _AllNotificationsTemplateScreenState
+    extends State<AllNotificationsTemplateScreen> {
   // ignore: unused_field
   final List<int> _notifications = List.generate(30, (index) => index);
 
-  Future<bool> _showDeleteNotificationTemplateDialog(int index) async {
+  Future<bool> _showDeleteNotificationTemplateDialog(String docId) async {
     return await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -47,7 +49,8 @@ class _AllNotificationsTemplateScreenState extends State<AllNotificationsTemplat
                           onPressed: () {
                             Navigator.pop(context, false);
                           },
-                          child: const Text("No", style: TextStyle(color: Colors.black)),
+                          child: const Text("No",
+                              style: TextStyle(color: Colors.black)),
                         ),
                       ),
                       SizedBox(
@@ -55,12 +58,14 @@ class _AllNotificationsTemplateScreenState extends State<AllNotificationsTemplat
                         child: ElevatedButton(
                           style: ButtonStyle(
                             elevation: MaterialStateProperty.all(4),
-                            backgroundColor: MaterialStateProperty.all(Colors.black),
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.black),
                           ),
                           onPressed: () {
                             Navigator.pop(context, true);
                           },
-                          child: const Text("Yes", style: TextStyle(color: Colors.white)),
+                          child: const Text("Yes",
+                              style: TextStyle(color: Colors.white)),
                         ),
                       ),
                     ],
@@ -83,19 +88,23 @@ class _AllNotificationsTemplateScreenState extends State<AllNotificationsTemplat
         children: [
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection('notifications').snapshots(),
+              stream: FirebaseFirestore.instance
+                  .collection('notifications')
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 }
                 if (snapshot.hasError) {
-                  return const Center(child: Text('Error fetching notifications'));
+                  return const Center(
+                      child: Text('Error fetching notifications'));
                 }
                 final notifications = snapshot.data!.docs;
                 return ListView.separated(
                   padding: const EdgeInsets.all(15.0),
                   itemCount: notifications.length,
-                  separatorBuilder: (context, index) => const SizedBox(height: 15),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 15),
                   itemBuilder: (context, index) {
                     final notification = notifications[index];
                     return notificationsListTile(context, notification);
@@ -113,29 +122,45 @@ class _AllNotificationsTemplateScreenState extends State<AllNotificationsTemplat
     );
   }
 
-  Widget notificationsListTile(BuildContext context, QueryDocumentSnapshot notification) {
+  Widget notificationsListTile(
+      BuildContext context, QueryDocumentSnapshot notification) {
     return Dismissible(
       key: Key(notification.id),
       direction: DismissDirection.endToStart,
-      confirmDismiss: (direction) async {
-        final result = await _showDeleteNotificationTemplateDialog(notification.id as int);
+      onDismissed: (direction) async {
+        // Call the deletion dialog and handle the response
+        final result =
+            await _showDeleteNotificationTemplateDialog(notification.id);
         if (result) {
-          await FirebaseFirestore.instance.collection('notifications').doc(notification.id).delete();
+          try {
+            // Attempt to delete from Firestore
+            await FirebaseFirestore.instance
+                .collection('notifications')
+                .doc(notification.id)
+                .delete();
+            // Remove the item from the UI
+            setState(() {
+              // This assumes you have a way to refresh or update the list of notifications
+            });
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Notification deleted successfully")));
+          } catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Failed to delete notification")));
+          }
         }
-        return result;
       },
       background: Container(
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.symmetric(horizontal: 20),
         color: Colors.red,
-        child: IconButton(
-          icon: const Icon(Icons.delete, color: Colors.white),
-          onPressed: () {},
-        ),
+        child: const Icon(Icons.delete, color: Colors.white),
       ),
       child: ListTile(
-        leading: notification['imageUrl'] != null && notification['imageUrl'].isNotEmpty
-            ? CircleAvatar(backgroundImage: NetworkImage(notification['imageUrl']))
+        leading: notification['imageUrl'] != null &&
+                notification['imageUrl'].isNotEmpty
+            ? CircleAvatar(
+                backgroundImage: NetworkImage(notification['imageUrl']))
             : const CircleAvatar(child: Icon(Icons.notifications)),
         title: Text(notification['title']),
         subtitle: Text(notification['message']),
