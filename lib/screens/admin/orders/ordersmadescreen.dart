@@ -134,7 +134,6 @@ class _OrdersMadeScreenState extends State<OrdersMadeScreen> {
                           return const Center(
                               child: Text("No Orders available."));
                         }
-                        int totalCount = snapshot.data!.docs.length;
                         return Table(
                           columnWidths: const {
                             0: FlexColumnWidth(1.5),
