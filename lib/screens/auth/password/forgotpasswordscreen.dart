@@ -1,39 +1,77 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_v/widgets/buttons/auth/sendbutton.dart';
 import 'package:project_v/widgets/textfields/textfield.dart';
 import 'package:project_v/screens/auth/password/passwordreset.dart';
 import 'package:project_v/constants/app_constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-// Add functionality to the Forgot Password Screen
-// Forgot Password Screen
 class ForgotPasswordScreen extends StatelessWidget {
   ForgotPasswordScreen({super.key});
 
   final emailController = TextEditingController();
 
-   void sendEmail(BuildContext context) {
-    // send email logic to be added
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const PasswordReset()), 
-    );
+  Future<void> sendPasswordResetEmail(BuildContext context) async {
+    final email = emailController.text.trim();
+
+    if (email.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter your email')),
+      );
+      return;
+    }
+
+    try {
+      // Query Firestore to check if the email exists
+      var querySnapshot = await FirebaseFirestore.instance
+          .collection('customers')
+          .where('email', isEqualTo: email)
+          .get();
+
+      // Check if any documents match the query
+      if (querySnapshot.docs.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('User with this email does not exist')),
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
+        ); // Exit the function if the email doesn't exist
+      } else {
+        // If the email exists, send a password reset email
+        await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Password reset email sent')),
+        );
+        // Only navigate to the reset password screen if the email exists
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => PasswordReset(userEmail: email)),
+        );
+      }
+
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error sending password reset email: $e')),
+      );
+    }
   }
-    @override
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-       backgroundColor: const Color.fromARGB(255, 249, 249, 249),
+      backgroundColor: const Color.fromARGB(255, 249, 249, 249),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start, // Align content to the upper-left corner
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 50),
-          // Custom icon with smaller size
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: SizedBox(
-              width: 40, // Adjust width as needed
-              height: 40, // Adjust height as needed
+              width: 40,
+              height: 40,
               child: IconButton(
-                iconSize: 24, // Adjust icon size as needed
+                iconSize: 24,
                 icon: Image.asset(AppConstants.backIconPath),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -41,7 +79,6 @@ class ForgotPasswordScreen extends StatelessWidget {
               ),
             ),
           ),
-          // Logo
           const SizedBox(height: 50),
           const Padding(
             padding: EdgeInsets.only(left: 20.0),
@@ -56,44 +93,38 @@ class ForgotPasswordScreen extends StatelessWidget {
               ),
             ),
           ),
-
           const SizedBox(height: 10),
-
-              // welcome back, you've been missed!
-              const Padding(
-              padding: EdgeInsets.only(left: 25.0), // Adjust the padding as needed
-              child: Text(
-                'We’ll send you a code to reset your password.',
-                style: TextStyle(
-                  color: Color(0xFF757575),
-                  fontSize: 11,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w400,
-                  height: 0,
-                ),
+          const Padding(
+            padding: EdgeInsets.only(left: 25.0),
+            child: Text(
+              'We’ll send you a code to reset your password.',
+              style: TextStyle(
+                color: Color(0xFF757575),
+                fontSize: 11,
+                fontFamily: 'Inter',
+                fontWeight: FontWeight.w400,
+                height: 0,
               ),
             ),
-             const SizedBox(height: 25),
-
-              // email textfield
-              MyTextField(
-                controller: emailController,
-                hintText: 'Email',
-                obscureText: false,
-                decoration: const InputDecoration(
-                   border: OutlineInputBorder(),
-                   labelText: 'Email',
-                    
-                ),
-              ),
-              const SizedBox(height: 25),
-              SendButton(
-                onTap: () {
-                  sendEmail(context);
-                }
-              ),
+          ),
+          const SizedBox(height: 25),
+          MyTextField(
+            controller: emailController,
+            hintText: 'Email',
+            obscureText: false,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Email',
+            ),
+          ),
+          const SizedBox(height: 25),
+          SendButton(
+            onTap: () {
+              sendPasswordResetEmail(context);
+            },
+          ),
         ],
       ),
     );
   }
-  }
+}

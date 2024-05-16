@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerfooter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SecuritySettings extends StatefulWidget {
   const SecuritySettings({super.key});
@@ -10,14 +12,69 @@ class SecuritySettings extends StatefulWidget {
 }
 
 class _SecuritySettingsState extends State<SecuritySettings> {
-  //bool isSwitchedSA = false;
-  //bool isSwitchedE2FA = false;
   bool cpasswordVisible=false;
   bool npasswordVisible=false;
   bool confpasswordVisible=false;
+
+  TextEditingController currentPasswordController = TextEditingController();
+  TextEditingController newPasswordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+
+  void _changePassword() async {
+    // Get input from text fields
+    String currentPassword = currentPasswordController.text.trim();
+    String newPassword = newPasswordController.text.trim();
+    String confirmPassword = confirmPasswordController.text.trim();
+
+    // Validate password match
+    if (newPassword != confirmPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("New password and confirm password do not match."),
+        duration: Duration(seconds: 2),
+      ));
+      return;
+    }
+
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        AuthCredential credential =
+        EmailAuthProvider.credential(email: user.email!, password: currentPassword);
+        await user.reauthenticateWithCredential(credential);
+
+        await user.updatePassword(newPassword);
+        // Show success message
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Password changed successfully"),
+          duration: Duration(seconds: 2),
+        ));
+
+        // Clear text fields after successful password change
+        currentPasswordController.clear();
+        newPasswordController.clear();
+        confirmPasswordController.clear();
+      }
+    } catch (error) {
+      // Show specific error messages based on error type
+      String errorMessage = "Failed to change password. Please try again.";
+      if (error is FirebaseAuthException) {
+        if (error.code == 'wrong-password') {
+          errorMessage = "Incorrect current password. Please try again.";
+        } else if (error.code == 'weak-password') {
+          errorMessage = "New password is too weak. Please choose a stronger password.";
+        }
+      }
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(errorMessage),
+        duration: Duration(seconds: 4),
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         surfaceTintColor: Colors.white,
         backgroundColor: Colors.white,
@@ -73,145 +130,6 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                       ),
                       child: Column(
                         children: [
-                          //2FA, and Security Alert are removed
-                          /*
-                          //Security Alert
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(20.0),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                              borderRadius: BorderRadius.circular(10.0),
-                              border: Border.all(
-                                color: Colors.grey.shade200, // Add white color for the border
-                                width: 2, // Set the width of the border
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      child: Image.asset(
-                                        'assets/images/SecurityAlertIcon.png', // asset icon
-                                        width: 30,
-                                        height: 30,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    const Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Security Alert",
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontFamily: "Inter",
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        SizedBox(height: 5,),
-                                        Text(
-                                          "Allow users to receive "
-                                              "\nalerts for suspicious activities, "
-                                              "\nor login attempts.",
-                                          style: TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.black,
-                                            fontFamily: "Inter",
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Switch(
-                                  value: isSwitchedSA,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      isSwitchedSA = value;
-                                      print(isSwitchedSA);
-                                    });
-                                  },
-                                  activeTrackColor: Colors.grey,
-                                  activeColor: Colors.black,
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 10,),
-                          //Enable 2FA
-                          Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(20.0),
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
-                              borderRadius: BorderRadius.circular(10.0),
-                              border: Border.all(
-                                color: Colors.grey.shade200, // Add white color for the border
-                                width: 2, // Set the width of the border
-                              ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      child: Image.asset(
-                                        'assets/images/Enable2FAIcon.png', // asset icon
-                                        width: 30,
-                                        height: 30,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    const Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Enable 2FA",
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.black,
-                                            fontFamily: "Inter",
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        SizedBox(height: 5,),
-                                        Text(
-                                          "Logging in with two types "
-                                              "\nof security method. User "
-                                              "\npassword and OTP via user email.",
-                                          style: TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.black,
-                                            fontFamily: "Inter",
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                Switch(
-                                  value: isSwitchedE2FA,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      isSwitchedE2FA = value;
-                                      print(isSwitchedE2FA);
-                                    });
-                                  },
-                                  activeTrackColor: Colors.grey,
-                                  activeColor: Colors.black,
-                                ),
-                              ],
-                            ),
-                          ),
-
-                          const SizedBox(height: 20,),
-                          */
-
                           //Change Password
                           Container(
                             width: double.infinity,
@@ -255,7 +173,6 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                                     ),
                                   ],
                                 ),
-
                                 //Current Password
                                 const SizedBox(height: 25),
                                 const Text(
@@ -268,6 +185,7 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                                   ),
                                 ),
                                 TextField(
+                                  controller: currentPasswordController,
                                   obscureText: cpasswordVisible,
                                   decoration: InputDecoration(
                                     hintText: "Current Password",
@@ -290,7 +208,6 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                                   keyboardType: TextInputType.visiblePassword,
                                   textInputAction: TextInputAction.done,
                                 ),
-
                                 //New Password
                                 const SizedBox(height: 25),
                                 const Text(
@@ -303,6 +220,7 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                                   ),
                                 ),
                                 TextField(
+                                  controller: newPasswordController,
                                   obscureText: npasswordVisible,
                                   decoration: InputDecoration(
                                     hintText: "New Password",
@@ -325,12 +243,10 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                                   keyboardType: TextInputType.visiblePassword,
                                   textInputAction: TextInputAction.done,
                                 ),
-
-                                //Confirm Password
-                                //New Password
+                                //Confirm New Password
                                 const SizedBox(height: 25),
                                 const Text(
-                                  "Confirm Password",
+                                  "Confirm New Password",
                                   style: TextStyle(
                                     fontSize: 14,
                                     color: Colors.black,
@@ -339,9 +255,10 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                                   ),
                                 ),
                                 TextField(
+                                  controller: confirmPasswordController,
                                   obscureText: confpasswordVisible,
                                   decoration: InputDecoration(
-                                    hintText: "Confirm Password",
+                                    hintText: "Confirm New Password",
                                     helperStyle:const TextStyle(color:Colors.green),
                                     suffixIcon: IconButton(
                                       icon: Icon(confpasswordVisible
@@ -367,7 +284,7 @@ class _SecuritySettingsState extends State<SecuritySettings> {
                                 Center(
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      // Add button functionality here
+                                      _changePassword();
                                     },
                                     style: ButtonStyle(
                                       backgroundColor: MaterialStateProperty.all(Colors.black), // Button background color
