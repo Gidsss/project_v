@@ -208,9 +208,9 @@ class _EditCouponScreenState extends State<EditCouponScreen> {
                     const Text("Description",
                         style: TextStyle(fontWeight: FontWeight.bold)),
                     createField(descriptionController, maxLines: 3),
-                    const Text("Benefits",
+                    const Text("Benefits (in %)",
                         style: TextStyle(fontWeight: FontWeight.bold)),
-                    createField(benefitsController),
+                    createField(benefitsController, keyboardType: TextInputType.number),
                     const Text("Usage Limit (Optional)",
                         style: TextStyle(fontWeight: FontWeight.bold)),
                     createField(usageLimitController),
@@ -257,12 +257,13 @@ class _EditCouponScreenState extends State<EditCouponScreen> {
     );
   }
 
-  Widget createField(TextEditingController controller, {int maxLines = 1}) {
+  Widget createField(TextEditingController controller,{int maxLines = 1, TextInputType keyboardType = TextInputType.text}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: TextField(
         controller: controller,
         maxLines: maxLines,
+        keyboardType: keyboardType,
         decoration: const InputDecoration(border: OutlineInputBorder()),
       ),
     );
