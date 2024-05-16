@@ -26,11 +26,16 @@ class _EditNotificationScreenState extends State<EditNotificationScreen> {
   List<File?> imageFiles = List.filled(1, null);
   final DateFormat dateFormat = DateFormat('MM/dd/yyyy');
   final ImagePicker picker = ImagePicker();
-  bool showSearchBar = false;
+  bool showSearchBar = true;
+  bool hasSearched = false;
+  List<String> selectedRecipients = [];
+  List<String> searchResults = [];
+  Map<String, String> userNamesToUids = {};
 
-  final TextEditingController DateController = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
   final TextEditingController titleController = TextEditingController();
   final TextEditingController messageController = TextEditingController();
+  final TextEditingController searchController = TextEditingController();
   String? notificationType;
   String? priorityLevel;
   String? recipient;
@@ -40,55 +45,21 @@ class _EditNotificationScreenState extends State<EditNotificationScreen> {
   @override
   void initState() {
     super.initState();
-    // Initialize controllers with the data
+    fetchUserNamesAndUids();
     titleController.text = widget.notificationData['title'];
     messageController.text = widget.notificationData['message'];
-    DateController.text = widget.notificationData['date'];
+    dateController.text = widget.notificationData['date'];
     notificationType = widget.notificationData['type'];
     priorityLevel = widget.notificationData['priority'];
-    recipient = widget.notificationData['recipient'];
     imageUrl = widget.notificationData['imageUrl'];
-  }
-
-  Future<void> selectDate(
-      BuildContext context, TextEditingController controller) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null) {
-      setState(() {
-        controller.text = dateFormat.format(picked);
-      });
-    }
-  }
-
-  Future<void> pickImage(int index) async {
-    try {
-      final XFile? pickedFile =
-          await picker.pickImage(source: ImageSource.gallery);
-      if (pickedFile != null) {
-        setState(() {
-          imageFile = File(pickedFile.path);
-          imageFiles[index] = imageFile;
-          imageUrl = null; // Clear imageUrl since a new image is picked
-          print("Image picked at index $index: ${imageFiles[index]?.path}");
-        });
-      }
-    } catch (e) {
-      print('Failed to pick image: $e');
-    }
   }
 
   Future<void> updateNotification() async {
     if (notificationType == null ||
         priorityLevel == null ||
-        recipient == null ||
         titleController.text.isEmpty ||
         messageController.text.isEmpty ||
-        DateController.text.isEmpty) {
+        dateController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Please fill all fields')));
       return;
@@ -119,14 +90,112 @@ class _EditNotificationScreenState extends State<EditNotificationScreen> {
         'message': messageController.text,
         'priority': priorityLevel,
         'recipient': recipient,
-        'date': DateController.text,
+        'date': dateController.text,
         'imageUrl': imageUrlToSave // Only if image was uploaded
       });
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Notification updated successfully!')));
+      Navigator.pop(context);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error updating notification: $e')));
+    }
+  }
+
+  Future<void> selectDate(
+      BuildContext context, TextEditingController controller) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null) {
+      setState(() {
+        controller.text = dateFormat.format(picked);
+      });
+    }
+  }
+
+  Future<void> fetchUserNamesAndUids() async {
+    var usersSnapshot =
+        await FirebaseFirestore.instance.collection('customers').get();
+    setState(() {
+      userNamesToUids = Map.fromIterable(usersSnapshot.docs,
+          key: (doc) => doc.data()['name'] as String, value: (doc) => doc.id);
+      searchResults = userNamesToUids.keys.toList();
+    });
+  }
+
+  void performSearch(String query) async {
+    if (query.isEmpty) {
+      setState(() {
+        searchResults.clear();
+        hasSearched = false; // Reset if the search query is empty
+      });
+      return;
+    }
+
+    var snapshot = await FirebaseFirestore.instance
+        .collection('customers')
+        .where('name', isGreaterThanOrEqualTo: query)
+        .where('name', isLessThanOrEqualTo: query + '\uf8ff')
+        .get();
+
+    setState(() {
+      searchResults =
+          snapshot.docs.map((doc) => doc.data()['name'] as String).toList();
+      hasSearched = true; // Set to true after performing search
+    });
+  }
+
+  Future<void> pickImage(int index) async {
+    final XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = File(pickedFile.path);
+        imageFiles[index] = imageFile;
+        imageUrl = null; // Clear imageUrl since a new image is picked
+      });
+    }
+  }
+
+  Future<void> sendNotification() async {
+    if (selectedRecipients.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Please select at least one recipient.')));
+      return;
+    }
+
+    // Confirm all fields are filled
+    if (notificationType == null ||
+        titleController.text.isEmpty ||
+        messageController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please fill in all fields.')));
+      return;
+    }
+
+    try {
+      for (var recipient in selectedRecipients) {
+        await FirebaseFirestore.instance.collection('notifications').add({
+          'type': notificationType,
+          'title': titleController.text,
+          'message': messageController.text,
+          'priority': priorityLevel,
+          'recipient': userNamesToUids[recipient],
+          'date': DateFormat('MM/dd/yyyy').format(DateTime.now()),
+          'imageUrl': imageUrl ?? '',
+          'status': 'unread'
+        });
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Notifications sent successfully!')));
+           Navigator.pop(context);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error sending notifications: $e')));
     }
   }
 
@@ -201,40 +270,53 @@ class _EditNotificationScreenState extends State<EditNotificationScreen> {
                     // Notification Recipient
                     buildDropdownRow('Notification Recipient',
                         'assets/images/EditIconBlack.png'),
-                    buildDropdownContainer(
-                      recipient,
-                      (String? newValue) {
-                        setState(() {
-                          recipient = newValue!;
-                          showSearchBar = newValue == 'Specific Customers';
-                        });
-                      },
-                      ['All Customers', 'Specific Customers'],
-                    ),
-
-                    if (showSearchBar)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TextFormField(
-                                decoration: const InputDecoration(
-                                  labelText: 'Search Customer',
-                                  border: OutlineInputBorder(),
-                                ),
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                // Add your search functionality here
-                              },
-                              icon: const Icon(Icons.search),
-                            ),
-                          ],
+                    TextFormField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                        labelText:
+                            '', // for visualization I removed the label text
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 12),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey[400]!),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.search),
+                          onPressed: () => performSearch(searchController.text),
                         ),
                       ),
-
+                    ),
+                    if (hasSearched && searchResults.isNotEmpty) ...[
+                      SizedBox(height: 10),
+                      Wrap(
+                        spacing: 8.0, // Gap between adjacent chips
+                        runSpacing: 4.0, // Gap between lines
+                        children: searchResults
+                            .map((name) => ChoiceChip(
+                                  label: Text(name),
+                                  selected: selectedRecipients.contains(name),
+                                  onSelected: (selected) {
+                                    setState(() {
+                                      if (selected) {
+                                        selectedRecipients.add(name);
+                                      } else {
+                                        selectedRecipients.remove(name);
+                                      }
+                                    });
+                                  },
+                                  backgroundColor: Colors.grey[200],
+                                  selectedColor: Colors.blue,
+                                  labelStyle: TextStyle(
+                                      color: selectedRecipients.contains(name)
+                                          ? Colors.white
+                                          : Colors.black),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15)),
+                                ))
+                            .toList(),
+                      )
+                    ],
                     const SizedBox(height: 10),
 
                     // Priority Level
@@ -268,7 +350,7 @@ class _EditNotificationScreenState extends State<EditNotificationScreen> {
                     const SizedBox(height: 15),
                     const Text("Date",
                         style: TextStyle(fontWeight: FontWeight.bold)),
-                    buildDatePickerField("", DateController),
+                    buildDatePickerField("", dateController),
                     // Save Notification Button
                     CreateButton(
                       buttontext: 'Save Changes',
@@ -276,16 +358,16 @@ class _EditNotificationScreenState extends State<EditNotificationScreen> {
                       context: context,
                     ),
                     const SizedBox(
-                        width: 380, // Specify the exact width of the divider
-                        child: Divider(
-                          color: Colors.grey,
-                          height: 20,
-                          thickness: 1,
-                        ),
+                      width: 380, // Specify the exact width of the divider
+                      child: Divider(
+                        color: Colors.grey,
+                        height: 20,
+                        thickness: 1,
                       ),
+                    ),
                     CreateButton(
                       buttontext: 'Send Notification',
-                      navigator: updateNotification,
+                      navigator: sendNotification,
                       context: context,
                     ),
                   ],
@@ -331,6 +413,11 @@ class _EditNotificationScreenState extends State<EditNotificationScreen> {
 
   Widget buildDropdownContainer(String? currentValue,
       ValueChanged<String?> onChanged, List<String> options) {
+    // Ensure the current value is in the list of options or is null
+    if (!options.contains(currentValue) && currentValue != null) {
+      currentValue = null; // Reset to null or set to a default valid option
+    }
+
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey[400]!),
