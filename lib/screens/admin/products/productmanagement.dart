@@ -24,7 +24,57 @@ class ProductsScreen extends StatefulWidget {
 
 class _ProductsScreenState extends State<ProductsScreen> {
   bool isEdit = false;
-  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final TextEditingController _searchController = TextEditingController();
+  String searchQuery = '';
+
+  Widget createSearchCategory(BuildContext context) {
+    return Container(
+        decoration: BoxDecoration(
+            border: Border.all(),
+            color: Colors.white.withOpacity(0.85),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                spreadRadius: 1,
+                blurRadius: 4,
+                offset: const Offset(0, 3),
+              )
+            ],
+            borderRadius: BorderRadius.circular(5)),
+        width: MediaQuery.of(context).size.width * 0.95,
+        height: MediaQuery.of(context).size.height * 0.05,
+        child: ListTile(
+          visualDensity: VisualDensity.compact,
+          minVerticalPadding: 0,
+          dense: true,
+          leading: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.45,
+            height: MediaQuery.of(context).size.height * 0.25,
+            child: TextFormField(
+              controller: _searchController,
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+              decoration: const InputDecoration(
+                contentPadding: EdgeInsets.only(bottom: 12),
+                hintText: "Search Products",
+                hintStyle: TextStyle(fontSize: 14),
+                border: InputBorder.none,
+                floatingLabelBehavior: FloatingLabelBehavior.never,
+              ),
+            ),
+          ),
+         /* title: InkWell(
+            splashColor: Colors.black,
+            onTap: () {},
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: const [
+                Text("All Categories"),
+                Icon(Icons.expand_more),
+              ],
+            ),
+          ),*/
+        ));
+  }
 
   Widget createSwitchButton() {
     return Switch(
@@ -68,6 +118,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
   @override
   void initState() {
     super.initState();
+    _searchController.addListener(() {
+      setState(() {
+        searchQuery = _searchController.text;
+      });
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.isNavigatedfromAddProd == true) {
         showDialog(
@@ -194,6 +249,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
   }
 
   @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // Get the size of the screen
     var screenSize = MediaQuery.of(context).size;
@@ -243,7 +304,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                     color: Colors.black.withOpacity(0.8),
                                     borderRadius: BorderRadius.circular(5)),
                                 child: Row(
-                                  mainAxisAlignment: screenWidth >= 600 ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
+                                  mainAxisAlignment: screenWidth >= 600
+                                      ? MainAxisAlignment.spaceBetween
+                                      : MainAxisAlignment.center,
                                   children: [
                                     Text(isEdit ? "Edit Mode" : "View Mode",
                                         style: const TextStyle(
@@ -267,8 +330,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
                                 return const Center(
-                                    child: CircularProgressIndicator( valueColor: AlwaysStoppedAnimation(
-                                            Colors.black),));
+                                    child: CircularProgressIndicator(
+                                  valueColor:
+                                      AlwaysStoppedAnimation(Colors.black),
+                                ));
                               }
 
                               // Show a message if no data is available
@@ -277,6 +342,16 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                 return const Center(
                                     child: Text("No products available."));
                               }
+
+                              // Filter products based on search query
+                              var filteredDocs =
+                                  snapshot.data!.docs.where((doc) {
+                                var name =
+                                    (doc.data() as Map<String, dynamic>)['name']
+                                        .toString()
+                                        .toLowerCase();
+                                return name.contains(searchQuery.toLowerCase());
+                              }).toList();
 
                               // Data is available, so we show the table
                               return Table(
@@ -339,7 +414,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                     decoration: BoxDecoration(
                                         color: Colors.black.withOpacity(0.9)),
                                   ),
-                                  ...snapshot.data!.docs.map((doc) {
+                                  ...filteredDocs.map((doc) {
                                     Map<String, dynamic> data =
                                         doc.data() as Map<String, dynamic>;
                                     int sold = data.containsKey('sold')
@@ -358,8 +433,30 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                           child: Padding(
                                             padding: const EdgeInsets.all(1.0),
                                             child: Image.network(
-                                                doc['imageUrls'][0],
-                                                fit: BoxFit.fitHeight),
+                                              doc['imageUrls'][0],
+                                              fit: BoxFit.fitHeight,
+                                              loadingBuilder:
+                                                  (BuildContext context,
+                                                      Widget child,
+                                                      ImageChunkEvent?
+                                                          loadingProgress) {
+                                                if (loadingProgress == null)
+                                                  return child;
+                                                return Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    value: loadingProgress
+                                                                .expectedTotalBytes !=
+                                                            null
+                                                        ? loadingProgress
+                                                                .cumulativeBytesLoaded /
+                                                            loadingProgress
+                                                                .expectedTotalBytes!
+                                                        : null,
+                                                  ),
+                                                );
+                                              },
+                                            ),
                                           ),
                                         ),
                                         TableCell(
@@ -482,53 +579,4 @@ Widget createButton(
       ),
     ),
   );
-}
-
-Widget createSearchCategory(BuildContext context) {
-  return Container(
-      decoration: BoxDecoration(
-          border: Border.all(),
-          color: Colors.white.withOpacity(0.85),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              spreadRadius: 1,
-              blurRadius: 4,
-              offset: const Offset(0, 3),
-            )
-          ],
-          borderRadius: BorderRadius.circular(5)),
-      width: MediaQuery.of(context).size.width * 0.95,
-      height: MediaQuery.of(context).size.height * 0.05,
-      child: ListTile(
-        visualDensity: VisualDensity.compact,
-        minVerticalPadding: 0,
-        dense: true,
-        leading: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.45,
-          height: MediaQuery.of(context).size.height * 0.25,
-          child: TextFormField(
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
-            decoration: const InputDecoration(
-              contentPadding: EdgeInsets.only(bottom: 12),
-              hintText: "Search Products",
-              hintStyle: TextStyle(fontSize: 14),
-              border: InputBorder.none,
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-            ),
-          ),
-        ),
-        title: InkWell(
-          splashColor: Colors.black,
-          onTap: () {},
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text("All Categories"),
-              Icon(Icons.expand_more),
-            ],
-          ),
-        ),
-      )
-);
 }
