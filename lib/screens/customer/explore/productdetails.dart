@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
 class ProductDetailScreen extends StatelessWidget {
   final String imageURL;
   final String name;

@@ -2,9 +2,40 @@ import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/screens/customer/orders/orderdetails.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerheaderfooter.dart';
-// import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-// import 'package:project_v/screens/main/bookingscreenStepOne.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+class OrderItem {
+  final String trackId;
+  final String name;
+  final String image;
+  final String category;
+  final String datePlaced;
+  final String dateProcess;
+  final String datePrepare;
+  final String datePickup;
+  final bool status;
+  final double price;
+  final int quantity;
+  final String itemID;
+  final String? promoCode;
+
+  OrderItem({
+    required this.name,
+    required this.trackId,
+    required this.image,
+    required this.category,
+    required this.datePlaced,
+    required this.dateProcess,
+    required this.datePrepare,
+    required this.datePickup,
+    required this.status,
+    required this.price,
+    required this.quantity,
+    required this.itemID,
+    this.promoCode,
+  });
+}
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
@@ -15,20 +46,183 @@ class OrdersScreen extends StatefulWidget {
 
 class _OrderScreenState extends State<OrdersScreen>
     with TickerProviderStateMixin {
-  late TabController _ordersTabController;
   final db = FirebaseFirestore.instance;
+  List<OrderItem> _orderItemsActive = [];
+  List<OrderItem> _orderItemsComplete = [];
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _ordersTabController =
-        TabController(length: 2, vsync: this); // Define the number of tabs here
+    loadOrders();
+  }
+
+  Future<void> loadOrders() async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        String id = user.uid;
+
+        // Clear previous lists
+        setState(() {
+          _orderItemsActive.clear();
+          _orderItemsComplete.clear();
+          isLoading = true;
+        });
+
+        // Fetch active orders
+        await fetchOrders(true, id);
+        // Fetch completed orders
+        await fetchOrders(false, id);
+
+        setState(() {
+          isLoading = false;
+          print('State updated with loaded orders.'); // Debugging
+          printFirstOrderItemActive(); // Print the first active order item
+        });
+      } else {
+        print('No user is logged in.'); // Debugging
+      }
+    } catch (error) {
+      print("Error loading orders: $error"); // Debugging
+      throw Exception("Error loading orders: $error");
+    }
+  }
+
+  Future<void> fetchOrders(bool isActive, String userId) async {
+    try {
+
+      // Get orders based on the isActive status and belonging to the user.
+      QuerySnapshot orderQuery = await db
+          .collection("orders")
+          .where("IsActive", isEqualTo: isActive)
+          .where("User", isEqualTo: userId)
+          .get();
+
+      print('Orders fetched for isActive=$isActive: ${orderQuery.docs.length}'); // Debugging
+
+      if (orderQuery.docs.isNotEmpty) {
+        // For each order found, get the relevant data.
+        for (DocumentSnapshot order in orderQuery.docs) {
+          try {
+            print('Processing order: ${order.id}'); // Debugging
+            Map<String, dynamic> data = order.data() as Map<String, dynamic>;
+
+            String trackId = data['TrackingID'];
+            String datePlaced = data['DatePlaced'] != null
+                ? (data['DatePlaced'] as Timestamp).toDate().toString()
+                : '';
+            String dateProcess = data['DateProcess'] != null
+                ? (data['DateProcess'] as Timestamp).toDate().toString()
+                : '';
+            String datePrepare = data['DatePrepare'] != null
+                ? (data['DatePrepare'] as Timestamp).toDate().toString()
+                : '';
+            String datePickup = data['DatePickup'] != null
+                ? (data['DatePickup'] as Timestamp).toDate().toString()
+                : '';
+            bool status = data['IsActive'];
+            double orderPrice =
+                data['OrderPrice'] != null ? data['OrderPrice'] + 0.0 : 0.0;
+            double discount =
+                data['Discount'] != null ? data['Discount'] + 0.0 : 0.0;
+
+            // Get only the first item document from the items subcollection
+            QuerySnapshot itemsSnapshot =
+                await order.reference.collection('items').limit(1).get();
+
+            print(
+                'Items fetched for order ${order.id}: ${itemsSnapshot.docs.length}'); // Debugging
+
+            if (itemsSnapshot.docs.isNotEmpty) {
+              DocumentSnapshot item = itemsSnapshot.docs.first;
+              Map<String, dynamic> itemData =
+                  item.data() as Map<String, dynamic>;
+              DocumentReference productRef = itemData['cartItemRef'];
+
+              // Fetch the referenced product document
+              DocumentSnapshot productSnapshot = await productRef.get();
+              Map<String, dynamic> productData =
+                  productSnapshot.data() as Map<String, dynamic>;
+
+              String imageUrl = '';
+              if (productData['imageUrls'] != null &&
+                  (productData['imageUrls'] as List).isNotEmpty) {
+                imageUrl = productData['imageUrls'][0];
+              }
+
+              String category = '';
+              if (productData['category'] != null &&
+                  (productData['category'] as List).isNotEmpty) {
+                category = productData['category'][0];
+              }
+
+              OrderItem orderItem = OrderItem(
+                name: productData['name'],
+                image: imageUrl, // Assuming imageUrls is a list
+                price: double.parse(productData['price']),
+                quantity: itemData['Quantity'],
+                itemID: item.id,
+                category: category, // Assuming category is a list
+                trackId: trackId,
+                datePlaced: datePlaced,
+                dateProcess: dateProcess,
+                datePrepare: datePrepare,
+                datePickup: datePickup,
+                status: status,
+                promoCode: data['PromoCode'].toString(),
+              );
+
+              if (isActive) {
+                _orderItemsActive.add(orderItem);
+              } else {
+                _orderItemsComplete.add(orderItem);
+              }
+
+              print('OrderItem added: ${productData['name']}'); // Debugging
+            } else {
+              print('No items found for order: ${order.id}'); // Debugging
+            }
+          } catch (e) {
+            print('Error processing order ${order.id}: $e'); // Debugging
+          }
+        }
+      } else {
+        print('No orders found for user: $userId'); // Debugging
+      }
+    } catch (error) {
+      print("Error fetching orders: $error"); // Debugging
+      throw Exception("Error fetching orders: $error");
+    }
+  }
+
+  void printFirstOrderItemActive() {
+    if (_orderItemsActive.isNotEmpty) {
+      OrderItem firstItem = _orderItemsActive.first;
+      print('First Active OrderItem:');
+      print('Track ID: ${firstItem.trackId}');
+      print('Name: ${firstItem.name}');
+      print('Date Placed: ${firstItem.datePlaced}');
+      print('Price: ${firstItem.price}');
+      print('Quantity: ${firstItem.quantity}');
+      print('Image: ${firstItem.image}');
+      print('Category: ${firstItem.category}');
+      print('Promo Code: ${firstItem.promoCode}');
+    } else {
+      print('No active order items found.');
+    }
   }
 
   @override
   void dispose() {
-    _ordersTabController.dispose();
     super.dispose();
+  }
+
+  String formatOrderNumber(String trackId) {
+    String orderNumber = trackId.substring(29);
+    orderNumber = orderNumber.padLeft(6 - trackId.substring(29).length, '0');
+    return orderNumber;
   }
 
   @override
@@ -39,44 +233,48 @@ class _OrderScreenState extends State<OrdersScreen>
       context: context,
       title: "Orders",
       buttonStatus: const [false, false, false, true, false],
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-            vertical: 10), // Adjust vertical padding as needed
-        child: TabBarView(
-          controller: _ordersTabController,
-          children: [
-            // Active
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: ListView.separated(
-                itemCount: 10,
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 15), // Adjust spacing between items
-                itemBuilder: (context, index) => createOrderItem(context),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: const EdgeInsets.symmetric(
+                  vertical: 10), // Adjust vertical padding as needed
+              child: TabBarView(
+                children: [
+                  // Active
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: ListView.separated(
+                      itemCount: _orderItemsActive.length,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 15), // Adjust spacing between items
+                      itemBuilder: (context, index) =>
+                          createOrderItem(context, index, _orderItemsActive),
+                    ),
+                  ),
+                  // Completed
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: ListView.separated(
+                      itemCount: _orderItemsComplete.length,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 15), // Adjust spacing between items
+                      itemBuilder: (context, index) =>
+                          createOrderItem(context, index, _orderItemsComplete),
+                    ),
+                  ),
+                ],
               ),
             ),
-            // Completed
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: ListView.separated(
-                itemCount: 10,
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 15), // Adjust spacing between items
-                itemBuilder: (context, index) => createOrderItem(context),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
-  Widget createOrderItem(BuildContext context) {
-    return GestureDetector(
+  Widget createOrderItem(
+      BuildContext context, int index, List<OrderItem> orderItems) {
+    return orderItems.isNotEmpty ? GestureDetector(
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const OrderDetailsScreen()),
+          MaterialPageRoute(builder: (context) => OrderDetailsScreen(orderid: orderItems[index].trackId)),
         );
       },
       child: Container(
@@ -101,9 +299,9 @@ class _OrderScreenState extends State<OrdersScreen>
             Container(
               width: 40,
               height: 40,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(AppConstants.orderIconPath),
+                  image: NetworkImage(orderItems[index].image),
                   fit: BoxFit.contain,
                 ),
               ),
@@ -114,12 +312,12 @@ class _OrderScreenState extends State<OrdersScreen>
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Order #104523",
-                        style: TextStyle(
+                        "Order #${orderItems[index].trackId.substring(0, 6)}-${formatOrderNumber(orderItems[index].trackId)}",
+                        style: const TextStyle(
                           fontWeight: FontWeight.w600,
                           fontFamily: "Inter",
                           fontSize: 16,
@@ -134,7 +332,7 @@ class _OrderScreenState extends State<OrdersScreen>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Brown Full Rim Round Glasses",
+                        orderItems[index].name,
                         style: TextStyle(
                           fontFamily: "Inter",
                           fontSize: 12,
@@ -153,7 +351,7 @@ class _OrderScreenState extends State<OrdersScreen>
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const OrderDetailsScreen()),
+                      builder: (context) => OrderDetailsScreen(orderid: orderItems[index].trackId)),
                 );
               },
               icon: const Icon(Icons.chevron_right),
@@ -166,6 +364,7 @@ class _OrderScreenState extends State<OrdersScreen>
           ],
         ),
       ),
-    );
+    )
+    : Text("No orders yet.");
   }
 }

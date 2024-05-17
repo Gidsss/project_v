@@ -80,7 +80,8 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                             ),
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black), // Border color
+                                borderSide: BorderSide(
+                                    color: Colors.black), // Border color
                               ),
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 8),
@@ -116,7 +117,8 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                             ),
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black), // Border color
+                                borderSide: BorderSide(
+                                    color: Colors.black), // Border color
                               ),
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 8),
@@ -152,7 +154,8 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                             ),
                             decoration: InputDecoration(
                               border: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black), // Border color
+                                borderSide: BorderSide(
+                                    color: Colors.black), // Border color
                               ),
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 8),
@@ -187,7 +190,8 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                                 border: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.black),
                                 ),
-                                contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                                contentPadding:
+                                    EdgeInsets.symmetric(horizontal: 10),
                               ),
                               child: DropdownButtonHideUnderline(
                                 child: DropdownButton<String>(
@@ -208,7 +212,8 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                                     return DropdownMenuItem<String>(
                                       value: value,
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(value),
                                         ],
@@ -230,8 +235,7 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                       1: FlexColumnWidth(1.5),
                       2: FlexColumnWidth(1.5),
                     },
-                    defaultVerticalAlignment:
-                    TableCellVerticalAlignment.middle,
+                    defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                     children: [
                       TableRow(
                         children: const [
@@ -246,9 +250,7 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                                 alignment: Alignment.topLeft,
                                 child: Text(
                                   "Order Status",
-                                  style: TextStyle(
-                                      color: Colors.white
-                                  ),
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               ),
                             ),
@@ -264,9 +266,7 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                                 alignment: Alignment.topLeft,
                                 child: Text(
                                   "Actual Time",
-                                  style: TextStyle(
-                                      color: Colors.white
-                                  ),
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               ),
                             ),
@@ -274,7 +274,7 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                           TableCell(
                             child: Padding(
                               padding: EdgeInsets.only(
-                                left:20,
+                                left: 20,
                                 top: 10,
                                 bottom: 10,
                               ),
@@ -282,8 +282,7 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                                 alignment: Alignment.topLeft,
                                 child: Text(
                                   "Expected Time",
-                                  style: TextStyle(
-                                      color: Colors.white),
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               ),
                             ),
@@ -294,81 +293,75 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                         ),
                       ),
                       TableRow(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color:
-                                Colors.grey.withOpacity(0.2)),
-                          ),
-                          children: const [
-                            TableCell(
-                              verticalAlignment: TableCellVerticalAlignment.middle,
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                    left: 20
-                                ),
-                                child: Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    'PLACED',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            TableCell(
-                              verticalAlignment: TableCellVerticalAlignment.middle,
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                    left: 20
-                                ),
-                                child: Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    '09/09/2024 - 10:10 P.M',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            TableCell(
-                              verticalAlignment: TableCellVerticalAlignment.middle,
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                    left: 20
-                                ),
-                                child: Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    '09/09/2024 - 10:10 P.M',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      TableRow(
                         decoration: BoxDecoration(
-                          border: Border.all(
-                              color:
-                              Colors.grey.withOpacity(0.2)),
+                          border:
+                              Border.all(color: Colors.grey.withOpacity(0.2)),
                         ),
                         children: const [
                           TableCell(
-                            verticalAlignment: TableCellVerticalAlignment.middle,
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
                             child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20
+                              padding: EdgeInsets.only(left: 20),
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  'PLACED',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
                               ),
+                            ),
+                          ),
+                          TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 20),
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  '09/09/2024 - 10:10 P.M',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 20),
+                              child: Align(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  '09/09/2024 - 10:10 P.M',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      TableRow(
+                        decoration: BoxDecoration(
+                          border:
+                              Border.all(color: Colors.grey.withOpacity(0.2)),
+                        ),
+                        children: const [
+                          TableCell(
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 20),
                               child: Align(
                                 alignment: Alignment.topLeft,
                                 child: Text(
@@ -382,11 +375,10 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                             ),
                           ),
                           TableCell(
-                            verticalAlignment: TableCellVerticalAlignment.middle,
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
                             child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20
-                              ),
+                              padding: EdgeInsets.only(left: 20),
                               child: Align(
                                 alignment: Alignment.topLeft,
                                 child: Text(
@@ -400,11 +392,10 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                             ),
                           ),
                           TableCell(
-                            verticalAlignment: TableCellVerticalAlignment.middle,
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
                             child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20
-                              ),
+                              padding: EdgeInsets.only(left: 20),
                               child: Align(
                                 alignment: Alignment.topLeft,
                                 child: Text(
@@ -421,17 +412,15 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                       ),
                       TableRow(
                         decoration: BoxDecoration(
-                          border: Border.all(
-                              color:
-                              Colors.grey.withOpacity(0.2)),
+                          border:
+                              Border.all(color: Colors.grey.withOpacity(0.2)),
                         ),
                         children: const [
                           TableCell(
-                            verticalAlignment: TableCellVerticalAlignment.middle,
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
                             child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20
-                              ),
+                              padding: EdgeInsets.only(left: 20),
                               child: Align(
                                 alignment: Alignment.topLeft,
                                 child: Text(
@@ -445,11 +434,10 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                             ),
                           ),
                           TableCell(
-                            verticalAlignment: TableCellVerticalAlignment.middle,
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
                             child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20
-                              ),
+                              padding: EdgeInsets.only(left: 20),
                               child: Align(
                                 alignment: Alignment.topLeft,
                                 child: Text(
@@ -463,11 +451,10 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                             ),
                           ),
                           TableCell(
-                            verticalAlignment: TableCellVerticalAlignment.middle,
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
                             child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20
-                              ),
+                              padding: EdgeInsets.only(left: 20),
                               child: Align(
                                 alignment: Alignment.topLeft,
                                 child: Text(
@@ -484,17 +471,15 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                       ),
                       TableRow(
                         decoration: BoxDecoration(
-                          border: Border.all(
-                              color:
-                              Colors.grey.withOpacity(0.2)),
+                          border:
+                              Border.all(color: Colors.grey.withOpacity(0.2)),
                         ),
                         children: const [
                           TableCell(
-                            verticalAlignment: TableCellVerticalAlignment.middle,
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
                             child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20
-                              ),
+                              padding: EdgeInsets.only(left: 20),
                               child: Align(
                                 alignment: Alignment.topLeft,
                                 child: Text(
@@ -508,11 +493,10 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                             ),
                           ),
                           TableCell(
-                            verticalAlignment: TableCellVerticalAlignment.middle,
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
                             child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20
-                              ),
+                              padding: EdgeInsets.only(left: 20),
                               child: Align(
                                 alignment: Alignment.topLeft,
                                 child: Text(
@@ -526,11 +510,10 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                             ),
                           ),
                           TableCell(
-                            verticalAlignment: TableCellVerticalAlignment.middle,
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
                             child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20
-                              ),
+                              padding: EdgeInsets.only(left: 20),
                               child: Align(
                                 alignment: Alignment.topLeft,
                                 child: Text(
@@ -547,17 +530,15 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                       ),
                       TableRow(
                         decoration: BoxDecoration(
-                          border: Border.all(
-                              color:
-                              Colors.grey.withOpacity(0.2)),
+                          border:
+                              Border.all(color: Colors.grey.withOpacity(0.2)),
                         ),
                         children: const [
                           TableCell(
-                            verticalAlignment: TableCellVerticalAlignment.middle,
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
                             child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20
-                              ),
+                              padding: EdgeInsets.only(left: 20),
                               child: Align(
                                 alignment: Alignment.topLeft,
                                 child: Text(
@@ -571,11 +552,10 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                             ),
                           ),
                           TableCell(
-                            verticalAlignment: TableCellVerticalAlignment.middle,
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
                             child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20
-                              ),
+                              padding: EdgeInsets.only(left: 20),
                               child: Align(
                                 alignment: Alignment.topLeft,
                                 child: Text(
@@ -589,11 +569,10 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                             ),
                           ),
                           TableCell(
-                            verticalAlignment: TableCellVerticalAlignment.middle,
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
                             child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20
-                              ),
+                              padding: EdgeInsets.only(left: 20),
                               child: Align(
                                 alignment: Alignment.topLeft,
                                 child: Text(
@@ -610,17 +589,15 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                       ),
                       TableRow(
                         decoration: BoxDecoration(
-                          border: Border.all(
-                              color:
-                              Colors.grey.withOpacity(0.2)),
+                          border:
+                              Border.all(color: Colors.grey.withOpacity(0.2)),
                         ),
                         children: const [
                           TableCell(
-                            verticalAlignment: TableCellVerticalAlignment.middle,
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
                             child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20
-                              ),
+                              padding: EdgeInsets.only(left: 20),
                               child: Align(
                                 alignment: Alignment.topLeft,
                                 child: Text(
@@ -634,11 +611,10 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                             ),
                           ),
                           TableCell(
-                            verticalAlignment: TableCellVerticalAlignment.middle,
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
                             child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20
-                              ),
+                              padding: EdgeInsets.only(left: 20),
                               child: Align(
                                 alignment: Alignment.topLeft,
                                 child: Text(
@@ -652,11 +628,10 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                             ),
                           ),
                           TableCell(
-                            verticalAlignment: TableCellVerticalAlignment.middle,
+                            verticalAlignment:
+                                TableCellVerticalAlignment.middle,
                             child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20
-                              ),
+                              padding: EdgeInsets.only(left: 20),
                               child: Align(
                                 alignment: Alignment.topLeft,
                                 child: Text(
@@ -677,9 +652,12 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                   Center(
                     child: ElevatedButton(
                       style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                        backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                        fixedSize: MaterialStateProperty.all<Size>(const Size(250, 35)),
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.black),
+                        fixedSize: MaterialStateProperty.all<Size>(
+                            const Size(250, 35)),
                       ),
                       onPressed: () {
                         showDialog(
@@ -687,13 +665,19 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                           builder: (BuildContext context) {
                             return AlertDialog(
                               title: const Text("Confirmation"),
-                              content: const Text("Are you sure you want to save changes?"),
+                              content: const Text(
+                                  "Are you sure you want to save changes?"),
                               actions: [
                                 TextButton(
                                   style: ButtonStyle(
-                                    foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                                    backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                                    fixedSize: MaterialStateProperty.all<Size>(const Size(100, 35)),
+                                    foregroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.black),
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.white),
+                                    fixedSize: MaterialStateProperty.all<Size>(
+                                        const Size(100, 35)),
                                   ),
                                   onPressed: () {
                                     Navigator.of(context).pop();
@@ -702,12 +686,20 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
                                 ),
                                 ElevatedButton(
                                   style: ButtonStyle(
-                                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                                    backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                                    fixedSize: MaterialStateProperty.all<Size>(const Size(100, 35)),
+                                    foregroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.white),
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.black),
+                                    fixedSize: MaterialStateProperty.all<Size>(
+                                        const Size(100, 35)),
                                   ),
                                   onPressed: () {
-                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const OrdersMadeScreen()));
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const OrdersMadeScreen()));
                                   },
                                   child: const Text("Change"),
                                 ),
@@ -731,4 +723,118 @@ class _ViewEditOrderState extends State<ViewEditOrder> {
       ),
     );
   }
+}
+
+Widget createButton(BuildContext context, String text) {
+  return Center(
+    child: ElevatedButton(
+      onPressed: () {
+        _showMarkDialog(context);
+      },
+      style: ButtonStyle(
+        backgroundColor:
+            MaterialStateProperty.all(Colors.black), // Button background color
+        shape: MaterialStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(40.0), // Button border radius
+          ),
+        ),
+        elevation: MaterialStateProperty.all(0), // Set button elevation to 0
+        overlayColor: MaterialStateProperty.resolveWith<Color>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.pressed)) {
+              return Colors.grey; // Change color on pressed
+            }
+            return Colors.black; // Set default overlay color
+          },
+        ),
+        minimumSize: MaterialStatePropertyAll(Size(
+            MediaQuery.of(context).size.width * 0.95,
+            MediaQuery.of(context).size.height *
+                0.06)), // Adjust the width and height
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            text,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+              fontFamily: "Inter",
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+void _showMarkDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        child: Container(
+          height: 185,
+          width: MediaQuery.of(context).size.width * 0.67,
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text(
+                  "Mark as Completed",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  "Are you sure you want to mark this order as completed?",
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.28,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text("No",
+                            style: TextStyle(color: Colors.black)),
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.25,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          elevation: MaterialStateProperty.all(4),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.black),
+                        ),
+                        onPressed: () async {
+                          // Call a function to save the changes
+                          await markAsCompleted();
+                          Navigator.pop(context);
+                        },
+                        child: const Text("Yes",
+                            style: TextStyle(color: Colors.white)),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
+Future<void> markAsCompleted() async {
+  // Your logic to mark the order as completed
 }

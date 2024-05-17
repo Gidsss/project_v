@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerheaderfooter.dart';
 import 'package:project_v/screens/customer/explore/productdetails.dart';
@@ -43,14 +42,29 @@ class ProductItem extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.20,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              image: DecorationImage(
-                image: NetworkImage(imageURL),
-                fit: BoxFit.cover,
-              ),
               border: Border.all(
                 color:
                     const Color(0xFFECECF8), // Specify the color of the border
                 width: 2, // Specify the width of the border
+              ),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.network(
+                imageURL,
+                fit: BoxFit.cover,
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Center(
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                          : null,
+                    ),
+                  );
+                },
               ),
             ),
           ),
@@ -210,43 +224,6 @@ class _ExploreScreenState extends State<ExploreScreen> {
     } catch (e) {
       // Handle errors gracefully
       throw Exception("Error getting product details: $e");
-      // Consider displaying a user-friendly message
-    }
-  }
-
-  // Get products based on selected categories
-  Future<void> searchProducts() async {
-    try {
-      QuerySnapshot querySnapshot;
-
-      if (widget.navdcategory != null && widget.navdcategory!.isNotEmpty) {
-        querySnapshot = await db
-            .collection("products")
-            .where("category", arrayContains: widget.navdcategory)
-            .get();
-      } else {
-        querySnapshot = await db.collection("products").get();
-      }
-
-      for (DocumentSnapshot docsSnapshot in querySnapshot.docs) {
-        Map<String, dynamic> prodData =
-            docsSnapshot.data() as Map<String, dynamic>;
-        prodName.add(prodData['name']);
-        prodQuantity.add(prodData['productQuantity']);
-        prodPrice.add(prodData['price']);
-        prodDescription.add(prodData['description']);
-        prodSold.add(prodData['sold']);
-        tempImageUrls.addAll(List.from(prodData['imageUrls']));
-        // Assuming there's at least one image URL
-        imageUrls.add(tempImageUrls[0]);
-        tempImageUrls = [];
-      }
-
-      // Update the state after fetching all data
-      setState(() {});
-    } catch (e) {
-      // Handle errors gracefully
-      throw Exception("Error getting product details: $e \n");
       // Consider displaying a user-friendly message
     }
   }
