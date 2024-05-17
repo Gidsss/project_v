@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/constants/app_constants.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerfooter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart'; // Import intl package
 
 class OrderDetailItem extends StatelessWidget {
   final String label;
@@ -36,32 +39,183 @@ class OrderDetailItem extends StatelessWidget {
   }
 }
 
-class OrderStatusItem extends StatelessWidget {
-  final String status;
-  final String date;
+class OrderItem {
+  final String trackId;
+  final String name;
+  final String image;
+  final String category;
+  final String datePlaced;
+  final String dateProcess;
+  final String datePrepare;
+  final String datePickup;
+  final bool status;
+  final double price;
+  final int quantity;
 
-  const OrderStatusItem({
-    super.key,
+  OrderItem({
+    required this.name,
+    required this.trackId,
+    required this.image,
+    required this.category,
+    required this.datePlaced,
+    required this.dateProcess,
+    required this.datePrepare,
+    required this.datePickup,
     required this.status,
-    required this.date,
+    required this.price,
+    required this.quantity,
   });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(status),
-        const SizedBox(height: 5),
-        Text(date),
-        const SizedBox(height: 20),
-      ],
-    );
-  }
 }
 
-class OrderDetailsScreen extends StatelessWidget {
-  const OrderDetailsScreen({super.key});
+class OrderDetailsScreen extends StatefulWidget {
+  const OrderDetailsScreen({super.key, required this.orderid});
+
+  final String orderid;
+
+  @override
+  State<OrderDetailsScreen> createState() => _OrderDetailsScreenState();
+}
+
+class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
+  final db = FirebaseFirestore.instance;
+  List<OrderItem> _orderItems = [];
+  bool isLoading = true;
+  String trackingID = "";
+
+  @override
+  void initState() {
+    super.initState();
+    loadOrders();
+  }
+
+  String formatOrderNumber(String trackId) {
+    String orderNumber = trackId.substring(29);
+    orderNumber = orderNumber.padLeft(6 - trackId.substring(29).length, '0');
+    return orderNumber;
+  }
+
+  Future<void> loadOrders() async {
+    try {
+      trackingID = formatOrderNumber(widget.orderid);
+      User? user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        String id = user.uid;
+
+        // Clear previous lists
+        setState(() {
+          _orderItems.clear();
+          isLoading = true;
+        });
+
+        // Fetch active orders
+        await fetchOrders(id);
+
+        setState(() {
+          isLoading = false;
+          print('State updated with loaded orders.'); // Debugging
+        });
+      } else {
+        print('No user is logged in.'); // Debugging
+      }
+    } catch (error) {
+      print("Error loading orders: $error"); // Debugging
+      throw Exception("Error loading orders: $error");
+    }
+  }
+
+  Future<void> fetchOrders(String userId) async {
+    try {
+      // Get orders based on the isActive status and belonging to the user.
+      DocumentSnapshot orderdocument =
+          await db.collection("orders").doc(widget.orderid).get();
+
+      // Get document data
+      try {
+        print('Processing order: ${orderdocument.id}'); // Debugging
+        Map<String, dynamic> data =
+            orderdocument.data() as Map<String, dynamic>;
+
+        String trackId = data['TrackingID'];
+        DateFormat dateFormat = DateFormat('yyyy-MM-dd'); // Define the date format
+
+        String datePlaced = data['DatePlaced'] != null
+            ? dateFormat.format((data['DatePlaced'] as Timestamp).toDate())
+            : '';
+        String dateProcess = data['DateProcess'] != null
+            ? dateFormat.format((data['DateProcess'] as Timestamp).toDate())
+            : '';
+        String datePrepare = data['DatePrepare'] != null
+            ? dateFormat.format((data['DatePrepare'] as Timestamp).toDate())
+            : '';
+        String datePickup = data['DatePickup'] != null
+            ? dateFormat.format((data['DatePickup'] as Timestamp).toDate())
+            : '';
+        bool status = data['IsActive'];
+        double orderPrice =
+            data['OrderPrice'] != null ? data['OrderPrice'] + 0.0 : 0.0;
+
+        // Get all items document from the items subcollection
+        QuerySnapshot itemsSnapshot = await db
+            .collection("orders")
+            .doc(widget.orderid)
+            .collection("items")
+            .get();
+
+        print(
+            'Items fetched for order ${orderdocument.id}: ${itemsSnapshot.docs.length}'); // Debugging
+
+        if (itemsSnapshot.docs.isNotEmpty) {
+          for (DocumentSnapshot item in itemsSnapshot.docs) {
+            Map<String, dynamic> itemData = item.data() as Map<String, dynamic>;
+            DocumentReference productRef = itemData['cartItemRef'];
+
+            // Fetch the referenced product document
+            DocumentSnapshot productSnapshot = await productRef.get();
+
+            Map<String, dynamic> productData =
+                productSnapshot.data() as Map<String, dynamic>;
+
+            String imageUrl = '';
+            if (productData['imageUrls'] != null &&
+                (productData['imageUrls'] as List).isNotEmpty) {
+              imageUrl = productData['imageUrls'][0];
+            }
+
+            String category = '';
+            if (productData['category'] != null &&
+                (productData['category'] as List).isNotEmpty) {
+              category = productData['category'][0];
+            }
+
+            OrderItem orderItem = OrderItem(
+              name: productData['name'],
+              image: imageUrl, // Assuming imageUrls is a list
+              price: double.parse(productData['price']),
+              quantity: itemData['Quantity'],
+              category: category, // Assuming category is a list
+              trackId: trackId,
+              datePlaced: datePlaced,
+              dateProcess: dateProcess,
+              datePrepare: datePrepare,
+              datePickup: datePickup,
+              status: status,
+            );
+
+            _orderItems.add(orderItem);
+            print('OrderItem added: ${productData['name']}'); // Debugging
+          }
+        } else {
+          print('No items found for order: ${orderdocument.id}'); // Debugging
+        }
+      } catch (e) {
+        print('Error processing order ${orderdocument.id}: $e'); // Debugging
+      }
+    } catch (error) {
+      print("Error fetching orders: $error"); // Debugging
+      throw Exception("Error fetching orders: $error");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,129 +243,108 @@ class OrderDetailsScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 15),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Product image and description
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 100,
-                          height: 100,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: const DecorationImage(
-                              image:
-                                  AssetImage('assets/images/product_1.jpg'),
-                              fit: BoxFit.cover,
-                            ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Column(
+              children: [
+                const SizedBox(height: 15),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Product image and description
+                          ListView.separated(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: _orderItems.length,
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(
+                                    height:
+                                        15), // Adjust spacing between items
+                            itemBuilder: (context, index) =>
+                                createOrderItem(context, index),
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Brown Full Rim Round Glasses',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17,
+
+                          const SizedBox(height: 20),
+                          const Divider(color: Colors.black),
+                          const SizedBox(height: 20),
+                          const Row(
+                            children: [
+                              Text(
+                                'Order Details',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
                               ),
-                            ),
-                            SizedBox(height: 5),
-                            Text(
-                              'Category: Graded (-2.50) || Qty: 1',
-                              style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontSize: 15,
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          OrderDetailItem(
+                            label: 'Total Price (Discount Applied):',
+                            value: "₱${_orderItems[0].price}",
+                          ),
+                          const SizedBox(height: 10),
+                          OrderDetailItem(
+                            label: 'Tracking ID',
+                            value: _orderItems.isNotEmpty ? "#${_orderItems[0].trackId.substring(0, 6)}-${trackingID}" : '',
+                          ),
+                          const SizedBox(height: 15),
+                          const SizedBox(height: 5),
+                          const Divider(color: Colors.black),
+                          const SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'Order Status',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
                               ),
-                            ),
-                            Text(
-                              'Price: ₱1000.00',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 15),
-                    const SizedBox(height: 5),
-                    const Divider(color: Colors.black),
-                    const SizedBox(height: 20),
-                    const Row(
-                      children: [
-                        Text(
-                          'Order Details',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                              _orderItems[0].status ? const Text(
+                                'Active',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              )
+                              : const Text(
+                                'Completed',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              )
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    const OrderDetailItem(
-                      label: 'Expected Pick-up Date',
-                      value: 'March 25, 2024',
-                    ),
-                    const SizedBox(height: 10),
-                    const OrderDetailItem(
-                      label: 'Tracking ID',
-                      value: '#104523',
-                    ),
-                    const SizedBox(height: 15),
-                    const SizedBox(height: 5),
-                    const Divider(color: Colors.black),
-                    const SizedBox(height: 20),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Order Status',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                          const SizedBox(
+                            height: 15,
                           ),
-                        ),
-                        Text(
-                          'Active',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ],
+                          // Order status and dates here
+                          buildOrderStatusItem('Order Placed', _orderItems.isNotEmpty ? _orderItems[0].datePlaced : ''),
+                          buildOrderStatusItem('Order Processing', _orderItems.isNotEmpty ? _orderItems[0].dateProcess : ''),
+                          buildOrderStatusItem(
+                              'Preparation in Progress', _orderItems.isNotEmpty ? _orderItems[0].datePrepare : ''),
+                          buildOrderStatusItem('Ready for Pick-up', _orderItems.isNotEmpty ? _orderItems[0].datePickup : ''),
+                          const SizedBox(
+                            height: 20,
+                          )
+                        ],
+                      ),
                     ),
-                    // Order status and dates here
-                    buildOrderStatusItem('Order Placed', 'March 20, 2024'),
-                    buildOrderStatusItem(
-                        'Order Processing', 'March 22, 2024'),
-                    buildOrderStatusItem(
-                        'Preparation in Progress', 'March 23, 2024'),
-                    buildOrderStatusItem(
-                        'Ready for Pick-up', 'March 24, 2024'),
-                  ],
+                  ),
                 ),
-              ),
+                buildFooter(
+                  [false, false, false, true, false],
+                  context,
+                ),
+              ],
             ),
-          ),
-          buildFooter(
-            [false, false, false, true, false],
-            context,
-          ),
-        ],
-      ),
     );
   }
 
@@ -249,25 +382,74 @@ class OrderDetailsScreen extends StatelessWidget {
               Text(
                 status,
                 style: const TextStyle(
-                  fontSize: 16, // Adjust the font size as needed
+                  fontSize: 13, // Adjust the font size as needed
                   fontWeight:
                       FontWeight.bold, // Optionally, set the font weight
                 ),
               ),
-              const SizedBox(height: 40,)
             ],
           ),
-          Text(
-            date,
-            style: const TextStyle(
-              fontSize: 18,
-              
-            )
-            
-            
-            ),
+          Text(date,
+              style: const TextStyle(
+                fontSize: 16,
+              )),
         ],
       ),
+    );
+  }
+
+  Widget createOrderItem(BuildContext context, int index) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 100,
+          height: 100,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            image: DecorationImage(
+              image: NetworkImage(_orderItems[index].image),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+        const SizedBox(width: 10),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: MediaQuery.sizeOf(context).width * 0.6,
+              child: Text(
+                _orderItems[index].name,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17,
+                ),
+              ),
+            ),
+            const SizedBox(height: 5),
+            SizedBox(
+              width: MediaQuery.sizeOf(context).width * 0.6,
+              child: Text(
+                'Category: ${_orderItems[index].category} || Qty: ${_orderItems[index].quantity}',
+                style: const TextStyle(
+                  overflow: TextOverflow.ellipsis,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+            Text(
+              'Price: ₱${_orderItems[index].price}',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 17,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

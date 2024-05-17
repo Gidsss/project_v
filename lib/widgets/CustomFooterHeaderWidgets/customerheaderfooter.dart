@@ -42,25 +42,6 @@ class HeaderFooter extends StatefulWidget {
 
 class _HeaderFooterState extends State<HeaderFooter>
     with TickerProviderStateMixin {
-  late TabController _scheduleTabController;
-  late TabController _ordersTabController;
-  late TabController _profileTabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _scheduleTabController = TabController(length: 2, vsync: this);
-    _ordersTabController = TabController(length: 2, vsync: this);
-    _profileTabController = TabController(length: 2, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    _scheduleTabController.dispose();
-    _ordersTabController.dispose();
-    _profileTabController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +61,7 @@ class _HeaderFooterState extends State<HeaderFooter>
             ),
           )
         : DefaultTabController(
+            initialIndex: 0,
             length: 2,
             child: Scaffold(
               resizeToAvoidBottomInset: false,
@@ -91,33 +73,30 @@ class _HeaderFooterState extends State<HeaderFooter>
                   height: 40,
                 ),
                 bottom: widget.title == "Schedule"
-                    ? TabBar(
-                        controller: _scheduleTabController,
+                    ? const TabBar(
                         labelColor: Colors.black,
                         indicatorColor: Colors.black,
                         indicatorSize: TabBarIndicatorSize.tab,
-                        tabs: const [
+                        tabs: [
                           Tab(text: "Upcoming"),
                           Tab(text: "Completed"),
                         ],
                       )
                     : widget.title == "Orders"
-                        ? TabBar(
-                            controller: _ordersTabController,
+                        ? const TabBar(
                             labelColor: Colors.black,
                             indicatorColor: Colors.black,
                             indicatorSize: TabBarIndicatorSize.tab,
-                            tabs: const [
+                            tabs: [
                               Tab(text: "Active"),
                               Tab(text: "Completed"),
                             ],
                           )
-                        : TabBar(
-                            controller: _profileTabController,
+                        : const TabBar(
                             labelColor: Colors.black,
                             indicatorColor: Colors.black,
                             indicatorSize: TabBarIndicatorSize.tab,
-                            tabs: const [
+                            tabs: [
                               Tab(text: "Profile"),
                               Tab(text: "Settings"),
                             ],
@@ -125,23 +104,8 @@ class _HeaderFooterState extends State<HeaderFooter>
               ),
               body: Column(
                 children: [
-                  Expanded(
-                    child: TabBarView(
-                      controller: widget.title == "Schedule"
-                          ? _scheduleTabController
-                          : widget.title == "Orders"
-                              ? _ordersTabController
-                              : _profileTabController,
-                      children: [
-                        Container(
-                          child: widget.body,
-                        ),
-                        Container(
-                          child: widget.body,
-                        ),
-                      ],
-                    ),
-                  ),
+                  Expanded(child: Container(child: widget.body)),
+          
                   _buildSpacing(), // Call the method to build spacing widget
                   buildFooter(widget.buttonStatus, widget.context),
                 ],
@@ -252,7 +216,7 @@ class _HeaderFooterState extends State<HeaderFooter>
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => HomeScreen()));
+                      builder: (context) => const HomeScreen()));
             }),
             buttonStatus[1]
                 ? buildButton("Explore", Icons.explore, buttonStatus[1], () {})

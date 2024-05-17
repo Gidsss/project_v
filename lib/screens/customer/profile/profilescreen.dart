@@ -110,14 +110,55 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         CircleAvatar(
                           radius: 50,
-                          backgroundImage: _imageFile != null
-                              ? FileImage(_imageFile!) as ImageProvider
-                              : userProfilePic != null
-                              ? NetworkImage(userProfilePic!)
-                              : user?.photoURL != null
-                              ? NetworkImage(user!.photoURL!)
-                              : const AssetImage('assets/images/user.png')
-                          as ImageProvider,
+                          child: ClipOval(
+                            child: _imageFile != null
+                                ? Image.file(
+                                    _imageFile!,
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                  )
+                                : userProfilePic != null
+                                    ? Image.network(
+                                        userProfilePic!,
+                                        width: 100,
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                        loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                          if (loadingProgress == null) return child;
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                              value: loadingProgress.expectedTotalBytes != null
+                                                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                                  : null,
+                                            ),
+                                          );
+                                        },
+                                      )
+                                    : user?.photoURL != null
+                                        ? Image.network(
+                                            user!.photoURL!,
+                                            width: 100,
+                                            height: 100,
+                                            fit: BoxFit.cover,
+                                            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                                              if (loadingProgress == null) return child;
+                                              return Center(
+                                                child: CircularProgressIndicator(
+                                                  value: loadingProgress.expectedTotalBytes != null
+                                                      ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                                                      : null,
+                                                ),
+                                              );
+                                            },
+                                          )
+                                        : const Image(
+                                            image: AssetImage('assets/images/user.png'),
+                                            width: 100,
+                                            height: 100,
+                                            fit: BoxFit.cover,
+                                          ),
+                          ),
                         ),
                         const SizedBox(
                             width: 15), // Add some space between the image and text

@@ -58,7 +58,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
           'phoneNumber': phonenumController.text,
           'address': addressController.text,
           'profilePic': imageUrl,
-          'customerOrderNumber': 0,
+          'customerOrderNumber': 1,
         }, SetOptions(merge: true));
 
         Navigator.pushReplacement(

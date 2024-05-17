@@ -111,6 +111,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
 
         // Get reference to promo code
         DocumentReference? promoRef;
+
         if (widget.promoCode != null && widget.promoCode!.trim().isNotEmpty) {
           QuerySnapshot promoQuery = await db
               .collection("coupons")
@@ -118,6 +119,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               .get();
           if (promoQuery.docs.isNotEmpty) {
             promoRef = promoQuery.docs.first.reference;
+          
           } else {
             promoRef =
                 null; // Handle the case where the promo code is not found
@@ -132,10 +134,11 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
           "DateProcess": null,
           "DatePrepare": null,
           "DatePickup": null,
-          "OrderPrice": total,
+          "OrderPrice": subtotal,
           "PromoCode": promoRef,
           "Discount": discount,
-          "Status": true,
+          "IsActive": true,
+          "User": id,
         });
 
         // Transfer all items from cart subcollection into orders, id-customerordernumber, subcollection.
@@ -223,8 +226,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   void initState() {
     super.initState();
     loadCartItems().then((_) {
-      setState(() {
-        applyPromoCode(widget.promoCode);
+      setState(() async{
+        await applyPromoCode(widget.promoCode);
         calculateTotals();
         setState(() {});
       });
@@ -259,7 +262,18 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                       leading: SizedBox(
                         width: 50.0,
                         height: 50.0,
-                        child: Image.network(_checkoutItems[index - 1].image),
+                        child: Image.network(_checkoutItems[index - 1].image, 
+                  fit: BoxFit.cover,
+                  loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },),
                       ),
                       title: Text(
                         _checkoutItems[index - 1].name,
