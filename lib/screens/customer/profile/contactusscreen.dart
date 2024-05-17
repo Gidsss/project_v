@@ -269,21 +269,21 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                           ),
 
                           //Chat Now
-                          const SizedBox(height: 15,),
-                          const Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Chat Now",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 15,
-                                  fontFamily: "Inter",
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
+                          // const SizedBox(height: 15,),
+                          // const Row(
+                          //   mainAxisAlignment: MainAxisAlignment.start,
+                          //   children: [
+                          //     // Text(
+                          //     //   "Chat Now",
+                          //     //   style: TextStyle(
+                          //     //     color: Colors.black,
+                          //     //     fontSize: 15,
+                          //     //     fontFamily: "Inter",
+                          //     //     fontWeight: FontWeight.bold,
+                          //     //   ),
+                          //     // ),
+                          //   ],
+                          // ),
 
                           const SizedBox(height: 5,),
 
@@ -300,62 +300,62 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
                                   ),
                                 ],
                               ),
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => const ChatScreen()),
-                                  );
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(Colors.white), // Button background color
-                                  shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(40.0), // Button border radius
-                                    ),
-                                  ),
-                                  elevation: MaterialStateProperty.all(0), // Set button elevation to 0
-                                  overlayColor: MaterialStateProperty.resolveWith<Color>(
-                                        (Set<MaterialState> states) {
-                                      if (states.contains(MaterialState.pressed)) {
-                                        return Colors.grey; // Change color on pressed
-                                      }
-                                      return Colors.white; // Set default overlay color
-                                    },
-                                  ),
-                                  minimumSize: MaterialStateProperty.all(const Size(800, 40)), // Adjust the width and height
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      child: Image.asset(
-                                        'assets/images/ChatNowIcon.png', // asset icon
-                                        width: 26,
-                                        height: 26,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10,),
-                                    const Text(
-                                      'Chat us now',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 14,
-                                        fontFamily: "Inter",
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 157,),
-                                    SizedBox(
-                                      child: Image.asset(
-                                        'assets/images/RightArrow.png', // asset icon
-                                        width: 26,
-                                        height: 26,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              // child: ElevatedButton(
+                              //   onPressed: () {
+                              //     Navigator.push(
+                              //       context,
+                              //       MaterialPageRoute(builder: (context) => const ChatScreen()),
+                              //     );
+                              //   },
+                              //   style: ButtonStyle(
+                              //     backgroundColor: MaterialStateProperty.all(Colors.white), // Button background color
+                              //     shape: MaterialStateProperty.all(
+                              //       RoundedRectangleBorder(
+                              //         borderRadius: BorderRadius.circular(40.0), // Button border radius
+                              //       ),
+                              //     ),
+                              //     elevation: MaterialStateProperty.all(0), // Set button elevation to 0
+                              //     overlayColor: MaterialStateProperty.resolveWith<Color>(
+                              //           (Set<MaterialState> states) {
+                              //         if (states.contains(MaterialState.pressed)) {
+                              //           return Colors.grey; // Change color on pressed
+                              //         }
+                              //         return Colors.white; // Set default overlay color
+                              //       },
+                              //     ),
+                              //     minimumSize: MaterialStateProperty.all(const Size(800, 40)), // Adjust the width and height
+                              //   ),
+                              //   child: Row(
+                              //     mainAxisAlignment: MainAxisAlignment.start,
+                              //     children: [
+                              //       // SizedBox(
+                              //       //   child: Image.asset(
+                              //       //     'assets/images/ChatNowIcon.png', // asset icon
+                              //       //     width: 26,
+                              //       //     height: 26,
+                              //       //   ),
+                              //       // ),
+                              //       // const SizedBox(width: 10,),
+                              //       // const Text(
+                              //       //   'Chat us now',
+                              //       //   style: TextStyle(
+                              //       //     color: Colors.black,
+                              //       //     fontSize: 14,
+                              //       //     fontFamily: "Inter",
+                              //       //     fontWeight: FontWeight.bold,
+                              //       //   ),
+                              //       // ),
+                              //       // const SizedBox(width: 157,),
+                              //       // SizedBox(
+                              //       //   child: Image.asset(
+                              //       //     'assets/images/RightArrow.png', // asset icon
+                              //       //     width: 26,
+                              //       //     height: 26,
+                              //       //   ),
+                              //       // ),
+                              //     ],
+                              //   ),
+                              // ),
                             ),
                           ),
                         ],
