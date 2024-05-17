@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/customerfooter.dart';
-import 'package:project_v/screens/customer/chat/chatscreen.dart';
+//import 'package:project_v/screens/customer/chat/chatscreen.dart';
 import 'package:project_v/widgets/CustomFooterHeaderWidgets/header2.dart';
 
 class ContactUsScreen extends StatefulWidget {

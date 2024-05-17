@@ -218,6 +218,7 @@ class _AddNewNotificationsTemplateScreenState
                           'Special Offers',
                           'Maintenance Alerts',
                           'Purchase Receipts',
+                          'Order Status'
                         ].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
