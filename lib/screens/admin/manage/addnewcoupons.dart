@@ -39,8 +39,27 @@ class _AddNewCouponsScreenState extends State<AddNewCouponsScreen> {
 
   Future<void> addCoupon() async {
     String couponCode = couponCodeController.text;
+    if (couponCode.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Coupon code cannot be empty.')));
+      return;
+    }
+
+    // Check if the coupon code already exists in the database
+    final QuerySnapshot result = await FirebaseFirestore.instance
+        .collection('coupons')
+        .where('couponCode', isEqualTo: couponCode)
+        .limit(1)
+        .get();
+
+    if (result.docs.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('A coupon with this code already exists.')));
+      return;
+    }
     String description = descriptionController.text;
-    String benefits = benefitsController.text;
+    int benefits =
+        int.tryParse(benefitsController.text) ?? 0; // This now uses int
     int usageLimit = int.tryParse(usageLimitController.text) ?? 0;
     String startDate = startDateController.text;
     String endDate =
@@ -55,15 +74,16 @@ class _AddNewCouponsScreenState extends State<AddNewCouponsScreen> {
       return;
     }
 
-    // Create the coupon data to be stored in Firestore
+    // Prepare the data to be stored in Firestore
     Map<String, dynamic> couponData = {
       'couponCode': couponCode,
       'description': description,
-      'benefits': benefits,
+      'benefits': benefits, // Store as an integer
       'usageLimit': usageLimit,
       'status': selectedStatus,
       'startDate': startDate,
       'endDate': endDate,
+      'redeems': 0, // Initialize the redeems count to 0
     };
 
     try {
@@ -77,6 +97,7 @@ class _AddNewCouponsScreenState extends State<AddNewCouponsScreen> {
           .showSnackBar(SnackBar(content: Text('Error adding coupon: $e')));
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -110,16 +131,17 @@ class _AddNewCouponsScreenState extends State<AddNewCouponsScreen> {
                     ),
                     createField("", descriptionController, maxLines: 3),
                     const Text(
-                      "Benefits",
+                      "Benefits (in %)",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    createField("", benefitsController),
-                     const Text(
+                    createField("", benefitsController,
+                        keyboardType: TextInputType.number),
+                    const Text(
                       "Usage Limit (Optional)",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     createField("", usageLimitController),
-                      const Text(
+                    const Text(
                       "Status",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
@@ -151,8 +173,7 @@ class _AddNewCouponsScreenState extends State<AddNewCouponsScreen> {
                       "End Date (Optional)",
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    buildDatePickerField(
-                        "", endDateController),
+                    buildDatePickerField("", endDateController),
                     const SizedBox(height: 15),
                     CreateButton(
                       buttontext: 'Add Coupon',
@@ -174,12 +195,13 @@ class _AddNewCouponsScreenState extends State<AddNewCouponsScreen> {
   }
 
   Widget createField(String label, TextEditingController controller,
-      {int maxLines = 1}) {
+      {int maxLines = 1, TextInputType keyboardType = TextInputType.text}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: TextField(
         controller: controller,
         maxLines: maxLines,
+        keyboardType: keyboardType, // Add this line
         decoration: InputDecoration(
           border: const OutlineInputBorder(),
           labelText: label,

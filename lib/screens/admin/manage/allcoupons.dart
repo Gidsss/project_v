@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:project_v/screens/admin/manage/editcoupons.dart';
 import '../../../widgets/CustomFooterHeaderWidgets/adminfooter.dart';
 import '../../../widgets/CustomFooterHeaderWidgets/header2.dart';
@@ -25,6 +26,45 @@ class _AllCouponsScreenState extends State<AllCouponsScreen>
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  Future<void> incrementRedeemCount(String documentId) async { // add the logic here for customer redeems or move it to other file
+    DocumentReference couponRef =
+        FirebaseFirestore.instance.collection('coupons').doc(documentId);
+
+    try {
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        DocumentSnapshot snapshot = await transaction.get(couponRef);
+
+        if (!snapshot.exists) {
+          throw Exception("Coupon does not exist!");
+        }
+
+        int currentRedeems = snapshot.get('redeems') ?? 0;
+        int currentUsageLimit = snapshot.get('usageLimit') ?? 0;
+        String status = snapshot.get('status') ?? 'Available';
+
+        if (currentUsageLimit > 0) {
+          int newUsageLimit = currentUsageLimit - 1;
+          String newStatus = newUsageLimit > 0 ? status : 'Unavailable';
+
+          transaction.update(couponRef, {
+            'redeems': currentRedeems + 1,
+            'usageLimit': newUsageLimit,
+            'status': newStatus
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Coupon redeemed successfully!')));
+        } else {
+          // Notify that the coupon can no longer be redeemed
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('No more usages available for this coupon.')));
+        }
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Error redeeming coupon: $e')));
+    }
   }
 
   @override
@@ -76,14 +116,41 @@ class _AllCouponsScreenState extends State<AllCouponsScreen>
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
           return const Center(child: Text('No coupons available.'));
         }
+        DateTime today = DateTime.now();
+        // Assuming you are within a StreamBuilder or a similar context
+        snapshot.data!.docs.map((doc) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          String endDateString = data['endDate'] as String? ??
+              DateFormat('MM/dd/yyyy')
+                  .format(DateTime.now()); // Fallback to today if null
+          DateFormat format =
+              DateFormat('MM/dd/yyyy'); // Define the date format
 
+          try {
+            DateTime endDate = format.parse(
+                endDateString); // Parse the date string using the defined format
+
+            if (endDate.isBefore(today) && data['status'] != 'Expired') {
+              // Update the status to Expired if the end date has passed and it's not already expired
+              FirebaseFirestore.instance
+                  .collection('coupons')
+                  .doc(doc.id)
+                  .update({'status': 'Expired'});
+            }
+          } catch (e) {
+            print('Error parsing date: $e'); // Handle possible parsing errors
+          }
+
+          return doc;
+        }).toList();
         return ListView(
           padding:
               const EdgeInsets.all(4.0), // Optional padding for the whole list
           children: snapshot.data!.docs.map((doc) {
             Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
             String couponCode = data['couponCode'] ?? 'No Code';
-            String benefits = data['benefits'] ?? '';
+            String benefits =
+                data['benefits'] != null ? '${data['benefits']}%' : '---';
             String usageLimit = data['usageLimit'] != null
                 ? data['usageLimit'].toString()
                 : '---';
@@ -164,119 +231,143 @@ class _AllCouponsScreenState extends State<AllCouponsScreen>
   }
 
   Widget buildRedeemsList() {
-  return StreamBuilder<QuerySnapshot>(
-    stream: FirebaseFirestore.instance.collection('coupons').snapshots(),
-    builder: (context, snapshot) {
-      // Show a progress indicator if data is still loading
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Center(
-            child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation(Colors.black)));
-      }
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('coupons').snapshots(),
+      builder: (context, snapshot) {
+        // Show a progress indicator if data is still loading
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+              child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(Colors.black)));
+        }
 
-      // Show a message if no data is available
-      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-        return const Center(child: Text("No coupons available."));
-      }
+        // Show a message if no data is available
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return const Center(child: Text("No coupons available."));
+        }
 
-      // Data is available, so we show the table
-      return Padding(
-        padding: const EdgeInsets.only(top: 16, left: 16, right: 16), // Adjust padding as needed
-        child: Table(
-          columnWidths: const {
-            0: FlexColumnWidth(1),
-            1: FlexColumnWidth(2),
-            2: FlexColumnWidth(1),
-            3: FlexColumnWidth(1),
-          },
-          defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-          border: TableBorder.all(color: Colors.grey.withOpacity(0.2)), // Optional: add border for better definition
-          children: [
-            TableRow(
-              decoration: BoxDecoration(color: Colors.black.withOpacity(0.9)),
-              children: const [
-                TableCell(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 20),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text("Code", style: TextStyle(color: Colors.white)),
-                    ),
-                  ),
-                ),
-                TableCell(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 48),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text("Benefits", style: TextStyle(color: Colors.white)),
-                    ),
-                  ),
-                ),
-                TableCell(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 22),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text("Limit", style: TextStyle(color: Colors.white)),
-                    ),
-                  ),
-                ),
-                TableCell(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 8),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text("Redeems", style: TextStyle(color: Colors.white)),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            ...snapshot.data!.docs.map((doc) {
-              Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
-              String couponCode = data['couponCode'] ?? 'No Code';
-              String benefits = data['benefits'] ?? '';
-              String usageLimit = data['usageLimit'] != null ? data['usageLimit'].toString() : '---';
-              String redeems = data['redeems'] != null ? data['redeems'].toString() : '0'; // Default to '0' if not available
-
-              return TableRow(
-                decoration: BoxDecoration(border: Border.all(color: Colors.grey.withOpacity(0.2))),
-                children: [
+        // Data is available, so we show the table
+        return Padding(
+          padding: const EdgeInsets.only(
+              top: 16, left: 16, right: 16), // Adjust padding as needed
+          child: Table(
+            columnWidths: const {
+              0: FlexColumnWidth(1),
+              1: FlexColumnWidth(2),
+              2: FlexColumnWidth(1),
+              3: FlexColumnWidth(1),
+            },
+            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+            border: TableBorder.all(
+                color: Colors.grey.withOpacity(
+                    0.2)), // Optional: add border for better definition
+            children: [
+              TableRow(
+                decoration: BoxDecoration(color: Colors.black.withOpacity(0.9)),
+                children: const [
                   TableCell(
                     child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Text(couponCode, textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w600)),
+                      padding: EdgeInsets.only(left: 20),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child:
+                            Text("Code", style: TextStyle(color: Colors.white)),
+                      ),
                     ),
                   ),
                   TableCell(
                     child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Text(benefits, textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w600)),
+                      padding: EdgeInsets.only(left: 48),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Text("Benefits",
+                            style: TextStyle(color: Colors.white)),
+                      ),
                     ),
                   ),
                   TableCell(
                     child: Padding(
-                      padding: const EdgeInsets.all(24),
-                      child: Text(usageLimit, textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w600)),
+                      padding: EdgeInsets.only(left: 22),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Text("Limit",
+                            style: TextStyle(color: Colors.white)),
+                      ),
                     ),
                   ),
                   TableCell(
                     child: Padding(
-                      padding: const EdgeInsets.all(4),
-                      child: Text(redeems, textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.w600)),
+                      padding: EdgeInsets.only(left: 8),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Text("Redeems",
+                            style: TextStyle(color: Colors.white)),
+                      ),
                     ),
                   ),
                 ],
-              );
-            }).toList(),
-          ],
-        ),
-      );
-    },
-  );
-}
+              ),
+              ...snapshot.data!.docs.map((doc) {
+                Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+                String couponCode = data['couponCode'] ?? 'No Code';
+                String benefits =
+                    data['benefits'] != null ? '${data['benefits']}%' : '---';
+                String usageLimit = data['usageLimit'] != null
+                    ? data['usageLimit'].toString()
+                    : '---';
+                String redeems = data['redeems'] != null
+                    ? data['redeems'].toString()
+                    : '0'; // Default to '0' if not available
 
+                return TableRow(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.withOpacity(0.2))),
+                  children: [
+                    TableCell(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(couponCode,
+                            textAlign: TextAlign.center,
+                            style:
+                                const TextStyle(fontWeight: FontWeight.w600)),
+                      ),
+                    ),
+                    TableCell(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(benefits,
+                            textAlign: TextAlign.center,
+                            style:
+                                const TextStyle(fontWeight: FontWeight.w600)),
+                      ),
+                    ),
+                    TableCell(
+                      child: Padding(
+                        padding: const EdgeInsets.all(24),
+                        child: Text(usageLimit,
+                            textAlign: TextAlign.center,
+                            style:
+                                const TextStyle(fontWeight: FontWeight.w600)),
+                      ),
+                    ),
+                    TableCell(
+                      child: Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: Text(redeems,
+                            textAlign: TextAlign.center,
+                            style:
+                                const TextStyle(fontWeight: FontWeight.w600)),
+                      ),
+                    ),
+                  ],
+                );
+              }).toList(),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   Widget buildStatusList() {
     return StreamBuilder<QuerySnapshot>(
@@ -359,7 +450,8 @@ class _AllCouponsScreenState extends State<AllCouponsScreen>
                   Map<String, dynamic> data =
                       doc.data() as Map<String, dynamic>;
                   String couponCode = data['couponCode'] ?? 'No Code';
-                  String benefits = data['benefits'] ?? '';
+                  String benefits =
+                      data['benefits'] != null ? '${data['benefits']}%' : '---';
                   String usageLimit = data['usageLimit'] != null
                       ? data['usageLimit'].toString()
                       : '---';

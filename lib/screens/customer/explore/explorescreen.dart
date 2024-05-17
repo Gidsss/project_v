@@ -158,7 +158,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
         DocumentSnapshot cartSnapshot =
             await cartsCollection.doc("order-$productId").get();
 
-        // If document with id order-productID does not exist, create a cart subcollection (if not exist)
+        // If document with id order-productID, does not exist, create a cart subcollection (if not exist)
         // and a document with cartItem value of prodRef and quantity 1
         if (!cartSnapshot.exists) {
           // Add cart item to the subcollection with reference and quantity as the name order-productID

@@ -195,6 +195,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Get the size of the screen
+    var screenSize = MediaQuery.of(context).size;
+    var screenWidth = screenSize.width;
+    var screenHeight = screenSize.height;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Column(
@@ -238,8 +243,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                     color: Colors.black.withOpacity(0.8),
                                     borderRadius: BorderRadius.circular(5)),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: screenWidth >= 600 ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
                                   children: [
                                     Text(isEdit ? "Edit Mode" : "View Mode",
                                         style: const TextStyle(
@@ -517,7 +521,7 @@ Widget createSearchCategory(BuildContext context) {
         title: InkWell(
           splashColor: Colors.black,
           onTap: () {},
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text("All Categories"),
@@ -525,5 +529,6 @@ Widget createSearchCategory(BuildContext context) {
             ],
           ),
         ),
-      ));
+      )
+);
 }

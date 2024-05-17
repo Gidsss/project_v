@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:project_v/widgets/img/square_tile.dart';
 import 'package:project_v/widgets/textfields/textfield.dart';
 import 'package:project_v/widgets/buttons/auth/loginbutton.dart';
@@ -12,7 +15,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:project_v/screens/admin/admindashboard.dart';
 
-
 Future<void> signInWithGoogle(BuildContext context) async {
   try {
     final GoogleSignInAccount? googleUser = await GoogleSignIn(
@@ -22,19 +24,48 @@ Future<void> signInWithGoogle(BuildContext context) async {
         'https://www.googleapis.com/auth/userinfo.profile',
       ],
     ).signIn();
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
+
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
 
     final OAuthCredential credential = GoogleAuthProvider.credential(
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
     );
 
-    await FirebaseAuth.instance.signInWithCredential(credential);
+    final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+    final User? user = userCredential.user;
 
-    // Optionally push to the HomeScreen or handle the authenticated user.
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (_) => const HomeScreen()));
+    if (user != null) {
+      String? imageUrl;
+      if (googleUser?.photoUrl != null) {
+        try {
+          // Download the image
+          final response = await http.get(Uri.parse(googleUser!.photoUrl!));
+          final Directory tempDir = Directory.systemTemp;
+          final File file = File('${tempDir.path}/profile.jpg');
+          await file.writeAsBytes(response.bodyBytes);
+
+          // Upload to Firebase Storage
+          TaskSnapshot uploadTask = await FirebaseStorage.instance
+              .ref('profilePics/${user.uid}')
+              .putFile(file);
+          imageUrl = await uploadTask.ref.getDownloadURL();
+        } catch (e) {
+          print('Error uploading profile picture: $e');
+        }
+      }
+
+      await FirebaseFirestore.instance.collection('customers').doc(user.uid).set({
+        'UID': user.uid,
+        'name': googleUser?.displayName ?? '',
+        'email': googleUser?.email ?? '',
+        'profilePic': imageUrl ?? '',
+      });
+
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+      );
+    }
   } catch (error) {
     print('Google sign-in error: $error');
     ScaffoldMessenger.of(context).showSnackBar(
@@ -43,69 +74,89 @@ Future<void> signInWithGoogle(BuildContext context) async {
   }
 }
 
-// FB LOGIN
 Future<void> signInWithFacebook(BuildContext context) async {
-  Map<String, dynamic>? _userData; // used to store user data.
-  AccessToken? _fbaccessToken;
   try {
     final LoginResult fbLoginResult = await FacebookAuth.instance.login();
 
     if (fbLoginResult.status == LoginStatus.success) {
-      _fbaccessToken = fbLoginResult.accessToken;
+      final AccessToken? _fbaccessToken = fbLoginResult.accessToken;
+      final userData = await FacebookAuth.instance.getUserData(fields: "name,email,picture.width(200)");
+      final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(_fbaccessToken!.token);
 
-      final userData = await FacebookAuth.instance.getUserData();
-      _userData = userData;
+      final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+      final User? user = userCredential.user;
 
-      // Create a credential from the access token
-      final OAuthCredential facebookAuthCredential =
-          FacebookAuthProvider.credential(fbLoginResult.accessToken!.token);
+      if (user != null) {
+        String? imageUrl;
+        if (userData['picture']['data']['url'] != null) {
+          try {
+            // Download the image
+            final response = await http.get(Uri.parse(userData['picture']['data']['url']));
+            final Directory tempDir = Directory.systemTemp;
+            final File file = File('${tempDir.path}/profile.jpg');
+            await file.writeAsBytes(response.bodyBytes);
 
-      // Once signed in, return the UserCredential
-      await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+            // Upload to Firebase Storage
+            TaskSnapshot uploadTask = await FirebaseStorage.instance
+                .ref('profilePics/${user.uid}')
+                .putFile(file);
+            imageUrl = await uploadTask.ref.getDownloadURL();
+          } catch (e) {
+            print('Error uploading profile picture: $e');
+          }
+        }
 
-      if (context.mounted) {
-        Navigator.push(context,
-            MaterialPageRoute(builder: ((context) => const HomeScreen())));
+        await FirebaseFirestore.instance.collection('customers').doc(user.uid).set({
+          'UID': user.uid,
+          'name': userData['name'] ?? '',
+          'email': userData['email'] ?? '',
+          'profilePic': imageUrl ?? '',
+        });
+
+        if (context.mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const HomeScreen()),
+          );
+        }
       }
     } else {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content:
-                Text('Facebook sign-in failed: ${fbLoginResult.message}')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Facebook sign-in failed: ${fbLoginResult.message}')),
+        );
       }
       print("Fail FB Login Status: ${fbLoginResult.status}");
       print("Fail FB Login Message: ${fbLoginResult.message}");
     }
   } catch (e) {
     print("FB Login Error: $e");
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Facebook sign-in failed: $e')),
+    );
   }
 }
 
+
 class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key, required String title});
+  LoginScreen({super.key, required this.title});
   static String routeName = "/login";
-  // This widget is the login page of the application.
+  final String title;
 
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  //text editing controllers
+  // Text editing controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   void login(BuildContext context) async {
     try {
-      // Attempt to sign in the user.
+      // Attempt to sign in the user
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(
               email: emailController.text.trim(),
               password: passwordController.text.trim());
 
-      // Check if the email is that of the admin and redirect accordingly.
-      if (userCredential.user!.email == "valdopenacse@gmail.com") 
-      {
+      // Check if the email is that of the admin and redirect accordingly
+      if (userCredential.user!.email == "valdopenacse@gmail.com") {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const AdminDashboardScreen()),
@@ -119,7 +170,7 @@ class LoginScreen extends StatelessWidget {
         print("Login successful: ${userCredential.user!.email}");
       }
     } catch (e) {
-      // If there is an error, display a message to the user.
+      // If there is an error, display a message to the user
       print("Login failed: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Login failed: $e")),
@@ -133,17 +184,15 @@ class LoginScreen extends StatelessWidget {
       backgroundColor: const Color.fromARGB(255, 249, 249, 249),
       body: SafeArea(
         child: SingleChildScrollView(
-          //fixed bottom overflowing
           child: Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 50),
 
-                // logo
+                // Logo
                 const Padding(
-                  padding: EdgeInsets.only(
-                      left: 20.0), // Adjust the padding as needed
+                  padding: EdgeInsets.only(left: 20.0),
                   child: Text(
                     'Login',
                     style: TextStyle(
@@ -157,10 +206,9 @@ class LoginScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
 
-                // welcome back, you've been missed!
+                // Welcome back, you've been missed!
                 const Padding(
-                  padding: EdgeInsets.only(
-                      left: 20.0), // Adjust the padding as needed
+                  padding: EdgeInsets.only(left: 20.0),
                   child: Text(
                     'Welcome back.',
                     style: TextStyle(
@@ -172,10 +220,9 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 25),
 
-                // email textfield
+                // Email textfield
                 MyTextField(
                   controller: emailController,
                   hintText: 'Email',
@@ -185,10 +232,9 @@ class LoginScreen extends StatelessWidget {
                     labelText: 'Email',
                   ),
                 ),
-
                 const SizedBox(height: 10),
 
-                // password textfield
+                // Password textfield
                 MyTextField(
                   controller: passwordController,
                   hintText: 'Password',
@@ -198,10 +244,9 @@ class LoginScreen extends StatelessWidget {
                     labelText: 'Password',
                   ),
                 ),
-
                 const SizedBox(height: 20),
 
-                // forgot password? and don't have an acct
+                // Forgot password? and don't have an account
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
@@ -209,7 +254,6 @@ class LoginScreen extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          // Go to the Forgot Password screen
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -223,7 +267,6 @@ class LoginScreen extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          // Go to the Sign Up screen
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -237,21 +280,20 @@ class LoginScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 25),
 
-                // sign in button
+                // Sign in button
                 LoginButton(
                   onTap: () => login(context),
                 ),
-
                 const SizedBox(height: 50),
-                // or login using
+
+                // Or login using
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: 20, // Adjust width as needed
+                      width: 20,
                       child: Divider(
                         thickness: 0.5,
                         color: Colors.grey[400],
@@ -269,7 +311,7 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      width: 20, // Adjust width as needed
+                      width: 20,
                       child: Divider(
                         thickness: 0.5,
                         color: Colors.grey[400],
@@ -277,14 +319,13 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 20),
 
-                // google + facebook sign in buttons
+                // Google + Facebook sign in buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // google button
+                    // Google button
                     SquareTile(
                       imagePath: AppConstants.googleIconPath,
                       onTap: () async {
@@ -292,7 +333,7 @@ class LoginScreen extends StatelessWidget {
                       },
                     ),
                     const SizedBox(width: 25),
-                    // facebook button
+                    // Facebook button
                     SquareTile(
                       imagePath: AppConstants.facebookIconPath,
                       onTap: () async {

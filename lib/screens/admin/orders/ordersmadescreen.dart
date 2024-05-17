@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_v/screens/admin/orders/vieweditorder.dart';
@@ -12,8 +13,16 @@ class OrdersMadeScreen extends StatefulWidget {
 }
 
 class _OrdersMadeScreenState extends State<OrdersMadeScreen> {
+
+  String getCurrentDateWithTime() {
+    DateTime now = DateTime.now();
+    String formattedDate = '${now.day}, ${now.month}, ${now.year} at ${now.hour}:${now.minute.toString().padLeft(2, '0')} ${now.hour >= 12? 'P.M.' : 'A.M.'}';
+    return formattedDate;
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         body: Column(
         children: [
@@ -28,19 +37,19 @@ class _OrdersMadeScreenState extends State<OrdersMadeScreen> {
                   Container(
                     width: double.infinity,
                     color: Colors.black,
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.fromLTRB(8, 15, 8, 15),
                       child: Column(
                         children: <Widget>[
                           Text(
-                            'Date',
+                            'Date and Time',
                             style: TextStyle(
                               fontSize: 20,
                               color: Colors.white,
                             ),
                           ),
                           Text(
-                            'September, 09, 2024',
+                            getCurrentDateWithTime(),
                             style: TextStyle(
                               fontSize: 16,
                               color: Colors.white,
@@ -51,20 +60,51 @@ class _OrdersMadeScreenState extends State<OrdersMadeScreen> {
                             height: 20,
                             thickness: 1,
                           ),
-                          Text(
-                            'Total Orders',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                            ),
+                          StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection('orders')
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              // Show a progress indicator if data is still loading
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation(
+                                      Colors.black,
+                                    ),
+                                  ),
+                                );
+                              }
+                              // Show a message if no data is available
+                              if (!snapshot.hasData ||
+                                  snapshot.data!.docs.isEmpty) {
+                                return const Center(
+                                  child: Text("No Orders available."),
+                                );
+                              }
+                              int totalCount = snapshot.data!.docs.length;
+                              return Column(
+                                children: [
+                                  Text(
+                                    'Total Orders',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Text(
+                                    '$totalCount', // Displaying the total count as a string
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
                           ),
-                          Text(
-                            '23',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                            ),
-                          ),
+
                         ],
                       ),
                     ),
@@ -76,118 +116,122 @@ class _OrdersMadeScreenState extends State<OrdersMadeScreen> {
                   const SizedBox(
                       height: 10
                   ),
-                  Table(
-                    columnWidths: const {
-                      0: FlexColumnWidth(1.5),
-                      1: FlexColumnWidth(1.5),
-                      2: FlexColumnWidth(1),
-                    },
-                    defaultVerticalAlignment:
-                    TableCellVerticalAlignment.middle,
-                    children: [
-                      TableRow(
-                        children: const [
-                          TableCell(
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                left: 20,
-                                top: 10,
-                                bottom: 10,
-                              ),
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  "Order Tracking ID",
-                                  style: TextStyle(
-                                      color: Colors.white
+                  StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('orders')
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        // Show a progress indicator if data is still loading
+                        if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator( valueColor: AlwaysStoppedAnimation(
+                                  Colors.black),));
+                        }
+                        // Show a message if no data is available
+                        if (!snapshot.hasData ||
+                            snapshot.data!.docs.isEmpty) {
+                          return const Center(
+                              child: Text("No Orders available."));
+                        }
+                        return Table(
+                          columnWidths: const {
+                            0: FlexColumnWidth(1.5),
+                            1: FlexColumnWidth(1.5),
+                            2: FlexColumnWidth(1),
+                          },
+                          defaultVerticalAlignment:
+                          TableCellVerticalAlignment.middle,
+                          children: [
+                            TableRow(
+                              children: const [
+                                TableCell(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                    left: 20,
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text(
+                                        "Order Tracking ID",
+                                        style: TextStyle(
+                                            color: Colors.white
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                left: 30,
-                                top: 10,
-                                bottom: 10,
-                              ),
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  "Status",
-                                  style: TextStyle(
-                                      color: Colors.white
+                                TableCell(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 55,
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text(
+                                        "Status",
+                                        style: TextStyle(
+                                            color: Colors.white
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                left:5,
-                                top: 10,
-                                bottom: 10,
-                              ),
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  "View/Edit",
-                                  style: TextStyle(
-                                      color: Colors.white),
+                                TableCell(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      left:5,
+                                      top: 10,
+                                      bottom: 10,
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text(
+                                        "View/Edit",
+                                        style: TextStyle(
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
                                 ),
+                              ],
+                              decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(0.9)
                               ),
                             ),
-                          ),
-                        ],
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.9),
-                        ),
-                      ),
-                      ...List.generate(
-                          2,
-                              (index) => TableRow(
+                            ...snapshot.data!.docs.map((doc) {
+                              Map<String, dynamic> data =
+                              doc.data() as Map<String, dynamic>;
+                              String statusText = data['IsActive'] ? "ACTIVE" : "COMPLETED";
+                              return TableRow(
                                 decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color:
-                                      Colors.grey.withOpacity(0.2)),
-                                ),
+                                    border: Border.all(
+                                        color: Colors.grey
+                                            .withOpacity(0.2))),
                                 children: [
-                                  const TableCell(
-                                    verticalAlignment: TableCellVerticalAlignment.middle,
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                          left: 20
-                                        ),
-                                        child: Align(
-                                            alignment: Alignment.topLeft,
-                                          child: Text(
-                                            '#104524\nGucci Eyes',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                  ),
-                                  const TableCell(
-                                    verticalAlignment: TableCellVerticalAlignment.middle,
+                                  TableCell(
                                     child: Padding(
-                                      padding: EdgeInsets.only(
-                                      left: 20
-                                      ),
-                                      child: Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Text(
-                                          'COMPLETED',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
+                                      padding: const EdgeInsets.all(8),
+                                      child: Text(doc['TrackingID'],
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                              fontWeight:
+                                              FontWeight.w600)),
+                                    ),
+                                  ),
+                                  TableCell(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: Text(
+                                          statusText,
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                              fontWeight:
+                                              FontWeight.w600)),
                                     ),
                                   ),
                                   TableCell(
@@ -200,28 +244,30 @@ class _OrdersMadeScreenState extends State<OrdersMadeScreen> {
                                         left: 15,
                                       ),
                                       child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          borderRadius: BorderRadius.circular(20),
-                                        ),
-                                        child: Align(
-                                          alignment: Alignment.center,
-                                          child: IconButton(
-                                            iconSize: 30,
-                                            color: Colors.white,
-                                            onPressed: (){
-                                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ViewEditOrder()));
-                                            },
-                                            icon: const Icon(Icons.remove_red_eye_outlined),
+                                          decoration: BoxDecoration(
+                                            color: Colors.black,
+                                            borderRadius: BorderRadius.circular(20),
                                           ),
-                                        )
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: IconButton(
+                                              iconSize: 30,
+                                              color: Colors.white,
+                                              onPressed: (){
+                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ViewEditOrder(orderData: doc.data())));
+                                              },
+                                              icon: const Icon(Icons.remove_red_eye_outlined),
+                                            ),
+                                          )
                                       ),
                                     ),
                                   ),
                                 ],
-                              ),
-                      ),
-                    ],
+                              );
+                            }).toList(),
+                          ],
+                        );
+                      },
                   ),
                 ],
               ),
