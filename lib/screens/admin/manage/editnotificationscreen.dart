@@ -202,6 +202,7 @@ class _EditNotificationScreenState extends State<EditNotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: const Header2(text: "Edit Notification"),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

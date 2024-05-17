@@ -134,6 +134,7 @@ class ProductItem extends StatelessWidget {
 
 class _ExploreScreenState extends State<ExploreScreen> {
   final db = FirebaseFirestore.instance;
+  final TextEditingController _searchController = TextEditingController();
   List<String> prodName = [];
   List<String> prodQuantity = [];
   List<String> prodPrice = [];
@@ -142,6 +143,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
   List<String> tempImageUrls = [];
   List<String> imageUrls = [];
   List<String> productIDs = [];
+  String searchQuery = '';
 
   Future<void> addCart(BuildContext context, String id, String name) async {
     try {
@@ -267,11 +269,17 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const Expanded(
+                          Expanded(
                             child: SizedBox(
                               height: double.infinity,
                               child: TextField(
-                                decoration: InputDecoration(
+                                controller: _searchController,
+                                onChanged: (value) {
+                                  setState(() {
+                                    searchQuery = value;
+                                  });
+                                },
+                                decoration: const InputDecoration(
                                   hintText: 'Search Products',
                                   hintStyle: TextStyle(
                                     color: Color(0xFF9D9D9D),
@@ -286,7 +294,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                             ),
                           ),
                           const SizedBox(width: 16),
-                          const SizedBox(
+                           /* const SizedBox(
                             width: 95,
                             child: Text(
                               'All categories',
@@ -298,7 +306,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                 height: 0.10,
                               ),
                             ),
-                          ),
+                          ),*/
                           Container(
                             width: 24,
                             height: 24,
@@ -365,31 +373,32 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   crossAxisSpacing: 20,
                   childAspectRatio: 0.75,
                 ),
-                itemCount: prodName
-                    .length, // Get the number of products from the number of product names in list.
+                itemCount: _filteredProducts().length,
                 itemBuilder: (context, index) {
+                  int filteredIndex = _filteredProducts()[index];
                   return Center(
                     // Center the ProductItem widget
                     child: ProductItem(
-                      imageURL: imageUrls[index],
-                      name: prodName[index],
-                      price: prodPrice[index], // Adjust the price
+                      imageURL: imageUrls[filteredIndex],
+                      name: prodName[filteredIndex],
+                      price: prodPrice[filteredIndex], // Adjust the price
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => ProductDetailScreen(
-                                imageURL: imageUrls[index],
-                                name: prodName[index],
-                                price: prodPrice[index],
-                                description: prodDescription[index],
-                                id: productIDs[index]),
+                                imageURL: imageUrls[filteredIndex],
+                                name: prodName[filteredIndex],
+                                price: prodPrice[filteredIndex],
+                                description: prodDescription[filteredIndex],
+                                id: productIDs[filteredIndex]),
                           ),
                         );
                       },
                       onAddtoCart: () {
                         // Show a pop-up message indicating that the item was added to the cart
-                        addCart(context, productIDs[index], prodName[index]);
+                        addCart(context, productIDs[filteredIndex],
+                            prodName[filteredIndex]);
                       },
                     ),
                   );
@@ -402,5 +411,17 @@ class _ExploreScreenState extends State<ExploreScreen> {
       title: "ExploreScreen",
       buttonStatus: const [false, true, false, false, false],
     );
+  }
+
+  List<int> _filteredProducts() {
+    List<int> filteredProducts = [];
+    for (int i = 0; i < prodName.length; i++) {
+      if (prodName[i]
+          .toLowerCase()
+          .contains(searchQuery.toLowerCase())) {
+        filteredProducts.add(i);
+      }
+    }
+    return filteredProducts;
   }
 }
