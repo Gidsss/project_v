@@ -51,6 +51,7 @@ class OrderItem {
   final bool status;
   final double price;
   final int quantity;
+  final double totalprice;
 
   OrderItem({
     required this.name,
@@ -64,6 +65,7 @@ class OrderItem {
     required this.status,
     required this.price,
     required this.quantity,
+    required this.totalprice,
   });
 }
 
@@ -137,9 +139,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             orderdocument.data() as Map<String, dynamic>;
 
         String trackId = data['TrackingID'];
-        DateFormat dateFormat = DateFormat('yyyy-MM-dd'); // Define the date format
+        DateFormat dateFormat =
+            DateFormat('yyyy-MM-dd'); // Define the date format
 
-        
         String datePlaced = data['DatePlaced'] != null
             ? dateFormat.format((data['DatePlaced'] as Timestamp).toDate())
             : '';
@@ -153,8 +155,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             ? dateFormat.format((data['DatePickup'] as Timestamp).toDate())
             : '';
         bool status = data['IsActive'];
-        double orderPrice =
-            data['OrderPrice'] != null ? data['OrderPrice'] - data['Discount'] : 0.0;
+        double orderPrice = 0.0;
+        if (data['OrderPrice'] != null && data['Discount'] != null) {
+          orderPrice = data['OrderPrice'] - data['Discount'];
+        } else if (data['OrderPrice'] != null) {
+          orderPrice = data['OrderPrice'];
+        }
 
         // Get all items document from the items subcollection
         QuerySnapshot itemsSnapshot = await db
@@ -173,7 +179,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 
             // Fetch the referenced product document
             DocumentSnapshot productSnapshot = await productRef.get();
-            
+
             Map<String, dynamic> productData =
                 productSnapshot.data() as Map<String, dynamic>;
 
@@ -190,18 +196,18 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             }
 
             OrderItem orderItem = OrderItem(
-              name: productData['name'],
-              image: imageUrl, // Assuming imageUrls is a list
-              price: orderPrice,
-              quantity: itemData['Quantity'],
-              category: category, // Assuming category is a list
-              trackId: trackId,
-              datePlaced: datePlaced,
-              dateProcess: dateProcess,
-              datePrepare: datePrepare,
-              datePickup: datePickup,
-              status: status,
-            );
+                name: productData['name'],
+                image: imageUrl, // Assuming imageUrls is a list
+                price: double.parse(productData['price']),
+                quantity: itemData['Quantity'],
+                category: category, // Assuming category is a list
+                trackId: trackId,
+                datePlaced: datePlaced,
+                dateProcess: dateProcess,
+                datePrepare: datePrepare,
+                datePickup: datePickup,
+                status: status,
+                totalprice: orderPrice);
 
             _orderItems.add(orderItem);
             print('OrderItem added: ${productData['name']}'); // Debugging
@@ -263,8 +269,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                             itemCount: _orderItems.length,
                             separatorBuilder: (context, index) =>
                                 const SizedBox(
-                                    height:
-                                        15), // Adjust spacing between items
+                                    height: 15), // Adjust spacing between items
                             itemBuilder: (context, index) =>
                                 createOrderItem(context, index),
                           ),
@@ -286,12 +291,14 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                           const SizedBox(height: 10),
                           OrderDetailItem(
                             label: 'Total Price (Discount Applied):',
-                            value: "₱${_orderItems[0].price}",
+                            value: "₱${_orderItems[0].totalprice}",
                           ),
                           const SizedBox(height: 10),
                           OrderDetailItem(
                             label: 'Tracking ID',
-                            value: _orderItems.isNotEmpty ? "#${_orderItems[0].trackId.substring(0, 6)}-${trackingID}" : '',
+                            value: _orderItems.isNotEmpty
+                                ? "#${_orderItems[0].trackId.substring(0, 6)}-${trackingID}"
+                                : '',
                           ),
                           const SizedBox(height: 15),
                           const SizedBox(height: 5),
@@ -307,31 +314,47 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                   fontSize: 20,
                                 ),
                               ),
-                              _orderItems[0].status ? const Text(
-                                'Active',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              )
-                              : const Text(
-                                'Completed',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              )
+                              _orderItems[0].status
+                                  ? const Text(
+                                      'Active',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    )
+                                  : const Text(
+                                      'Completed',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    )
                             ],
                           ),
                           const SizedBox(
                             height: 15,
                           ),
                           // Order status and dates here
-                          buildOrderStatusItem('Order Placed', _orderItems.isNotEmpty ? _orderItems[0].datePlaced : ''),
-                          buildOrderStatusItem('Order Processing', _orderItems.isNotEmpty ? _orderItems[0].dateProcess : ''),
                           buildOrderStatusItem(
-                              'Preparation in Progress', _orderItems.isNotEmpty ? _orderItems[0].datePrepare : ''),
-                          buildOrderStatusItem('Ready for Pick-up', _orderItems.isNotEmpty ? _orderItems[0].datePickup : ''),
+                              'Order Placed',
+                              _orderItems.isNotEmpty
+                                  ? _orderItems[0].datePlaced
+                                  : ''),
+                          buildOrderStatusItem(
+                              'Order Processing',
+                              _orderItems.isNotEmpty
+                                  ? _orderItems[0].dateProcess
+                                  : ''),
+                          buildOrderStatusItem(
+                              'Preparation in Progress',
+                              _orderItems.isNotEmpty
+                                  ? _orderItems[0].datePrepare
+                                  : ''),
+                          buildOrderStatusItem(
+                              'Ready for Pick-up',
+                              _orderItems.isNotEmpty
+                                  ? _orderItems[0].datePickup
+                                  : ''),
                           const SizedBox(
                             height: 20,
                           )
