@@ -7,6 +7,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:project_v/screens/customer/explore/productdetails.dart';
 
+/*
+TTD
+  1. No sold field in add product - Check
+  2. Unoptimized and crashing, use cache - Not completed 
+  3. View edit order screen - 
+  4. Sold and Quantity update. - 
+  5. Send all feature - Not completed
+  6. Confirm order placement. - Not completed
+  7. Archive not delete principle. - Not completed
+*/
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
