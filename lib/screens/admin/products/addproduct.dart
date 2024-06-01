@@ -89,7 +89,8 @@ class AddProductState extends State<AddProduct> {
           'productQuantity': productQuantityController.text,
           'productGrade': productGradeController.text,
           'imageUrls': imageUrls,
-          'category': categoryController.text
+          'category': categoryController.text,
+          'sold': "0"
         });
       } catch (e) {
         ScaffoldMessenger.of(context)
